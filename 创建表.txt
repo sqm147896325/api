@@ -1,0 +1,36 @@
+创建用户表
+
+create table `user` (
+`id` int not null AUTO_INCREMENT comment '用户帐户',
+`username` varchar(50) not null comment '用户名',
+`password` varchar(50) not null comment '密码',
+`des` varchar(200) comment '描述',
+`emil` varchar(50) comment '邮箱',
+`tel` int comment '电话',
+`power` text comment '权限',
+`token` varchar(200) comment 'token值',
+`display` int unsigned NOT NULL DEFAULT '1' comment '是否启用',
+`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+`updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+PRIMARY KEY (`id`)
+) AUTO_INCREMENT=10000 engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
+
+
+
+创建博客表
+
+create table `blog` (
+`id` int not null AUTO_INCREMENT comment '文章id',
+`author_id` int not null comment '作者id',
+`author` varchar(50) not null comment '作者名',
+`title` varchar(50) not null comment '文章标题',
+`content` LongText not null comment '内容',
+`des` varchar(200) comment '文章描述',
+`keyword` varchar(200) comment '文章关键字',
+`display` int unsigned NOT NULL DEFAULT '1' comment '是否启用',
+`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+`updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+PRIMARY KEY (`id`)
+) AUTO_INCREMENT=10000 engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
+
+
