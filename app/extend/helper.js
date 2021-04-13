@@ -1,21 +1,33 @@
 'user strict';
 
 // helper用来放utils
-module.exports = (options, app) => {
+module.exports = {
 	// 请求成功
-	return {
-		success(dataInfo){
+	success(msg='',dataInfo={}){
+		this.ctx.body = {
+			flag: 1,
+			msg,
+			dataInfo
+		}
+	},
 
-		},
-	
-		// 请求失败
-		msg(msg){
-	
-		},
-	
-		// 请求失败
-		fail(msg){
-	
-		},
+	// 请求信息直接渲染
+	info(msg='',dataInfo={}){
+		this.ctx.status = 233;
+		this.ctx.body = {
+			flag: 0,
+			msg,
+			dataInfo
+		}
+	},
+
+	// 请求失败
+	fail(msg='',dataInfo={}){
+		this.ctx.status = 250;
+		this.ctx.body = {
+			flag: 0,
+			msg,
+			dataInfo
+		}
 	}
 };

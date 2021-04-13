@@ -8,11 +8,10 @@ class LoginController extends Controller {
 
 	async login() {
 		const { ctx } = this;
-		const { params , body } = ctx;
+		const { params , body , helper } = ctx;
 		const result = await this.main.login(params.id,params.password);
 		if(!result){
-			ctx.status = 250;
-			ctx.body.msg = '账号密码错误';
+			helper.fail('账号密码错误');
 			return false;
 		}
 		// 注册token
@@ -24,15 +23,13 @@ class LoginController extends Controller {
 		try {
 			await this.main.updataToken(token,params.id);
 		} catch (error) {
-			ctx.status = 250;
-			body.msg = 'token更新错误';
+			helper.fail('token更新错误');
 			return false;
 		}
-		body.flag = 1;
-		body.dataInfo = {
+		helper.success('登录成功',{
 			token,
 			userInfo:result
-		};
+		});
 	}
 }
 

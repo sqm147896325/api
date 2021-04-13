@@ -18,7 +18,16 @@ module.exports = appInfo => {
 	config.keys = appInfo.name + '_';
 
 	// 在这里添加中间件,执行顺序为数组顺序
-	config.middleware = [ 'token' , 'params'   , 'responseBody'];
+	config.middleware = [ 'token' , 'params' ];
+
+	// 程序端口设置
+	config.cluster = {
+		listen: {
+			path: '',
+			port: 9080,
+			hostname: '127.0.0.1',
+		}
+	};
 
 	// 安全策略设置
 	config.security = {
@@ -26,6 +35,7 @@ module.exports = appInfo => {
 			enable: false, 		// 开关功能配置
 			ignoreJSON: true 	// 默认为 false，当设置为 true 时，将会放过所有 content-type 为 `application/json` 的请求
 		},
+
 		//白名单，指定前端地址
 		// domainWhiteList: ["http://localhost:8080"],
 		// domainWhiteList: '*',
@@ -97,7 +107,15 @@ module.exports = appInfo => {
 	};
 
 	// 路由白名单
-	config.tokenWL = ['/', '/login']
+	config.tokenWL = ['/' , '/login'];
+
+	// 模板引擎配置
+	config.view = {
+		defaultViewEngine: 'ejs',	// 默认使用的模板引擎
+		mapping:{
+			'.html':'ejs' 			// '指定后缀':'指定模板引擎'
+		}
+	};
 
 	// add your user config here
 	const userConfig = {

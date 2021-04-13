@@ -21,23 +21,24 @@ module.exports = (options, app) => {
 				// 解析出数据
                 const decode = await app.jwt.verify(token, app.config.jwt.secret);
 
-				// // 验证是否与数据库中的token保持一致,不限制token同时登录可以注释以下代码
-				// // 在中间件中调用service需要使用serviceClasses，且只能使用静态方法
-				// const result = await ctx.service.user.aloneToken(token,decode.username,decode.id);
-				// if(!result){
-				// 	// 没有匹配数据token被替换
-				// 	ctx.status = 401;
-				// 	ctx.body = {
-				// 		flag: 0,
-				// 		msg: 'token被替换'
-				// 	}
-				// 	return false;
-				// }
+				/*
+				// 验证是否与数据库中的token保持一致,不限制token同时登录可以注释以下代码
+				// 在中间件中调用service需要使用serviceClasses，且只能使用静态方法
+				const result = await ctx.service.user.aloneToken(token,decode.username,decode.id);
+				if(!result){
+					// 没有匹配数据token被替换
+					ctx.status = 401;
+					ctx.body = {
+						flag: 0,
+						msg: 'token被替换'
+					}
+					return false;
+				}
 
 				// 把数据放在state存储
 				ctx.state.userInfo = decode;
+				*/
 
-				await next();
             } catch (err) {
 				// token错误定义
                 ctx.status = 401;
@@ -47,6 +48,10 @@ module.exports = (options, app) => {
                     dataInfo: err
 				}
 			}
+
+			// 洋葱卷模型需要注意next()的位置 
+			await next();
+
 		}
 	}
 }
