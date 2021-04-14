@@ -7,7 +7,11 @@ module.exports = (options, app) => {
         //获取当前路由
         const url = ctx.path;
         //判断当前路由是否需要验证token
-        const flag = tokenWL.includes(url);
+        let flag = tokenWL.includes(url);
+
+		// debug模式，不验证token
+		flag = true;
+
         if (flag) {
 			// 不需要验证
             await next();
@@ -47,6 +51,8 @@ module.exports = (options, app) => {
                     msg: 'token失效或解析错误',
                     dataInfo: err
 				}
+				// 直接拦截使请求停止下发
+				return false;
 			}
 
 			// 洋葱卷模型需要注意next()的位置 

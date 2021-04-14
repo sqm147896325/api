@@ -70,7 +70,7 @@ class BlogService extends Service {
 	}
 
 	// 获取用户列表
-	async getList(page,pagesize,key='id',query=''){
+	async getList(page=1,pagesize=5,key='id',query=''){
 		const offset = (page-1)*pagesize;
 		const limit = pagesize;
 		const config = { 
