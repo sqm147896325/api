@@ -54,7 +54,7 @@ module.exports = appInfo => {
 		host: '127.0.0.1',
 		port: '3306',
 		username: 'root',
-		password: '355369',
+		password: '666666',
 		timezone:'+08:00',
 		define:{
 			freezeTableName: true,		// Model 对应的表名将与model名相同
