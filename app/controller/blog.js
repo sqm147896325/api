@@ -55,7 +55,7 @@ class BlogController extends Controller {
 			helper.fail('更新失败');
 			return false;
 		}
-		helper.success('更新成功',result);
+		helper.info('更新成功',result);
 	};
 
 	// 获取用户列表,支持模糊查询
