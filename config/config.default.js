@@ -20,14 +20,16 @@ module.exports = appInfo => {
 	// 在这里添加中间件,执行顺序为数组顺序
 	config.middleware = [ 'token' , 'params' ];
 
+
 	// 程序端口设置
 	config.cluster = {
 		listen: {
 			path: '',
-			port: 9080,
+			port: process.env.NODE_ENV == "production" ? 9080 : 9080,
 			hostname: '127.0.0.1',
 		}
 	};
+	
 
 	// 安全策略设置
 	config.security = {
@@ -62,6 +64,7 @@ module.exports = appInfo => {
 			// createdAt:'created_at',
 			// updatedAt:'updated_at',
 		},
+		
 		// 使用默认运算符别名
 		operatorsAliases: {
 			$eq: Op.eq,
