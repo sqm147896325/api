@@ -11,10 +11,11 @@ describe('test/app/controller/home.test.js', () => {
     // yield ctx.service.xx();
   });
 
-  it('should GET /', () => {
-    return app.httpRequest()
-      .get('/')
-      .expect('hi, egg')
-      .expect(200);
-  });
+  // 这里是测试用例
+  // it('should GET /', () => {
+  //   return app.httpRequest()
+  //     .get('/')
+  //     .expect('hi, egg')
+  //     .expect(200);
+  // });
 });
