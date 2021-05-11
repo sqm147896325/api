@@ -63,9 +63,21 @@ class UserController extends Controller {
 	// 获取文章列表,支持模糊查询
 	async getList() {
 		const { ctx } = this;
-		const { params , body , helper } = ctx;
+		const { params , helper } = ctx;
 		const result = await this.main.getList(params.page,params.pagesize,params.key || 'id',params.query || '');
 		helper.success('',result);
+	};
+
+	// 设置某一用户权限
+	async setPower(){
+		const { ctx } = this;
+		const { params , helper } = ctx;
+		const result = await this.main.setPower(params.id,params.power);
+		if(!result){
+			helper.fail('更新失败');
+			return false;
+		}
+		helper.info('更新成功',result);
 	};
 
 }

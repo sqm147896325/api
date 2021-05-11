@@ -136,6 +136,20 @@ class UserService extends Service {
 		const result = await this.main.findAndCountAll(config);
 		return result;
 	}
+
+	// 设置用户权限
+	async setPower(id,power){
+		const result = await this.main.update({
+			power,
+		},{
+			where: {id:parseInt(id)}
+		});
+		if(result[0] == 0){
+			// 未发生更新
+			return false;
+		}
+		return true;
+	}
 }
 
 module.exports = UserService;
