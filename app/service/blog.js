@@ -69,7 +69,7 @@ class BlogService extends Service {
 		return result;
 	}
 
-	// 获取用户列表
+	// 获取博客列表
 	async getList(page=1,pagesize=5,key='id',query=''){
 		const offset = (page-1)*pagesize;
 		const limit = pagesize;
