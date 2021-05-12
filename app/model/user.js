@@ -3,45 +3,86 @@
 module.exports = app => {
 
 	// 获取数据类型
-	
-	const { INTEGER, STRING, TEXT, DATE } = app.Sequelize;
-
+	// const { INTEGER, STRING, TEXT, DATE } = app.Sequelize;
+	const DataTypes = app.Sequelize.DataTypes;
 
 	// 定义模型
-
 	const User = app.model.define('user', {
-
-		id: { type: INTEGER, primaryKey: true, autoIncrement: true },	// 自动生成，唯一标识
-
-		username: STRING(50),		// 必选
-		
-		password: STRING(50),		// 必选
-
-		des: STRING(200),			// 可选
-
-		emil: STRING(50),			// 可选
-
-		tel: INTEGER,				// 可选
-
-		power: TEXT,				// 特殊，权限
-
-		token: STRING(200),			// 特殊，token
-
-		display: { type: INTEGER, defaultValue: 1 },	// 自动生成，是否展示，默认1显示
-
-		created_at: DATE,			// 自动生成，创建时间
-
-		updated_at: DATE,			// 自动生成，更新时间
-
-	}, {
-
-		// 禁用 created_at、updated_at 自动转换，使用 mysql 管理
-
-		// 方便后续迁移 ORM 等需求
-
+		id: {
+		  autoIncrement: true,
+		  type: DataTypes.INTEGER,
+		  allowNull: false,
+		  primaryKey: true,
+		  comment: "用户帐户"
+		},
+		username: {
+		  type: DataTypes.STRING(50),
+		  allowNull: true
+		},
+		password: {
+		  type: DataTypes.STRING(50),
+		  allowNull: true
+		},
+		des: {
+		  type: DataTypes.STRING(200),
+		  allowNull: true
+		},
+		emil: {
+		  type: DataTypes.STRING(50),
+		  allowNull: true
+		},
+		tel: {
+		  type: DataTypes.INTEGER,
+		  allowNull: true
+		},
+		power: {
+		  type: DataTypes.TEXT,
+		  allowNull: true,
+		  comment: "权限"
+		},
+		token: {
+		  type: DataTypes.STRING(200),
+		  allowNull: true,
+		  comment: "token值"
+		},
+		display: {
+		  type: DataTypes.INTEGER.UNSIGNED,
+		  allowNull: false,
+		  defaultValue: 1,
+		  comment: "是否启用"
+		},
+		created_at: {
+		  type: DataTypes.DATE,
+		  allowNull: false,
+		  defaultValue: app.Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+		  comment: "创建时间"
+		},
+		updated_at: {
+		  type: DataTypes.DATE,
+		  allowNull: true,
+		  comment: "最后修改时间"
+		}
+	  }, {
+		sequelize: app.sequelize,
+		tableName: 'user',
 		timestamps: false,
+		indexes: [
+		  {
+			name: "PRIMARY",
+			unique: true,
+			using: "BTREE",
+			fields: [
+			  { name: "id" },
+			]
+		  },
+		]
+	  });
 
-	});
+	// 如果没有表则创建表
+	(async function () {
+		await User.sync();
+		console.log("模型User同步完毕！");
+	})();
 
 	return User;
 

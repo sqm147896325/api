@@ -60,9 +60,6 @@ module.exports = appInfo => {
 		timezone:'+08:00',
 		define:{
 			freezeTableName: true,		// Model 对应的表名将与model名相同
-			// timestamps: false,			//去掉默认的添加时间和更新时间
-			// createdAt:'created_at',
-			// updatedAt:'updated_at',
 		},
 		
 		// 使用默认运算符别名
