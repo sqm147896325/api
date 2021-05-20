@@ -66,7 +66,9 @@ class BlogService extends Service {
 				'des',
 				'keyword',
 				'created_at',
-				'updated_at'
+				'updated_at',
+				'lenght',
+				'visited'
 			]
 		});
 		return result;
@@ -98,7 +100,9 @@ class BlogService extends Service {
 				'des',
 				'keyword',
 				'created_at',
-				'updated_at'
+				'updated_at',
+				'lenght',
+				'visited'
 			]
 		};
 		const result = await this.main.findAndCountAll(config);
