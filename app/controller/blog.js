@@ -22,7 +22,7 @@ class BlogController extends Controller {
 	async create() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;
- 		const { id , name } = await this.main.create(params.author_id,params.author,params.title,params.content,{
+ 		const { id , name } = await this.main.create(params.author_id,params.author,params.title,params.content,params.lenght,{
 			keyword: params.keyword,
 			des: params.des
 		});
@@ -49,7 +49,8 @@ class BlogController extends Controller {
 			title: params.title,
 			content: params.content,
 			des: params.des,
-			keyword: params.keyword
+			keyword: params.keyword,
+			lenght: params.lenght
 		});
 		if(!result){
 			helper.fail('更新失败');

@@ -14,7 +14,8 @@ class BlogService extends Service {
 			title,
 			content,
 			des: option.des,
-			keyword: option.keyword
+			keyword: option.keyword,
+			lenght: option.lenght
 		});	
 		return result;
 	}
@@ -33,11 +34,13 @@ class BlogService extends Service {
 
 	// 更新文章
 	async update(id,option={}){
+		console.log(option)
 		const result = await this.main.update({
 			title: option.title,
 			content: option.content,
 			des: option.des,
-			keyword: option.keyword
+			keyword: option.keyword,
+			lenght: option.lenght
 		},{
 			where: {id:parseInt(id)}
 		});
@@ -69,14 +72,14 @@ class BlogService extends Service {
 		return result;
 	}
 
-	// 获取博客列表
+	// 获取博客列表，可以用作获取最新博客的接口
 	async getList(page=1,pagesize=5,key='id',query=''){
 		const offset = (page-1)*pagesize;
 		const limit = pagesize;
 		const config = { 
 			limit:parseInt(limit), 		// 查询条数
 			offset:parseInt(offset), 	// 偏移量
-			order: [ 'created_at', 'updated_at' ], // 排序规则
+			order: [ ['created_at', 'DESC'], 'updated_at' ], // 排序规则
 			// 查询条件
 			where: {
 				display: 1, 	// 只查询未删除的数据

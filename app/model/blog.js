@@ -50,6 +50,17 @@ module.exports = app => {
 			allowNull: true,
 			comment: "文章关键字"
 		},
+		lenght: {
+			type: INTEGER,
+			allowNull: false,
+			comment: "文章字数"
+		},
+		visited: {
+			type: INTEGER,
+			allowNull: false,
+			defaultValue: 1,
+			comment: "访问次数"
+		},
 		display: {
 			type: INTEGER.UNSIGNED,
 			allowNull: false,
