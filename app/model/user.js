@@ -80,8 +80,22 @@ module.exports = app => {
 
 	// 如果没有表则创建表
 	(async function () {
-		await User.sync();
-		console.log("模型User同步完毕！");
+		await User.sync()
+		.then(async () => {
+			const users = await User.findAll();
+			if (!users['0']) {
+				// 如果用户表里没有数据，则创建管理员账户
+				await User.create({
+					id: 10000,
+					username: 'admin',
+					password: '123456',
+					power: JSON.stringify(['用户管理'])
+				});
+				console.log('创建了新的表')
+			} else {
+				// 已经存在数据了，不执行创建操作
+			}
+		})
 	})();
 
 	return User;

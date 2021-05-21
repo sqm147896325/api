@@ -59,7 +59,7 @@ class BlogController extends Controller {
 		helper.info('更新成功',result);
 	};
 
-	// 获取用户列表,支持模糊查询
+	// 获取博客列表,支持模糊查询
 	async getList() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;
