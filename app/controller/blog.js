@@ -6,7 +6,12 @@ class BlogController extends Controller {
 
 	main = this.service.blog;
 
-	// 获取某篇文章
+	/**
+	 * @description: 获取某篇文章
+	 * @param {id:Number}		文章id
+	 * @return {return:Object}	success或fail
+	 * @Date Changed: 2021-5-24
+	 */	
 	async read() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;
@@ -18,7 +23,18 @@ class BlogController extends Controller {
 		helper.success('查询成功',result);
 	};
 
-	// 创建文章
+	/**
+	 * @description: 创建文章
+	 * @param {id:Number}		文章id
+	 * @param {author:String}	作者名称
+	 * @param {title:String}	文章标题
+	 * @param {content:String}	文章内容
+	 * @param {lenght:String}	文章长度
+	 * @param {keyword:String}	查询关键字
+	 * @param {des:String}		查询描述
+	 * @return {return:Object}	info
+	 * @Date Changed: 2021-5-24
+	 */	
 	async create() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;

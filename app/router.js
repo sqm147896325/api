@@ -26,4 +26,8 @@ module.exports = app => {
     router.delete('/user', controller.user.delete);
     router.get('/user/list', controller.user.getList);
     router.post('/user/power', controller.user.setPower);
+
+    // 接口文档路由
+    router.get('/api/index', controller.api.index);
+
 };
