@@ -7,11 +7,11 @@ class BlogController extends Controller {
 	main = this.service.blog;
 
 	/**
-	 * @description: 获取某篇文章
-	 * @param {id:Number}		文章id
-	 * @return {return:Object}	success或fail
-	 * @Date Changed: 2021-5-24
-	 */	
+	 * @author sqm
+	 * @description 获取某篇文章
+	 * @param {id:Number}	文章id
+	 * @backDes 
+	 */
 	async read() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;
@@ -24,7 +24,8 @@ class BlogController extends Controller {
 	};
 
 	/**
-	 * @description: 创建文章
+	 * @author sqm
+	 * @description 添加创建文章
 	 * @param {id:Number}		文章id
 	 * @param {author:String}	作者名称
 	 * @param {title:String}	文章标题
@@ -32,8 +33,7 @@ class BlogController extends Controller {
 	 * @param {lenght:String}	文章长度
 	 * @param {keyword:String}	查询关键字
 	 * @param {des:String}		查询描述
-	 * @return {return:Object}	info
-	 * @Date Changed: 2021-5-24
+	 * @backDes 
 	 */	
 	async create() {
 		const { ctx } = this;
@@ -45,7 +45,12 @@ class BlogController extends Controller {
 		helper.info('添加成功',{ id , name });
 	};
 
-	// 删除文章
+	/**
+	 * @author sqm
+	 * @description 删除文章
+	 * @param {id:Number}	文章id
+	 * @backDes 
+	 */
 	async delete() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx
@@ -57,7 +62,17 @@ class BlogController extends Controller {
 		helper.success('删除成功',result);
 	};
 
-	// 更新文章
+	/**
+	 * @author sqm
+	 * @description 更新文章
+	 * @param {id:Number}		文章id
+	 * @param {title:String}	文章标题
+	 * @param {content:String}	文章内容
+	 * @param {des:String}		文章描述
+	 * @param {keyword:String}	文章关键字
+	 * @param {lenght:String}	文章长度
+	 * @backDes 
+	 */	
 	async update() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;
@@ -75,7 +90,15 @@ class BlogController extends Controller {
 		helper.info('更新成功',result);
 	};
 
-	// 获取博客列表,支持模糊查询
+	/**
+	 * @author sqm
+	 * @description 获取博客列表,支持模糊查询
+	 * @param {page:Number}		博客列表页码
+	 * @param {pagesize:Number}	博客列表每页大小
+	 * @param {key:String}		查询的关键字
+	 * @param {query:String}	需要查询的内容
+	 * @backDes 
+	 */	
 	async getList() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;

@@ -6,6 +6,13 @@ class LoginController extends Controller {
 
 	main = this.service.user;
 
+	/**
+	 * @author sqm
+	 * @description 登录
+	 * @param {id:String}		账号
+	 * @param {password:String}	密码
+	 * @backDes 返回token和用户信息
+	 */	
 	async login() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;

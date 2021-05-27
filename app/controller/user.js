@@ -6,7 +6,12 @@ class UserController extends Controller {
 
 	main = this.service.user;
 
-	// 获取某一用户
+	/**
+	 * @author sqm
+	 * @description 获取某一用户信息
+	 * @param {id:String}	账号
+	 * @backDes 
+	 */	
 	async read() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;
@@ -18,7 +23,16 @@ class UserController extends Controller {
 		helper.success('查询成功',result);
 	};
 
-	// 创建用户
+	/**
+	 * @author sqm
+	 * @description 创建用户
+	 * @param {username:String}		用户名称
+	 * @param {password:String}		用户密码
+	 * @param {emil:String}			用户邮箱
+	 * @param {tel:String}			用户电话
+	 * @param {des:String}			用户描述
+	 * @backDes 
+	 */	
 	async create() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;
@@ -30,7 +44,12 @@ class UserController extends Controller {
 		helper.info('添加成功',{ id , username });
 	};
 
-	// 删除用户
+	/**
+	 * @author sqm
+	 * @description 删除用户
+	 * @param {id:String}	账号
+	 * @backDes 
+	 */	
 	async delete() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx
@@ -42,7 +61,17 @@ class UserController extends Controller {
 		helper.success('删除成功',result);
 	};
 
-	// 更新用户
+	/**
+	 * @author sqm
+	 * @description 更新用户
+	 * @param {id:String}			账号
+	 * @param {username:String}		用户名称
+	 * @param {password:String}		用户密码
+	 * @param {emil:String}			用户邮箱
+	 * @param {tel:String}			用户电话
+	 * @param {des:String}			用户描述
+	 * @backDes 
+	 */	
 	async update() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;
@@ -60,7 +89,15 @@ class UserController extends Controller {
 		helper.success('更新成功',result);
 	};
 
-	// 获取文章列表,支持模糊查询
+	/**
+	 * @author sqm
+	 * @description 获取用户列表,支持模糊查询
+	 * @param {page:Number}		用户列表页码
+	 * @param {pagesize:Number}	用户列表每页大小
+	 * @param {key:String}		查询的关键字
+	 * @param {query:String}	需要查询的内容
+	 * @backDes 
+	 */	
 	async getList() {
 		const { ctx } = this;
 		const { params , helper } = ctx;
@@ -68,7 +105,13 @@ class UserController extends Controller {
 		helper.success('',result);
 	};
 
-	// 设置某一用户权限
+	/**
+	 * @author sqm
+	 * @description 设置某一用户权限
+	 * @param {id:String}			账号
+	 * @param {power:String}		权限
+	 * @backDes 
+	 */	
 	async setPower(){
 		const { ctx } = this;
 		const { params , helper } = ctx;
