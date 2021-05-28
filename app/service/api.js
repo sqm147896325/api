@@ -24,19 +24,22 @@ function formatContent(val, group) {
         return e!==''
     })
     let content = {}
+    console.log(val)
     if(val.length !== 0){
         val.forEach((item1) => {
             if(item1.split(' ')[0] !== ''){
                 if(!content[item1.split(' ')[0]]){
-                    content[item1.split(' ')[0]] = []
+                    // 如果是可以分割的
+                    content[item1.split(' ')[0]] = [] // 使空格前的值变为key
                 }
-                content[item1.split(' ')[0]].push(item1.split(' ')[1])
+                content[item1.split(' ')[0]].push(item1.split(' ')[1]) // 每一行执行分割，将空格后的数据赋给空格前的key
             }
         })
     }
     for (const key in content) {
-        if(content[key].length == 1){
-            // 如果不是数组则直接改为string的键值对
+        if(content[key].length == 1 && key !== 'param'){
+            // 如果数组中只有一个string，则使他变为单独的string，而不是数组的形式
+            // params一定是数组形式，不做处理
             content[key] = content[key][0]
         }
     }
@@ -71,7 +74,6 @@ async function getRouterReadFile() {
 class ApiService extends Service {
     async index() {
         const res = await getRouterReadFile();
-        console.log(res)
         return res
     }
 }
