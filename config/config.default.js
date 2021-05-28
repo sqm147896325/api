@@ -61,6 +61,9 @@ module.exports = appInfo => {
 		define:{
 			freezeTableName: true,		// Model 对应的表名将与model名相同
 		},
+		dialectOptions: {
+			charset: 'utf8mb4'
+		},
 		
 		// 使用默认运算符别名
 		operatorsAliases: {
