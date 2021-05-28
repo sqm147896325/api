@@ -109,6 +109,55 @@ class BlogService extends Service {
 		return result;
 	}
 
+	async read(id){
+		const result = await this.main.findByPk(id,{
+			where: {
+				display: 1, 	// 只查询未删除的数据
+			},
+			attributes: [
+				'id',
+				'author_id',
+				'author',
+				'title',
+				'content',
+				'des',
+				'keyword',
+				'created_at',
+				'updated_at',
+				'lenght',
+				'visited'
+			]
+		});
+		return result;
+	}
+
+	// 获取博客关键字，及关键字下博客数量
+	async getKeyword(){
+		const config = {
+			order: [ ['created_at', 'DESC'], 'updated_at' ], // 排序规则
+			// 查询条件
+			where: {
+				display: 1, 	// 只查询未删除的数据
+			},
+			// 指定返回的属性
+			attributes: [ 'keyword' ]
+		};
+		let result = await this.main.findAll(config);
+		result = result.map(e => {
+			return e.keyword.split(',')
+		})
+		result = [].concat(...result); // 二维数组降维
+		// result = [...new Set(result)]; // 数组去重
+		function getRepeatNum(arr){
+			// 统计数组中所有值出现的次数
+			return arr.reduce((prev,next) => { 
+				prev[next] = (prev[next] + 1) || 1; 
+				return prev; 
+			},{}); 
+		}
+		return getRepeatNum(result);
+	}
+
 }
 
 module.exports = BlogService;

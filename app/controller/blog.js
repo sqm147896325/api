@@ -106,6 +106,19 @@ class BlogController extends Controller {
 		helper.success('',result);
 	};
 
+	/**
+	 * @author sqm
+	 * @description 获取所有种类的博客标签及每个标签下的博客数量
+	 * @param {*} 
+	 * @backDes 
+	 */	
+	async getKeyword() {
+		const { ctx } = this;
+		const { params , body , helper } = ctx;
+		const result = await this.main.getKeyword()
+		helper.success('',result);
+	}
+
 }
 
 module.exports = BlogController;

@@ -18,6 +18,7 @@ module.exports = app => {
     router.put('/blog', controller.blog.create);
     router.delete('/blog', controller.blog.delete);
     router.get('/blog/list', controller.blog.getList);
+    router.get('/blog/keyword', controller.blog.getKeyword);
 
     // 用户相关路由
     router.get('/user', controller.user.read);
