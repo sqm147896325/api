@@ -7,15 +7,15 @@ class BlogService extends Service {
 	main = this.ctx.model.Blog;
 	
 	// 按需创建文章
-	async create(author_id,author,title,content,option={}){
+	async create(author_id,author,title,content,lenght,option={}){
 		const result = await this.main.create({
 			author_id,
 			author,
 			title,
 			content,
+			lenght,
 			des: option.des,
 			keyword: option.keyword,
-			lenght: option.lenght
 		});	
 		return result;
 	}
