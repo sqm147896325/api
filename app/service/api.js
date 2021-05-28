@@ -50,21 +50,22 @@ async function getRouterReadFile() {
     const routerGroupExp = /router.([a-z]{3,6}).*;/g // 分组的正则表达式
     let routerGroup = fileString.match(routerGroupExp) // 使用表达式进行分组
     let routeExp = /router.([a-z]{3,6})\('(.*)',\scontroller.(.*)\.(.*)\)/ //分组匹配
-    // routerGroup = []
+    let newGroup = []
     await routerGroup.forEach(async e => {
         // 对接口进行分组并提取关键字
         let group = routeExp.exec(e)
         const controllerFile = await fs.readFileSync(path.join(__dirname, `../controller/${group[3]}.js`), 'utf-8') // 获取路由文件内容
-        let result = formatContent(controllerFile, group)
-        routerGroup.push({
+        let result = formatContent(controllerFile, group);
+        let obj = {
             method: group[1],
             path: group[2],
             // file: group[3],
             // fileFun: group[4],
-            content: result
-        })
+        }
+        Object.assign(obj, result); // 使用追加属性的方式赋值
+        newGroup.push(obj)
     })
-    return routerGroup
+    return newGroup
 }
 
 class ApiService extends Service {
