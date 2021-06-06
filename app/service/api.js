@@ -35,9 +35,9 @@ function formatContent(val, group) {
         })
     }
     for (const key in content) {
-        if(content[key].length == 1){
-            // 如果不是数组则直接改为string的键值对
-            content[key] = content[key][0]
+        if(content[key].length == 1 && key != 'param'){
+			// 如果不是数组则直接改为string的键值对,除了params
+			content[key] = content[key][0]
         }
     }
     return content
@@ -71,7 +71,6 @@ async function getRouterReadFile() {
 class ApiService extends Service {
     async index() {
         const res = await getRouterReadFile();
-        console.log(res)
         return res
     }
 }
