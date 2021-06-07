@@ -109,28 +109,6 @@ class BlogService extends Service {
 		return result;
 	}
 
-	async read(id){
-		const result = await this.main.findByPk(id,{
-			where: {
-				display: 1, 	// 只查询未删除的数据
-			},
-			attributes: [
-				'id',
-				'author_id',
-				'author',
-				'title',
-				'content',
-				'des',
-				'keyword',
-				'created_at',
-				'updated_at',
-				'lenght',
-				'visited'
-			]
-		});
-		return result;
-	}
-
 	// 获取博客关键字，及关键字下博客数量
 	async getKeyword(){
 		const config = {

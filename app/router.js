@@ -31,4 +31,12 @@ module.exports = app => {
     // 接口文档路由
     router.get('/api/index', controller.api.index);
 
+	// 文件操作相关路由
+	router.post('/file/index', controller.file.read);
+	router.put('/file/index', controller.file.create);
+    router.delete('/file/index', controller.file.delete);
+    // router.post('/file/dir', controller.file.dirRead);
+    // router.put('/file/dir', controller.file.dirCreate);
+    // router.delete('/file/dir', controller.file.dirDelete);
+
 };
