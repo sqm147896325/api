@@ -102,8 +102,16 @@ module.exports = app => {
 
 	// 如果没有表则创建表
 	(async function () {
-		await Blog.sync();
-		console.log("模型Blog同步完毕！");
+		await Blog.sync()
+		.then(async () => {
+			const blog = await Blog.findAll();
+			if (!blog['0']) {
+				// 如果文件表里没有数据
+				console.log('创建了Blog表')
+			} else {
+				// 已经存在数据了，不执行创建操作
+			}
+		});
 	})();
 
 	return Blog;

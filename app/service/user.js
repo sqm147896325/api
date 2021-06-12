@@ -26,7 +26,7 @@ class UserService extends Service {
 		return result;
 	}
 
-	// 跟新token
+	// 更新token
 	async updataToken(token,id){
 		const result = await this.main.update({token},{
 			where:{id}

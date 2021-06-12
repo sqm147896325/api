@@ -112,6 +112,17 @@ module.exports = appInfo => {
 	// 路由白名单
 	config.tokenWL = ['/' , '/login'];
 
+	config.multipart = {
+		mode: 'file',		// 使用文件模式，这里还有stream模式更合理，不过使用较复杂
+		fieldNameSize: 100,	// 表单 Field 文件名长度限制，默认100
+		fieldSize: '100kb',	// 表单 Field 内容大小，默认100kb
+		fields: 10,			// 表单 Field 最大个数
+		fileSize: '10mb',	// 单个文件大小
+		files: 10,			// 允许上传的最大文件数
+		// 文件上传白名单，这里使用函数式使所有文件都可以上传
+		whitelist: 	() => true
+	};
+
 	// 模板引擎配置
 	config.view = {
 		defaultViewEngine: 'ejs',	// 默认使用的模板引擎

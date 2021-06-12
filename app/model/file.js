@@ -24,6 +24,11 @@ module.exports = app => {
 			return uuidv1().replace(/-/g, "");
 		  }
 		},
+		parentId: {
+			type: STRING(50),
+			allowNull: false,
+			comment: '父级Id'
+		},
 		name: {
 		  type: STRING(50),
 		  allowNull: false,
@@ -61,11 +66,6 @@ module.exports = app => {
 			defaultValue: app.Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
 			comment: "创建时间"
 		},
-		md5: {
-		  type: STRING(1024),
-		  allowNull: false,
-		  comment: 'md5校验码'
-		},
 		display: {
 			type: INTEGER.UNSIGNED,
 			allowNull: false,
@@ -80,8 +80,16 @@ module.exports = app => {
 
 	// 如果没有表则创建表
 	(async function () {
-		await File.sync();
-		console.log("模型File同步完毕！");
+		await File.sync()
+		.then(async () => {
+			const file = await File.findAll();
+			if (!file['0']) {
+				// 如果文件表里没有数据
+				console.log('创建了File表')
+			} else {
+				// 已经存在数据了，不执行创建操作
+			}
+		});
 	})();
 
 	return File;
