@@ -10,7 +10,7 @@ class ApiController extends Controller {
      * @author sqm
      * @description 接口文档接口
      * @param {*}
-     * @backDes 
+     * @backDes 	编写时内容不要使用反斜杠
      */
     async index() {
         const { ctx } = this;

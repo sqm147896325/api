@@ -32,7 +32,7 @@ module.exports = app => {
 		  allowNull: true
 		},
 		tel: {
-		  type: DataTypes.INTEGER,
+		  type: DataTypes.BIGINT,
 		  allowNull: true
 		},
 		power: {

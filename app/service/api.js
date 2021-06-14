@@ -10,7 +10,6 @@ const path = require('path')
 function formatContent(val, group) {
     val = val.replace(/[\t|\r|\n]*/g, '') // 去除其他多余的制表符
     val = val.replace(/^\s+|\s+$/g, ' ') // 使多个空格变为一个
-    console.log('val', val)
     let method = new RegExp('\\/\\*\\*\\s(?<need>[^\\/]*)\\*\\/\\s*async*\\s*' + group[4]) // 匹配查找文件中对应的多行注释
     val = method.exec(val)
     if(val === null){
@@ -24,7 +23,6 @@ function formatContent(val, group) {
         return e!==''
     })
     let content = {}
-    console.log(val)
     if(val.length !== 0){
         val.forEach((item1) => {
             if(item1.split(' ')[0] !== ''){

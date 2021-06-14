@@ -8,16 +8,18 @@ class FileService extends Service {
 	main = this.ctx.model.File;
 
 	// 获取单个文件信息
-	async read(uuid){
+	async read(uuid,user_id){
 		if( uuid != 0 ){
 			// 父目录不是根目录
 			const result = await this.main.findByPk(uuid,{
 				where: {
 					display: 1, 	// 只查询未删除的数据
+					user_id
 				},
 				attributes: [
 					'uuid',
 					'name',
+					'user_id',
 					'size',
 					'file_type',
 					'keyword',
@@ -28,7 +30,7 @@ class FileService extends Service {
 			});
 			if(result.dataValues.file_type == 'dir'){
 				// 文件夹执行内容
-				const content = await this.getItem(uuid);
+				const content = await this.getItem(uuid,user_id);
 				result.dataValues.content = content;
 			} else {
 				// 文件执行内容
@@ -39,22 +41,24 @@ class FileService extends Service {
 			return result;
 		}
 		// 父目录是根目录
-		const content = await this.getItem(uuid);
+		const content = await this.getItem(uuid,user_id);
 		const result = {uuid: 0, name: 'root', size:0, file_type:'dir', keyword: 'root', content, upload_time:'2021-06-12T13:00:00.000Z'};
 		return result;
 	}
 
 	// 通过父级id查询子集
-	async getItem(parentId) {
+	async getItem(parentId,user_id) {
 		const result = await this.main.findAll({
 			where: {
 				parentId,		// 只查询父id对应的子集
-				display: 1
+				display: 1,
+				user_id			// 只查对应用户下的
 			},
 			attributes: [
 				'uuid',
 				'name',
 				'size',
+				'user_id',
 				'file_type',
 				'upload_time'
 			]
@@ -75,24 +79,39 @@ class FileService extends Service {
 		});
 		return result.dataValues.path;
 	}
-	
-	// 按需创建文件
-	async create(parentId ,name, size, fileType, path, keyword, url='/' , option={}){
-		const result = await this.main.create({
-			parentId,
-			name,
-			size,
-			file_type: fileType,
-			path,
-			keyword,
-			url,
-			keyword: option.keyword
-		});	
+
+	// 创建文件或文件夹(单个或批量)
+	async create(files){
+		const result = await this.main.bulkCreate(files);	
 		return result;
 	}
 
 	// 删除文件
-	async del(uuid){
+	async del(uuid,user_id){
+		const type = await this.main.findByPk(uuid,{
+			where: {user_id},
+			attributes: [ 'file_type', 'path' ]
+		});
+		// 如果类型为文件夹
+		if(type['file_type'] == 'dir'){
+			// 递归获取子集状态
+			const itemArr = await this.main.findAll({
+				where: {
+					parentId: uuid,		// 只查询父id对应的子集
+					display: 1
+				},
+				attributes: [ 'uuid' ]
+			});
+			// 递归更新子集状态
+			await itemArr.map(async e => {
+				this.del(e.uuid);
+			})
+		} else {
+			// 类型为文件
+			// 移动真实路径到trash中
+			await fs.renameSync(`app/public/static${type.path}`,`app/public/trash${type.path}`);
+		}
+		// 类型为文件或文件夹最后一步,更新当前删除状态
 		const result = await this.main.update({ display: 0 },{
 			where: {uuid}
 		});

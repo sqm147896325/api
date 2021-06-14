@@ -16,7 +16,7 @@ class FileController extends Controller {
     async read() {
         const { ctx } = this;
 		const { helper , params } = ctx;
-		const res = await this.main.read(params.uuid);
+		const res = await this.main.read(params.uuid,params['user_id']);
 		if(res){
 			helper.success('读取文件成功',res);
 			return false;
@@ -27,37 +27,47 @@ class FileController extends Controller {
 
 	/**
      * @author sqm
-     * @description 上传文件(目前只支持单文件上传)
-     * @param {parentId:Number}		父级文件夹id，如果是在根目录下创建则传0
-	 * @param {md5:String}			校验的md5码/文件夹为'0'
+     * @description 上传文件,目前只支持单文件上传
+     * @param {parentId:Number}		父级文件夹id,如果是在根目录下创建则传0
+	 * @param {md5:String}			校验的md5码,文件夹为'0'
      * @param {name:String}			文件或文件夹名
-     * @param {size:String}			文件大小/文件夹为0(如果没有则从文件中获取)
+     * @param {size:String}			文件大小,文件夹为0,如果没有则从文件中获取
      * @param {keyword:String}		关键字,可选
      * @backDes 
      */
-	 async create() {
+	async create() {
         const { ctx } = this;
 		const { helper , params } = ctx;
 		
 		if(ctx.request.files){
 			// 如果有files属性说明有文件传输，此时是文件
 			try {
-				const { name , parentId , keyword } = params; // 获取参数
+				const { name , parentId , keyword, user_id } = params; // 获取参数
 				let path;
 				if(parentId == 0){
 					path = '/';
 				} else {
-					path = '/' + await this.main.getPath(parentId) + '/';	// 通过父id获取路径
+					path = await this.main.getPath(parentId) + '/';	// 通过父id获取路径
 				}
-				const nowDate = (new Date).getTime();				// 获取时间戳追加在文件的真实路径中
-				const fullName = ctx.request.files[0].filename;		// 获取内容
-				const temPath = ctx.request.files[0].filepath;		// 缓存文件的位置获取
-				const fileType = /(.*)(\..*$)/.exec(fullName)[2];	// 获取文件类型
-				path = path + name + nowDate + fileType;			// 重新拼接得到文件存放路径
-				const size = await fs.statSync(temPath).size;		// 读取文件大小，单位字节
-				await fs.copyFileSync(temPath,`app/public/static${path}`);	// 移动文件到父位置
-				const res = await this.main.create(parentId , name , size , fileType , path , keyword);
-				if(res){
+
+				// 构建文件结构
+				let files = [];
+				await ctx.request.files.map(async (e,i) => {
+					const nowDate = (new Date).getTime();				// 获取时间戳追加在文件的真实路径中
+					const temPath = e.filepath;		// 缓存文件的位置获取
+					files[i] = {};
+					files[i].parentId = parentId;
+					files[i].name = /(.*)(\..*$)/.exec(e.filename)[1];
+					files[i].file_type = /(.*)(\..*$)/.exec(e.filename)[2];
+					files[i].path = path + files[i].name + nowDate + files[i].file_type
+					files[i].size = await fs.statSync(temPath).size;
+					files[i].url = '/';
+					files[i]['user_id'] = user_id;
+					await fs.copyFileSync(temPath,`app/public/static${files[i].path}`);	// 移动文件到父位置
+				});
+
+				const res = await this.main.create(files);
+				if(res.length > 0){
 					helper.success('创建文件成功');
 					return false;
 				}
@@ -68,19 +78,29 @@ class FileController extends Controller {
 			};
 		} else {
 			// 否则是文件夹
-			const { name , parentId , keyword} = params; // 获取参数
+			const { name , parentId, user_id } = params; // 获取参数
 			let path;
 			if(parentId == 0){
 				path = '/'
 			} else {
-				path = '/' + await this.main.getPath(parentId) + '/';	// 通过父id获取路径
+				path = await this.main.getPath(parentId) + '/';	// 通过父id获取路径
 			}
-			const fileType = 'dir';		// 设置类型为文件夹
-			const size = 0;
-			path = path + name;
-			await fs.mkdirSync('app/public/static' + path );
-			const res = await this.main.create(parentId , name , size , fileType , path , keyword);
-			if(res){
+
+			// 构建文件夹结构
+			let files = [{
+				parentId: parentId,
+				name: name,
+				user_id,
+				file_type: 'dir',
+				path: path + name + (new Date).getTime(),
+				size: 0,
+				url: '/',
+			}]
+
+			await fs.mkdirSync('app/public/static' + files[0].path );
+			await fs.mkdirSync('app/public/trash' + files[0].path );
+			const res = await this.main.create(files);
+			if(res.length > 0){
 				helper.success('创建文件夹成功');
 				return false;
 			}
@@ -91,18 +111,24 @@ class FileController extends Controller {
 	/**
      * @author sqm
      * @description 删除文件
-     * @param {uuid:Number}		要删除的文件或文件夹uuid
+     * @param {delArr:Array}		要删除的文件或文件夹uuid的数组
      * @backDes 
      */
 	 async delete() {
         const { ctx } = this;
 		const { helper , params } = ctx;
-		const res = await this.main.del(params.uuid);
-		if(res){
-			helper.success('删除文件成功',res);
+		console.log(params)
+		try{
+			await params.delArr.map(async e => {
+				await this.main.del(e,params['user_id']);
+			})
+			helper.success('删除文件成功');
 			return false;
+		} catch(err) {
+			console.log(err)
+			helper.fail('删除文件失败',err);
 		}
-		helper.fail('删除文件失败',res);
+
     }
 }
 

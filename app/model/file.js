@@ -29,6 +29,11 @@ module.exports = app => {
 			allowNull: false,
 			comment: '父级Id'
 		},
+		user_id: {
+			type: STRING(10),
+			allowNull: false,
+			comment: '拥有者Id'
+		},
 		name: {
 		  type: STRING(50),
 		  allowNull: false,
@@ -76,6 +81,26 @@ module.exports = app => {
 		sequelize: app.sequelize,
 		tableName: 'file',
 		timestamps: false
+	}, {
+		sequelize: app.sequelize,
+		tableName: 'file',
+		timestamps: false,
+		indexes: [{
+				name: "PRIMARY",
+				unique: true,
+				using: "BTREE",
+				fields: [{
+					name: "id"
+				}, ]
+			},
+			{
+				name: "file_user",
+				using: "BTREE",
+				fields: [{
+					name: "user_id"
+				}, ]
+			},
+		]
 	});
 
 	// 如果没有表则创建表
