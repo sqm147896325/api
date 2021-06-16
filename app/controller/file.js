@@ -128,7 +128,26 @@ class FileController extends Controller {
 			console.log(err)
 			helper.fail('删除文件失败',err);
 		}
+    }
 
+	/**
+     * @author sqm
+     * @description 下载文件
+     * @param {downloadArr:Array}		要下载的文件或文件夹uuid的数组
+     * @backDes 
+     */
+	 async download() {
+        const { ctx } = this;
+		const { helper , params } = ctx;
+		console.log(params)
+		try{
+			const res =	await this.main.download(params.downloadArr,params['user_id']);
+			helper.success('下载文件成功');
+			return false;
+		} catch(err) {
+			console.log(err)
+			helper.fail('下载文件失败',err);
+		}
     }
 }
 

@@ -1,5 +1,6 @@
 'use strict';
-const fs = require('fs')
+const fs = require('fs');
+const archiver = require('archiver');
 
 const Service = require("egg").Service;
 
@@ -120,6 +121,30 @@ class FileService extends Service {
 			return false;
 		}
 		return true;
+	}
+
+	// 下载文件
+	async download(deleteArr,user_id) {
+		let path = await this.main.findAll({
+			where:{uuid:{$in:deleteArr},user_id},
+			attributes: [ 'path','file_type','name' ]
+		})
+		console.log('path',path);
+		// 创建文件输出流
+		let output = fs.createWriteStream(`app/public/zipTemp/${(new Date).getTime()}.zip`);
+		let archive = archiver('zip', {
+			zlib: { level: 9 }	// 设置压缩级别
+		});
+		archive.pipe(output)	// 使用管道连接两个流
+		path.forEach(e => {
+			if( e['file_type'] == 'dir' ) {
+				archive.directory(`app/public/static/${e.path}/`,false);
+			} else {
+				archive.append(fs.createReadStream(`app/public/static/${e.path}`),{name: e.name+e['file_type']});
+			}
+		});
+		archive.finalize()
+		return path;
 	}
 }
 

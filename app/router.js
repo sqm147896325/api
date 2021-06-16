@@ -35,4 +35,5 @@ module.exports = app => {
 	router.post('/file/index', controller.file.read);
 	router.put('/file/index', controller.file.create);
     router.delete('/file/index', controller.file.delete);
+    router.post('/file/download', controller.file.download);
 };
