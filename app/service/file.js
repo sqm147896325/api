@@ -129,9 +129,9 @@ class FileService extends Service {
 			where:{uuid:{$in:deleteArr},user_id},
 			attributes: [ 'path','file_type','name' ]
 		})
-		console.log('path',path);
 		// 创建文件输出流
-		let output = fs.createWriteStream(`app/public/zipTemp/${(new Date).getTime()}.zip`);
+		let zipPath = `app/public/zipTemp/${(new Date).getTime()}.zip`;
+		let output = fs.createWriteStream(zipPath);
 		let archive = archiver('zip', {
 			zlib: { level: 9 }	// 设置压缩级别
 		});
@@ -143,8 +143,8 @@ class FileService extends Service {
 				archive.append(fs.createReadStream(`app/public/static/${e.path}`),{name: e.name+e['file_type']});
 			}
 		});
-		archive.finalize()
-		return path;
+		archive.finalize();
+		return zipPath;
 	}
 }
 
