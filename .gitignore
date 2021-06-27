@@ -12,3 +12,10 @@ run/
 *.un~
 typings/
 .nyc_output/
+
+// 忽略网盘资源
+app/public/static/*
+// 忽略垃圾站
+app/public/trash/*
+// 忽略压缩缓存资源
+app/public/zipTemp/*
