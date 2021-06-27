@@ -141,8 +141,18 @@ class FileController extends Controller {
 		const { helper , params } = ctx;
 		console.log(params)
 		try{
-			const res =	await this.main.download(params.downloadArr,params['user_id']);
-			helper.success('下载文件成功');
+			const path = await this.main.download(params.downloadArr,params['user_id']);
+			ctx.attachment(path);		// 相当于设置响应头
+			const stats = fs.statSync(path, {
+				encoding: 'utf8',
+			});
+			ctx.response.set({
+				'Content-Type': 'application/octet-stream',
+				'Content-Disposition': `attachment; filename=download.zip`,
+				'Content-Length': stats.size,
+			});
+			ctx.body = fs.createReadStream(path);
+			// helper.success('下载文件成功',fs.createReadStream(path));
 			return false;
 		} catch(err) {
 			console.log(err)
