@@ -143,7 +143,7 @@ class FileController extends Controller {
 		try{
 			const path = await this.main.download(params.downloadArr,params['user_id']);
 			ctx.attachment(path);		// 相当于设置响应头
-			const stats = fs.statSync(path, {
+			const stats = await fs.statSync(path, {
 				encoding: 'utf8',
 			});
 			ctx.response.set({
@@ -151,7 +151,14 @@ class FileController extends Controller {
 				'Content-Disposition': `attachment; filename=download.zip`,
 				'Content-Length': stats.size,
 			});
-			ctx.body = fs.createReadStream(path);
+			const readData = fs.readFileSync(path);
+			fs.unlink(path,(err)=>{
+				if(err) throw err;
+				console.log('删除成功');
+			})
+			console.log('流',readData);
+			ctx.body = readData;
+
 			// helper.success('下载文件成功',fs.createReadStream(path));
 			return false;
 		} catch(err) {

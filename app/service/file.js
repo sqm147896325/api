@@ -143,7 +143,7 @@ class FileService extends Service {
 				archive.append(fs.createReadStream(`app/public/static/${e.path}`),{name: e.name+e['file_type']});
 			}
 		});
-		archive.finalize();
+		await archive.finalize();
 		return zipPath;
 	}
 }
