@@ -143,7 +143,7 @@ class FileController extends Controller {
 		try{
 			const path = await this.main.download(params.downloadArr.split(','),params['user_id']);
 			ctx.attachment(path);		// 相当于设置响应头
-			const stats = fs.statSync(path, {
+			const stats = await fs.statSync(path, {
 				encoding: 'utf8',
 			});
 			ctx.response.set({
