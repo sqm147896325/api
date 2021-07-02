@@ -134,14 +134,14 @@ class FileService extends Service {
 		try {
 			let output = fs.createWriteStream(zipPath);						// 创建写入流
 			let archive = archiver('zip', {
-				zlib: { level: 9 }	// 设置压缩级别
+				zlib: { level: -1 }	// 设置压缩级别
 			});
 			archive.pipe(output)	// 使用管道连接两个流
 			path.forEach(e => {
 				// 根据路径匹配需要压缩的文件
 				if( e['file_type'] == 'dir' ) {
 					// 如果是目录，执行
-					archive.directory(`app/public/static/${e.path}/`,false);
+					archive.directory(`app/public/static/${e.path}/`,e.name);
 				} else {
 					// 如果是文件，执行
 					archive.append(fs.createReadStream(`app/public/static/${e.path}`),{name: e.name+e['file_type']});
