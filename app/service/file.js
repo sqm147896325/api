@@ -125,25 +125,33 @@ class FileService extends Service {
 
 	// 下载文件
 	async download(deleteArr,user_id) {
+		// 获取文件路径
 		let path = await this.main.findAll({
 			where:{uuid:{$in:deleteArr},user_id},
 			attributes: [ 'path','file_type','name' ]
 		})
-		// 创建文件输出流
-		let zipPath = `app/public/zipTemp/${(new Date).getTime()}.zip`;
-		let output = fs.createWriteStream(zipPath);
-		let archive = archiver('zip', {
-			zlib: { level: 9 }	// 设置压缩级别
-		});
-		archive.pipe(output)	// 使用管道连接两个流
-		path.forEach(e => {
-			if( e['file_type'] == 'dir' ) {
-				archive.directory(`app/public/static/${e.path}/`,false);
-			} else {
-				archive.append(fs.createReadStream(`app/public/static/${e.path}`),{name: e.name+e['file_type']});
-			}
-		});
-		archive.finalize();
+		let zipPath = `app/public/zipTemp/${(new Date).getTime()}.zip`;	// 设置压缩路径
+		try {
+			let output = fs.createWriteStream(zipPath);						// 创建写入流
+			let archive = archiver('zip', {
+				zlib: { level: 9 }	// 设置压缩级别
+			});
+			archive.pipe(output)	// 使用管道连接两个流
+			path.forEach(e => {
+				// 根据路径匹配需要压缩的文件
+				if( e['file_type'] == 'dir' ) {
+					// 如果是目录，执行
+					archive.directory(`app/public/static/${e.path}/`,false);
+				} else {
+					// 如果是文件，执行
+					archive.append(fs.createReadStream(`app/public/static/${e.path}`),{name: e.name+e['file_type']});
+				}
+			});
+			// 最终打包
+			await archive.finalize();
+		} catch (error) {
+			console.log('压缩失败',error)
+		}
 		return zipPath;
 	}
 }
