@@ -55,8 +55,8 @@ module.exports = appInfo => {
 		database: 'main',
 		host: '127.0.0.1',
 		port: '3306',
-		username: 'root',
-		password: '666666',
+		username: process.env.SQL_NAME,
+		password: process.env.SQL_PASSWORD,
 		timezone:'+08:00',
 		define:{
 			freezeTableName: true,		// Model 对应的表名将与model名相同

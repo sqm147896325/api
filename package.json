@@ -1,5 +1,5 @@
 {
-  "name": "demo",
+  "name": "api",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -30,8 +30,8 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-demo --ignore-stderr",
-    "stop": "egg-scripts stop --title=egg-server-demo",
+    "start": "egg-scripts start --daemon --title=api --ignore-stderr --workers=1",
+    "stop": "egg-scripts stop --title=api",
     "dev": "egg-bin dev",
     "prod": "egg-scripts start --env=prod",
     "debug": "egg-bin debug",
