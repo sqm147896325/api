@@ -13,7 +13,7 @@
     ],
     "deploy": {
         "production": {
-            "user":"root",
+            "user":"sqm",
             "host": ["47.100.191.35"],
             "port": "22",
             "ref": "origin/master",
