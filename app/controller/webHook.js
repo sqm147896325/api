@@ -1,6 +1,6 @@
 'use strict';
 // 生成子进程
-const spawn = require('child_process').spawn;
+const { spawn } = require('child_process');
 // 脚本地址
 const script = '~/server/api/script/autoDeploy.sh';
 // 执行指令的地址
