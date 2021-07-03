@@ -1,0 +1,28 @@
+{
+    "apps":[
+        {
+            "name": "api",
+            "script": "app.js",
+            "env": {
+                "COMMON_VARIABLE": "true"
+            },
+            "env_production": {
+                "NODE_ENV": "production"
+            }
+        }
+    ],
+    "deploy": {
+        "production": {
+            "user":"root",
+            "host": ["47.100.191.35"],
+            "port": "22",
+            "ref": "origin/master",
+            "repo": "git@gitee.com:sqm147896325/api.git",
+            "path": "/home/sqm/server",
+            "ssh_options": "StrictHostKeyChecking=no",
+            "env": {
+                "NODE_ENV": "production"
+            }
+        }
+    }
+}
