@@ -10,6 +10,7 @@ module.exports = app => {
     } = app;
     router.get('/', controller.home.index);
 
+	// 登录接口
     router.post('/login', controller.login.login);
 
     // 博客相关路由
@@ -36,4 +37,7 @@ module.exports = app => {
 	router.put('/file/index', controller.file.create);
     router.delete('/file/index', controller.file.delete);
     router.get('/file/download', controller.file.download);
+
+	// webHook自动部署
+	router.post('/webHook/index', controller.webHook.index);
 };
