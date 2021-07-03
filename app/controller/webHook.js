@@ -20,7 +20,7 @@ class ApiController extends Controller {
         const { ctx } = this;
 		const { helper,params } = ctx;
 		if(ctx.headers['x-gitee-token'] === process.env.SQL_PASSWORD){
-			spawn( 'sh', [script], {
+			spawn( 'sh ~/server/api/script/autoDeploy.sh', [], {
 				cwd: currentPath,
 			})
 			helper.success('部署成功');
