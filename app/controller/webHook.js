@@ -2,9 +2,9 @@
 // 生成子进程
 const spawn = require('child_process').spawn;
 // 脚本地址
-const script = '/home/sqm/server/api/script/autoDeploy.sh';
+const script = '~/server/api/script/autoDeploy.sh';
 // 执行指令的地址
-const currentPath = '/home/sqm/server/api/';
+const currentPath = '~/server/api/';
 
 const Controller = require('egg').Controller;
 
