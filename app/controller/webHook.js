@@ -1,6 +1,6 @@
 'use strict';
 // 生成子进程
-const { spawn } = require('child_process');
+const child = require('child_process');
 // 脚本地址
 const script = '~/server/api/script/autoDeploy.sh';
 // 执行指令的地址
@@ -19,9 +19,10 @@ class ApiController extends Controller {
     async index() {
         const { ctx } = this;
 		const { helper,params } = ctx;
+		console.log('params',params);
 		if(ctx.headers['x-gitee-token'] === process.env.SQL_PASSWORD){
-			spawn( 'sh', [], {
-				cwd: currentPath,
+			child.exec( 'sh ~/server/api/script/autoDeploy.sh', (err) => {
+				console.log(err);
 			})
 			helper.success('部署成功');
 		}else{
