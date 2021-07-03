@@ -4,4 +4,3 @@ yarn stop
 git pull
 #重启服务
 yarn start
-mkdir 666
