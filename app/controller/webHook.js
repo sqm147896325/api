@@ -34,7 +34,7 @@ class ApiController extends Controller {
 			await next();
 			setTimeout(() => {
 				process.exit(1);
-			},100)
+			},500);
 		}else{
 			console.log('params',params);
 			helper.success('密钥错误')
