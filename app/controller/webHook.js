@@ -19,7 +19,7 @@ class ApiController extends Controller {
 		console.log('ctx.headers["x-gitee-token"]',ctx.headers['x-gitee-token'])
 		if(ctx.headers['x-gitee-token'] == process.env.SQL_PASSWORD){
 			try {
-				const spawn = child.spawn( '/bin/sh', ['~/server/api/script/autoDeploy.sh'], {cwd: '~/server/api',detached:true});
+				const spawn = child.spawn( '/bin/sh', ['/home/sqm/server/api/script/autoDeploy.sh'], {cwd: null,detached:true});
 				spawn.on('error',(err)=>{
 					console.log(err);
 				});
