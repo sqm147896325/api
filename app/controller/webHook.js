@@ -30,10 +30,11 @@ class ApiController extends Controller {
 			childrenProcess.on('exit',exit => {
 				console.log('exit',exit)
 			})
-			helper.success('部署成功');
+			helper.success('部署成功，正在重启');
+			// 延时杀死主进程，防止响应无法及时返回
 			setTimeout(()=>{
 				process.exit(1);
-			},3000);
+			},1000);
 		}else{
 			console.log('params',params);
 			helper.success('密钥错误')
