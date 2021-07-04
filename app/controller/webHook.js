@@ -28,10 +28,11 @@ class ApiController extends Controller {
 				});
 			} catch (error) {
 				console.log('error',error);
+				helper.fail('错误',error);
 			}
 		}else{
 			console.log('params',params);
-			helper.success('密钥错误');
+			helper.fail('密钥错误');
 		};
     }
 }
