@@ -31,6 +31,7 @@ class ApiController extends Controller {
 				console.log('exit',error)
 			})
 			helper.success('部署成功');
+			await next();
 			process.exit(1);
 		}else{
 			console.log('params',params);
