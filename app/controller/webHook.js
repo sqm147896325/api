@@ -37,7 +37,7 @@ class ApiController extends Controller {
 			}
 		}else{
 			console.log('params',params);
-			helper.fail('密钥错误');
+			helper.fail('密钥错误')
 		};
     }
 }
