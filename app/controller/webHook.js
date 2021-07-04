@@ -27,12 +27,10 @@ class ApiController extends Controller {
 			childrenProcess.on('error',error => {
 				console.log('error',error)
 			});
-			childrenProcess.on('exit',error => {
-				helper.success('部署成功');
-				console.log('exit',error)
+			childrenProcess.on('exit',exit => {
+				console.log('exit',exit)
 			})
 			helper.success('部署成功');
-			await next();
 			setTimeout(()=>{
 				process.exit(1);
 			},3000);
