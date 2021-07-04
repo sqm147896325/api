@@ -21,8 +21,10 @@ class ApiController extends Controller {
 			try {
 				child.exec( 'sh ~/server/api/script/autoDeploy.sh', (err,sto) => {
 					if(err){
+						console.log('err',err);
 						helper.fail('部署失败',err);
 					}else{
+						console.log('sto',sto);
 						helper.success('部署成功',sto);
 					}
 				});
