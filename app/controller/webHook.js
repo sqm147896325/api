@@ -34,7 +34,7 @@ class ApiController extends Controller {
 			process.exit(1);
 		}else{
 			console.log('params',params);
-			helper.success('密钥错误');
+			helper.success('密钥错误')
 		}
     }
 }
