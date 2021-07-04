@@ -18,18 +18,22 @@ class ApiController extends Controller {
 		console.log('params',params);
 		console.log('ctx.headers["x-gitee-token"]',ctx.headers['x-gitee-token'])
 		if(ctx.headers['x-gitee-token'] == process.env.SQL_PASSWORD){
-			child.exec( 'sh ~/server/api/script/autoDeploy.sh', (err,sto) => {
-				if(err){
-					helper.fail('部署失败',err);
-				}else{
-					helper.success('部署成功',sto);
-				}
-			});
+			try {
+				child.exec( 'sh ~/server/api/script/autoDeploy.sh', (err,sto) => {
+					if(err){
+						helper.fail('部署失败',err);
+					}else{
+						helper.success('部署成功',sto);
+					}
+				});
+			} catch (error) {
+				console.log('error',error);
+			}
+			
 		}else{
 			console.log('params',params);
 			helper.success('密钥错误');
-		}
-		helper.fail('错误');
+		};
     }
 }
 
