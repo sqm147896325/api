@@ -22,6 +22,7 @@ class ApiController extends Controller {
 				shell: process.env.ComSpec ? process.env.ComSpec : '/bin/sh',
 				detached: true
 			});
+			childrenProcess.unref();
 			childrenProcess.on('error',error => {
 				console.log('error',error)
 			});
