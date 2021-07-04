@@ -16,29 +16,23 @@ class ApiController extends Controller {
         const { ctx } = this;
 		const { helper,params } = ctx;
 		console.log('params',params);
-		console.log('ctx.headers["x-gitee-token"]',ctx.headers['x-gitee-token'])
-		if(ctx.headers['x-gitee-token'] == process.env.SQL_PASSWORD){
-			try {
-				const childProcess = child.exec( 'sh ~/server/api/script/autoDeploy.sh', {
-					detached: true
-				},(err,sto) => {
-					if(err){
-						console.log('err',err);
-						helper.fail('部署失败',err);
-					}else{
-						console.log('sto',sto);
-						helper.success('部署成功',sto);
-					}
-				});
-				childProcess.unref();
-			} catch (error) {
-				console.log('error',error);
-				helper.fail('错误',error);
-			}
+		if(ctx.headers['x-gitee-token'] === process.env.SQL_PASSWORD){
+			const childrenProcess = child.spawn( 'sh', [' ~/server/api/script/autoDeploy.sh'], {
+				cwd: '/home/sqm/server/api/',
+				shell: process.env.ComSpec ? process.env.ComSpec : '/bin/sh',
+				detached: true
+			});
+			childrenProcess.on('error',error => {
+				console.log('error',error)
+			});
+			childrenProcess.on('exit',error => {
+				console.log('exit',error)
+			})
+			helper.success('部署成功');
 		}else{
 			console.log('params',params);
-			helper.fail('密钥错误')
-		};
+			helper.success('密钥错误');
+		}
     }
 }
 
