@@ -29,7 +29,6 @@ class ApiController extends Controller {
 			} catch (error) {
 				console.log('error',error);
 			}
-			
 		}else{
 			console.log('params',params);
 			helper.success('密钥错误');
