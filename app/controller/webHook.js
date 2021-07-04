@@ -24,12 +24,6 @@ class ApiController extends Controller {
 				stdio: 'ignore'
 			});
 			childrenProcess.unref();
-			childrenProcess.on('error',error => {
-				console.log('error',error)
-			});
-			childrenProcess.on('exit',error => {
-				console.log('exit',error)
-			})
 			helper.success('部署成功');
 		}else{
 			console.log('params',params);
