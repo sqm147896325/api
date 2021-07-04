@@ -28,6 +28,7 @@ class ApiController extends Controller {
 				console.log('error',error)
 			});
 			childrenProcess.on('exit',error => {
+				helper.success('部署成功');
 				console.log('exit',error)
 			})
 			helper.success('部署成功');
