@@ -19,14 +19,15 @@ class ApiController extends Controller {
 		console.log('ctx.headers["x-gitee-token"]',ctx.headers['x-gitee-token'])
 		if(ctx.headers['x-gitee-token'] == process.env.SQL_PASSWORD){
 			try {
-				child.exec( 'sh ~/server/api/script/autoDeploy.sh', (err,sto) => {
-					if(err){
-						console.log('err',err);
-						helper.fail('部署失败',err);
-					}else{
-						console.log('sto',sto);
-						helper.success('部署成功',sto);
-					}
+				const spawn = child.spawn( 'sh', '~/server/api/script/autoDeploy.sh', {detached:true});
+				spawn.on('error',(err)=>{
+					console.log(err);
+				});
+				spawn.on('message',(message)=>{
+					console.log(message);
+				});
+				spawn.on('exit',(exit)=>{
+					console.log(exit);
 				});
 			} catch (error) {
 				console.log('error',error);
