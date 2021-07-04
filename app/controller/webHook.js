@@ -32,7 +32,7 @@ class ApiController extends Controller {
 			helper.success('部署成功');
 		}else{
 			console.log('params',params);
-			helper.success('密钥错误')
+			helper.success('密钥错误');
 		}
     }
 }
