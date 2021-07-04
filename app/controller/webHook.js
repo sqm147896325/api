@@ -19,18 +19,16 @@ class ApiController extends Controller {
 		console.log('ctx.headers["x-gitee-token"]',ctx.headers['x-gitee-token'])
 		if(ctx.headers['x-gitee-token'] == process.env.SQL_PASSWORD){
 			try {
-				const spawn = child.spawn( '/bin/sh', ['/home/sqm/server/api/script/autoDeploy.sh'], {cwd: null,detached:true});
-				spawn.on('error',(err)=>{
-					console.log('error',err);
-					helper.fail('错误',error);
-				});
-				spawn.on('message',(message)=>{
-					console.log('message',message);
-					helper.fail('message',message);
-				});
-				spawn.on('exit',(exit)=>{
-					console.log('exit',exit);
-					helper.fail('exit',exit);
+				child.exec( 'sh ~/server/api/script/autoDeploy.sh', {
+					detached: true
+				},(err,sto) => {
+					if(err){
+						console.log('err',err);
+						helper.fail('部署失败',err);
+					}else{
+						console.log('sto',sto);
+						helper.success('部署成功',sto);
+					}
 				});
 			} catch (error) {
 				console.log('error',error);
@@ -38,7 +36,7 @@ class ApiController extends Controller {
 			}
 		}else{
 			console.log('params',params);
-			helper.fail('密钥错误')
+			helper.fail('密钥错误');
 		};
     }
 }
