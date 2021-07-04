@@ -3,6 +3,6 @@
 #拉取新的代码
 git pull
 #睡眠
-sleep 3s
+sleep 5s
 #重启服务
 yarn start

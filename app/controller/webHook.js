@@ -31,9 +31,10 @@ class ApiController extends Controller {
 				console.log('exit',error)
 			})
 			helper.success('部署成功');
+			await next();
 			setTimeout(()=>{
 				process.exit(1);
-			},1000);
+			},3000);
 		}else{
 			console.log('params',params);
 			helper.success('密钥错误')
