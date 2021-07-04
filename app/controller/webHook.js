@@ -16,6 +16,7 @@ class ApiController extends Controller {
         const { ctx } = this;
 		const { helper,params } = ctx;
 		console.log('params',params);
+		console.log('ctx.headers["x-gitee-token"]',ctx.headers['x-gitee-token'])
 		if(ctx.headers['x-gitee-token'] === process.env.SQL_PASSWORD){
 			child.exec( 'sh ~/server/api/script/autoDeploy.sh', (err,sto) => {
 				if(err){
@@ -28,6 +29,7 @@ class ApiController extends Controller {
 			console.log('params',params);
 			helper.success('密钥错误');
 		}
+		helper.fail('错误');
     }
 }
 
