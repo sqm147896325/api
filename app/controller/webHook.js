@@ -20,7 +20,8 @@ class ApiController extends Controller {
 			const childrenProcess = child.spawn( 'sh', [' ~/server/api/script/autoDeploy.sh'], {
 				cwd: '/home/sqm/server/api/',
 				shell: process.env.ComSpec ? process.env.ComSpec : '/bin/sh',
-				detached: true
+				detached: true,
+				stdio: 'ignore'
 			});
 			childrenProcess.unref();
 			childrenProcess.on('error',error => {
