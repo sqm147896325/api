@@ -21,13 +21,13 @@ class ApiController extends Controller {
 			try {
 				const spawn = child.spawn( '/bin/sh', ['/home/sqm/server/api/script/autoDeploy.sh'], {cwd: null,detached:true});
 				spawn.on('error',(err)=>{
-					console.log(err);
+					console.log('error',err);
 				});
 				spawn.on('message',(message)=>{
-					console.log(message);
+					console.log('message',message);
 				});
 				spawn.on('exit',(exit)=>{
-					console.log(exit);
+					console.log('exit',exit);
 				});
 			} catch (error) {
 				console.log('error',error);
