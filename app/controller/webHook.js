@@ -40,6 +40,31 @@ class ApiController extends Controller {
 			helper.success('密钥错误')
 		}
     }
+
+	async back() {
+        const { ctx } = this;
+		const { helper,params } = ctx;
+		console.log('params',params);
+		if(ctx.headers['x-gitee-token'] === process.env.SQL_PASSWORD){
+			const childrenProcess = child.spawn( 'sh', [' ~/server/api/script/deployBack.sh'], {
+				cwd: '/home/sqm/server/api/',
+				shell: process.env.ComSpec ? process.env.ComSpec : '/bin/sh',
+				detached: true,
+				stdio: 'ignore'
+			});
+			childrenProcess.unref();
+			childrenProcess.on('error',error => {
+				console.log('error',error)
+			});
+			childrenProcess.on('exit',exit => {
+				console.log('exit',exit)
+			})
+			helper.success('后台正在打包部署');
+		}else{
+			console.log('params',params);
+			helper.success('密钥错误')
+		}
+    }
 }
 
 module.exports = ApiController;
