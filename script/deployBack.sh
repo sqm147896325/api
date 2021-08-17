@@ -1,7 +1,7 @@
 # 切换目录
 cd project
 # 判断目录是否存在
-if [ ! -d "~/server/api/project/blog-back" ]; then
+if [ ! -d "/home/sqm/server/api/project/blog-back" ]; then
     git clone https://gitee.com/sqm147896325/blog-back.git
     cd blog-back
 else
