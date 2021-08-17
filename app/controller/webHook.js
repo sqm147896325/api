@@ -44,7 +44,6 @@ class ApiController extends Controller {
 	async back() {
         const { ctx } = this;
 		const { helper,params } = ctx;
-		console.log('params',params);
 		if(ctx.headers['x-gitee-token'] === process.env.SQL_PASSWORD){
 			const childrenProcess = child.spawn( 'sh', [' ~/server/api/script/deployBack.sh'], {
 				cwd: '/home/sqm/server/api/',
@@ -52,7 +51,6 @@ class ApiController extends Controller {
 				detached: true,
 				stdio: 'ignore'
 			});
-			childrenProcess.unref();
 			childrenProcess.on('error',error => {
 				console.log('error',error)
 			});
