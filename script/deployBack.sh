@@ -9,6 +9,6 @@ else
     git pull
 fi
 # 安装依赖
-npm install -g cnpm --registry=https://registry.npm.taobao.org
+npm install --registry=https://registry.npm.taobao.org
 # 打包
 yarn build
