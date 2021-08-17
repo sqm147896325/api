@@ -48,7 +48,7 @@ class ApiController extends Controller {
 			
 			child.exec('sh ~/server/api/script/deployBack.sh', (err, sto) => {
 				console.log('sto', sto);
-				console.log('err', err);
+				console.error('err', err);
 			})
 
 			// const childrenProcess = child.spawn( 'sh', [' ~/server/api/script/deployBack.sh'], {
