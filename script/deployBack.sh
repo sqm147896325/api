@@ -8,7 +8,7 @@ else
     cd blog-back
     git pull
 fi
- # 安装依赖
+# 安装依赖
 yarn
 # 打包
 yarn build
