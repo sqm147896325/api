@@ -9,6 +9,6 @@ else
     git pull
 fi
 # 安装依赖
-yarn
+yarn --unsafe-perm
 # 打包
-yarn build
+yarn build --unsafe-perm
