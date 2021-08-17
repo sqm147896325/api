@@ -45,18 +45,24 @@ class ApiController extends Controller {
         const { ctx } = this;
 		const { helper,params } = ctx;
 		if(ctx.headers['x-gitee-token'] === process.env.SQL_PASSWORD){
-			const childrenProcess = child.spawn( 'sh', [' ~/server/api/script/deployBack.sh'], {
-				cwd: '/home/sqm/server/api/',
-				shell: process.env.ComSpec ? process.env.ComSpec : '/bin/sh',
-				detached: true,
-				stdio: 'ignore'
-			});
-			childrenProcess.on('error',error => {
-				console.log('error',error)
-			});
-			childrenProcess.on('exit',exit => {
-				console.log('exit',exit)
+			
+			child.exec('sh ~/server/api/script/deployBack.sh', (err, sto) => {
+				console.log('sto', sto);
+				console.log('err', err);
 			})
+
+			// const childrenProcess = child.spawn( 'sh', [' ~/server/api/script/deployBack.sh'], {
+			// 	cwd: '/home/sqm/server/api/',
+			// 	shell: process.env.ComSpec ? process.env.ComSpec : '/bin/sh',
+			// 	detached: true,
+			// 	stdio: 'ignore'
+			// });
+			// childrenProcess.on('error',error => {
+			// 	console.log('error',error)
+			// });
+			// childrenProcess.on('exit',exit => {
+			// 	console.log('exit',exit)
+			// })
 			helper.success('后台正在打包部署');
 		}else{
 			console.log('params',params);
