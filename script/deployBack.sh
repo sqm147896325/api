@@ -7,8 +7,8 @@ if [ ! -d "/blog-back" ]; then
 else
     cd blog-back
     git pull
+    # 安装依赖
+    npm install --registry=https://registry.npm.taobao.org
+    # 打包
+    yarn build
 fi
-# 安装依赖
-npm install --registry=https://registry.npm.taobao.org
-# 打包
-yarn build
