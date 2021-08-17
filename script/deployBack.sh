@@ -9,8 +9,6 @@ else
     git pull
 fi
 # 安装依赖
-yarn
-# 不知道为什么好像要安装多次才可以使用
-yarn
+npm install -g cnpm --registry=https://registry.npm.taobao.org
 # 打包
 yarn build
