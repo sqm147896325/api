@@ -15,7 +15,7 @@ class ApiController extends Controller {
     async index() {
         const { ctx } = this;
 		const { helper,params } = ctx;
-		console.log('params',params);
+		// console.log('params',params);
 		if(ctx.headers['x-gitee-token'] === process.env.SQL_PASSWORD){
 			const childrenProcess = child.spawn( 'sh', [' ~/server/api/script/autoDeploy.sh'], {
 				cwd: '/home/sqm/server/api/',
