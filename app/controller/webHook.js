@@ -4,7 +4,7 @@ const child = require('child_process');
 
 const Controller = require('egg').Controller;
 
-class ApiController extends Controller {
+class WebHookController extends Controller {
 
     /**
      * @author sqm
@@ -71,4 +71,4 @@ class ApiController extends Controller {
     }
 }
 
-module.exports = ApiController;
+module.exports = WebHookController;

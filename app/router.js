@@ -41,4 +41,7 @@ module.exports = app => {
 	// webHook自动部署
 	router.post('/webHook/index', controller.webHook.index);
 	router.post('/webHook/back', controller.webHook.back);
+
+    // 打包页面资源访问
+	router.get('/page/back', controller.page.back);
 };

@@ -1,6 +1,6 @@
-/* eslint valid-jsdoc: "off" */
-
 'use strict';
+
+const path = require('path');
 
 const Op = require('sequelize').Op;		// 定义sequelize的运算符
 
@@ -129,6 +129,15 @@ module.exports = appInfo => {
 		mapping:{
 			'.html':'ejs' 			// '指定后缀':'指定模板引擎'
 		}
+	};
+
+	config.static = {
+		prefix: '/static', 
+		dir: [path.join(appInfo.baseDir, 'project/'), path.join(appInfo.baseDir, 'app/public')],
+		dynamic: true, // 如果当前访问的静态资源没有缓存，则缓存静态文件，和`preload`配合使用；
+		preload: false,
+		maxAge: 31536000,
+		buffer: true
 	};
 
 	// add your user config here
