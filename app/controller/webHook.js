@@ -41,6 +41,12 @@ class WebHookController extends Controller {
 		}
     }
 
+	/**
+     * @author sqm
+     * @description 后台页面自动部署接口
+     * @param {*}
+     * @backDes
+     */
 	async back() {
         const { ctx } = this;
 		const { helper,params } = ctx;

@@ -8,6 +8,12 @@ const path = require('path');
 
 class PageController extends Controller {
 
+    /**
+     * @author sqm
+     * @description 后台页面静态地址
+     * @param {*}
+     * @backDes
+     */
 	async back() {
         const { ctx } = this;
 		const { helper,params } = ctx;
