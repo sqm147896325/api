@@ -133,7 +133,7 @@ module.exports = appInfo => {
 
 	config.static = {
 		dir: [
-			{ prefix: '/page/back', dir: path.join(appInfo.baseDir, 'project/blog-back/dist') }
+			{prefix: '/page/back/', dir: path.join(appInfo.baseDir, 'project/blog-back/dist')}
 		]
 	};
 
