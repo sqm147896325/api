@@ -36,7 +36,7 @@ class UserService extends Service {
 
 	// 验证token是否被替换，静态方法
 	async aloneToken(token,username,id){
-		const result = await this.main.User.findOne({
+		const result = await this.main.findOne({
 			where:{token,username,id}
 		});
 		return result;

@@ -29,14 +29,14 @@ class LoginController extends Controller {
 		
 		try {
 			await this.main.updataToken(token,params.id);
+			helper.success('登录成功',{
+				token,
+				userInfo:result
+			});
 		} catch (error) {
 			helper.fail('token更新错误');
 			return false;
 		}
-		helper.success('登录成功',{
-			token,
-			userInfo:result
-		});
 	}
 }
 

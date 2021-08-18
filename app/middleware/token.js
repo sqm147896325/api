@@ -9,9 +9,6 @@ module.exports = (options, app) => {
         //判断当前路由是否需要验证token
         let flag = tokenWL.includes(url);
 
-		// debug模式，不验证token
-		flag = true;
-
         if (flag) {
 			// 不需要验证
             await next();
@@ -25,7 +22,6 @@ module.exports = (options, app) => {
 				// 解析出数据
                 const decode = await app.jwt.verify(token, app.config.jwt.secret);
 
-				/*
 				// 验证是否与数据库中的token保持一致,不限制token同时登录可以注释以下代码
 				// 在中间件中调用service需要使用serviceClasses，且只能使用静态方法
 				const result = await ctx.service.user.aloneToken(token,decode.username,decode.id);
@@ -41,9 +37,9 @@ module.exports = (options, app) => {
 
 				// 把数据放在state存储
 				ctx.state.userInfo = decode;
-				*/
 
             } catch (err) {
+				console.log(err)
 				// token错误定义
                 ctx.status = 401;
                 ctx.body = {
