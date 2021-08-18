@@ -68,12 +68,13 @@ class UserService extends Service {
 
 	// 更新用户
 	async update(id,option={}){
+		// 可能没有值的地方插入时变为null
 		const result = await this.main.update({
 			username: option.username,
 			password: option.password,
-			emil: option.emil,
-			tel: option.tel,
-			des: option.des
+			emil: option.emil || null,
+			tel: option.tel || null,
+			des: option.des || null
 		},{
 			where: {id:parseInt(id)}
 		});
