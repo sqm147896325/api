@@ -12,7 +12,11 @@ class PageController extends Controller {
         const { ctx } = this;
 		const { helper,params } = ctx;
         this.ctx.set('Content-Type', 'text/html');
-        this.ctx.body = await fs.readFileSync(path.join(this.app.baseDir, 'project/blog-back/dist/index.html'));
+        try {
+            this.ctx.body = await fs.readFileSync(path.join(this.app.baseDir, 'project/blog-back/dist/index.html'));
+        } catch (error) {
+            helper.fail('访问失败！')
+        }
     }
 }
 
