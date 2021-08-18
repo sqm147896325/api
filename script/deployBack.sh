@@ -8,7 +8,8 @@ else
     cd blog-back
     git pull
 fi
-# 安装依赖
-yarn
-# 打包
-yarn build
+# ! 由于未知原因，使用脚本运行yarn相关命令会宕机，这里仅自动更新，需要手动升级
+# # 安装依赖
+# yarn
+# # 打包
+# yarn build
