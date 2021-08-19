@@ -110,7 +110,7 @@ module.exports = appInfo => {
 	};
 
 	// 路由白名单
-	config.tokenWL = ['/' , '/login'];
+	config.tokenWL = ['/' , '/login', '/page/back'];
 
 	config.multipart = {
 		mode: 'file',		// 使用文件模式，这里还有stream模式更合理，不过使用较复杂
@@ -129,6 +129,12 @@ module.exports = appInfo => {
 		mapping:{
 			'.html':'ejs' 			// '指定后缀':'指定模板引擎'
 		}
+	};
+
+	config.static = {
+		dir: [
+			{prefix: '/page/back/', dir: path.join(appInfo.baseDir, 'project/blog-back/dist')}
+		]
 	};
 
 	// add your user config here
