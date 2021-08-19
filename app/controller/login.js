@@ -25,7 +25,9 @@ class LoginController extends Controller {
 		const token = this.app.jwt.sign({
 			username: result.username,
 			id: params.id
-		},this.app.config.jwt.secret );
+		}, this.app.config.jwt.secret, {
+			expiresIn: '3 days'
+		} );
 		
 		try {
 			await this.main.updataToken(token,params.id);
