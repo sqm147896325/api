@@ -2,6 +2,8 @@
 
 'use strict';
 
+const path = require('path');
+
 const Op = require('sequelize').Op;		// 定义sequelize的运算符
 
 /**
