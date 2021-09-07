@@ -6,7 +6,8 @@
 module.exports = app => {
     const {
       router,
-      controller
+      controller,
+      io
     } = app;
     router.get('/', controller.home.index);
 
@@ -44,4 +45,7 @@ module.exports = app => {
 
     // 打包页面资源访问
 	router.get('/page/back/', controller.page.back);
+
+    // socket.io 消息模块
+    io.of('/msg').route('msg', io.controller.msg.index)
 };

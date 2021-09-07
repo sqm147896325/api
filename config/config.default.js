@@ -131,6 +131,17 @@ module.exports = appInfo => {
 		}
 	};
 
+	// socket配置
+	config.io = {
+		init: {}, // passed to engine.io
+		namespace: {
+			'/msg': {
+				connectionMiddleware: ['connection'],	// 进入时走的中间件
+				packetMiddleware: [],	// 每次发消息走的中间件
+			},
+		},
+	};
+
 	config.static = {
 		dir: [
 			{prefix: '/page/back/', dir: path.join(appInfo.baseDir, 'project/blog-back/dist')}
