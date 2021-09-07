@@ -1,5 +1,5 @@
 'use strict';
-const uuidv1 = require("uuid/v1");
+const { v1 } = require("uuid");
 
 module.exports = app => {
 
@@ -21,7 +21,7 @@ module.exports = app => {
 		  comment: '文件id',
 		  // 默认值回调需要通过sequelize来设置数据库生效
 		  defaultValue: () => {
-			return uuidv1().replace(/-/g, "");
+			return v1().replace(/-/g, "");
 		  }
 		},
 		parentId: {
