@@ -2,21 +2,16 @@
 
 const Controller = require('egg').Controller;
 
-class MsgController extends Controller {
+class ChatController extends Controller {
 	// 初始化
 	async init() {
 		const { ctx, app } = this;
 		await ctx.socket.emit('res', 'init');
 	}
-	// 广播
-	async broadcast() {
+	// 发送消息
+	async message() {
 		const { ctx, app } = this;
-		await ctx.socket.emit('res', 'broadcast');
-	}
-	// 单独推送
-	async push() {
-		const { ctx, app } = this;
-		await ctx.socket.emit('res', 'push');
+		await ctx.socket.emit('res', 'message');
 	}
 	// 退出
 	async exit() {
@@ -25,4 +20,4 @@ class MsgController extends Controller {
 	}
 }
 
-module.exports = MsgController;
+module.exports = ChatController;

@@ -9,6 +9,9 @@ module.exports = app => {
       controller,
       io
     } = app;
+
+    /* 普通接口 */
+
     router.get('/', controller.home.index);
 
 	// 登录接口
@@ -46,6 +49,21 @@ module.exports = app => {
     // 打包页面资源访问
 	router.get('/page/back/', controller.page.back);
 
-    // socket.io 消息模块
-    io.of('/msg').route('msg', io.controller.msg.index)
+    /* socket.io 模块，of对应的是url路径，route对应事件名称 */
+	// 消息模块-初始连接
+    io.of('/msg').route('init', io.controller.msg.init)
+	// 消息模块-广播
+    io.of('/msg').route('broadcast', io.controller.msg.broadcast)
+	// 消息模块-单独推送
+    io.of('/msg').route('push', io.controller.msg.push)
+	// 消息模块-退出
+    io.of('/msg').route('exit', io.controller.msg.exit)
+
+	// 聊天室模块-初始连接
+    io.of('/chat').route('init', io.controller.chat.init)
+	// 聊天室模块-发送消息
+    io.of('/chat').route('message', io.controller.chat.message)
+	// 聊天室模块-退出聊天室
+    io.of('/chat').route('exit', io.controller.chat.exit)
+
 };

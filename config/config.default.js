@@ -139,6 +139,10 @@ module.exports = appInfo => {
 				connectionMiddleware: ['connection'],	// 进入时走的中间件
 				packetMiddleware: [],	// 每次发消息走的中间件
 			},
+			'/chat': {
+				connectionMiddleware: ['connection'],	// 进入时走的中间件
+				packetMiddleware: [],	// 每次发消息走的中间件
+			}
 		},
 	};
 
