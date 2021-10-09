@@ -91,7 +91,7 @@ module.exports = app => {
 					password: '123456',
 					power: JSON.stringify(['用户管理'])
 				});
-				console.log('创建了新的表')
+				console.log('创建了user表并初始化管理员')
 			} else {
 				// 已经存在数据了，不执行创建操作
 			}

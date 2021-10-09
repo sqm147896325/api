@@ -4,6 +4,7 @@
 module.exports = {
 	// 请求成功
 	success(msg='',dataInfo={}){
+		this.ctx.status = 200;
 		this.ctx.body = {
 			flag: 1,
 			msg,
