@@ -2,15 +2,16 @@
 
 const Service = require("egg").Service;
 
+const Sequelize = require("Sequelize")
+
 class BlogService extends Service {
 
 	main = this.ctx.model.Blog;
 	
 	// 按需创建文章
-	async create(author_id,author,title,content,lenght,option={}){
+	async create(author_id,title,content,lenght,option={}){
 		const result = await this.main.create({
 			author_id,
-			author,
 			title,
 			content,
 			lenght,
@@ -57,10 +58,18 @@ class BlogService extends Service {
 			where: {
 				display: 1, 	// 只查询未删除的数据
 			},
+			include: [
+				{
+					model: this.app.model.User,
+					where: { display: 1 },
+					as: 'user',
+					attributes: []
+				}
+			],
 			attributes: [
 				'id',
 				'author_id',
-				'author',
+				// Sequelize.col('user.username'),
 				'title',
 				'content',
 				'des',
@@ -69,7 +78,8 @@ class BlogService extends Service {
 				'updated_at',
 				'lenght',
 				'visited'
-			]
+			],
+			raw: true
 		});
 		return result;
 	}
@@ -91,11 +101,19 @@ class BlogService extends Service {
 					[key]: { $like : `%${query}%`},
 				}
 			},
+			include: [
+				{
+					model: this.app.model.User,
+					where: { display: 1 },
+					as: 'user',
+					attributes: []
+				}
+			],
 			// 指定返回的属性
 			attributes: [
 				'id',
 				'author_id',
-				'author',
+				// $col('user.username'),
 				'title',
 				'des',
 				'keyword',
@@ -103,7 +121,8 @@ class BlogService extends Service {
 				'updated_at',
 				'lenght',
 				'visited'
-			]
+			],
+			raw: true
 		};
 		const result = await this.main.findAndCountAll(config);
 		return result;

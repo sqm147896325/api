@@ -9,60 +9,60 @@ module.exports = app => {
 	// 定义模型
 	const User = app.model.define('user', {
 		id: {
-		  autoIncrement: true,
-		  type: DataTypes.INTEGER,
-		  allowNull: false,
-		  primaryKey: true,
-		  comment: "用户帐户"
+			autoIncrement: true,
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			primaryKey: true,
+			comment: "用户帐户"
 		},
 		username: {
-		  type: DataTypes.STRING(50),
-		  allowNull: true
+			type: DataTypes.STRING(50),
+			allowNull: true
 		},
 		password: {
-		  type: DataTypes.STRING(50),
-		  allowNull: true
+			type: DataTypes.STRING(50),
+			allowNull: true
 		},
 		des: {
-		  type: DataTypes.STRING(200),
-		  allowNull: true
+			type: DataTypes.STRING(200),
+			allowNull: true
 		},
 		emil: {
-		  type: DataTypes.STRING(50),
-		  allowNull: true
+			type: DataTypes.STRING(50),
+			allowNull: true
 		},
 		tel: {
-		  type: DataTypes.BIGINT,
-		  allowNull: true
+			type: DataTypes.BIGINT,
+			allowNull: true
 		},
 		power: {
-		  type: DataTypes.TEXT,
-		  allowNull: true,
-		  comment: "权限"
+			type: DataTypes.TEXT,
+			allowNull: true,
+			comment: "权限"
 		},
 		token: {
-		  type: DataTypes.STRING(200),
-		  allowNull: true,
-		  comment: "token值"
+			type: DataTypes.STRING(200),
+			allowNull: true,
+			comment: "token值"
 		},
 		display: {
-		  type: DataTypes.INTEGER.UNSIGNED,
-		  allowNull: false,
-		  defaultValue: 1,
-		  comment: "是否启用"
+			type: DataTypes.INTEGER.UNSIGNED,
+			allowNull: false,
+			defaultValue: 1,
+			comment: "是否启用"
 		},
 		created_at: {
-		  type: DataTypes.DATE,
-		  allowNull: false,
-		  defaultValue: app.Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
-		  comment: "创建时间"
+			type: DataTypes.DATE,
+			allowNull: false,
+			defaultValue: app.Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+			comment: "创建时间"
 		},
 		updated_at: {
-		  type: DataTypes.DATE,
-		  allowNull: true,
-		  comment: "最后修改时间"
+			type: DataTypes.DATE,
+			allowNull: true,
+			comment: "最后修改时间"
 		}
-	  }, {
+	}, {
 		sequelize: app.sequelize,
 		tableName: 'user',
 		timestamps: false,
@@ -76,7 +76,7 @@ module.exports = app => {
 			]
 		  },
 		]
-	  });
+	});
 
 	// 如果没有表则创建表
 	(async function () {
@@ -97,6 +97,11 @@ module.exports = app => {
 			}
 		})
 	})();
+
+	// 一个用户 有 多个博客
+	User.associate = function() {
+		app.model.User.hasMany(app.model.Blog, { foreignKey: 'author_id', targetKey: 'id' });
+	}
 
 	return User;
 

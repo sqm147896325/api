@@ -25,11 +25,6 @@ module.exports = app => {
 			allowNull: false,
 			comment: "作者id"
 		},
-		author: {
-			type: STRING(50),
-			allowNull: false,
-			comment: "作者名"
-		},
 		title: {
 			type: STRING(50),
 			allowNull: false,
@@ -113,6 +108,11 @@ module.exports = app => {
 			}
 		});
 	})();
+
+	// 多个博客 对应 一个用户
+	Blog.associate = function() {
+		app.model.Blog.belongsTo(app.model.User, { as: 'user', foreignKey: 'author_id', targetKey: 'id' });
+	}
 
 	return Blog;
 

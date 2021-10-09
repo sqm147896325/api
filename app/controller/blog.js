@@ -27,7 +27,6 @@ class BlogController extends Controller {
 	 * @author sqm
 	 * @description 添加创建文章
 	 * @param {id:Number}		文章id
-	 * @param {author:String}	作者名称
 	 * @param {title:String}	文章标题
 	 * @param {content:String}	文章内容
 	 * @param {lenght:String}	文章长度
@@ -38,7 +37,7 @@ class BlogController extends Controller {
 	async create() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;
- 		const { id , name } = await this.main.create(params.author_id,params.author,params.title,params.content,params.lenght,{
+ 		const { id , name } = await this.main.create(params.author_id,params.title,params.content,params.lenght,{
 			keyword: params.keyword,
 			des: params.des
 		});
