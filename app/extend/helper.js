@@ -30,5 +30,20 @@ module.exports = {
 			msg,
 			dataInfo
 		}
+	},
+
+	/**
+	 * @author sqm
+	 * @description 多表联查
+	 * @param {*} key 可能需要处理的行
+	 * @param {*} keys 需要处理的行
+	 * @param {*} results 处理行的规则数组，与上一参数一一对应
+	 * @backDes 按规则处理后的key值
+	 */
+	changeQueryKey(key = '', keys = [], results = []){
+		if (keys.indexOf(key) !== -1) {
+			key = `$${results[keys.indexOf(key)]}$` // 字表需要在字符串前后添加$符
+		}
+		return key
 	}
 };

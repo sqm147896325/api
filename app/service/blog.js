@@ -2,7 +2,8 @@
 
 const Service = require("egg").Service;
 
-const Sequelize = require("Sequelize")
+// 这个地方要注意，要引入该包下的Sequelize类才行
+const { Sequelize } = require("sequelize")
 
 class BlogService extends Service {
 
@@ -69,7 +70,7 @@ class BlogService extends Service {
 			attributes: [
 				'id',
 				'author_id',
-				// Sequelize.col('user.username'),
+				[Sequelize.col('user.username'), 'author'],
 				'title',
 				'content',
 				'des',
@@ -88,6 +89,7 @@ class BlogService extends Service {
 	async getList(page=1,pagesize=5,key='id',query=''){
 		const offset = (page-1)*pagesize;
 		const limit = pagesize;
+		key = this.ctx.helper.changeQueryKey(key, ['author'], ['user.username'])
 		const config = { 
 			limit:parseInt(limit), 		// 查询条数
 			offset:parseInt(offset), 	// 偏移量
@@ -113,7 +115,7 @@ class BlogService extends Service {
 			attributes: [
 				'id',
 				'author_id',
-				// $col('user.username'),
+				[Sequelize.col('user.username'), 'author'],
 				'title',
 				'des',
 				'keyword',
