@@ -18,7 +18,7 @@ class LoginController extends Controller {
 		const { params , body , helper } = ctx;
 		const result = await this.main.login(params.id,params.password);
 		if(!result){
-			helper.fail('账号密码错误');
+			helper.info('账号密码错误');
 			return false;
 		}
 		// 注册token

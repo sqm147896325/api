@@ -6,6 +6,7 @@ class MsgController extends Controller {
 	// 初始化
 	async init() {
 		const { ctx, app } = this;
+		console.log(ctx.args)
 		await ctx.socket.emit('res', 'init');
 	}
 	// 广播
