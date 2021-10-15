@@ -1,5 +1,19 @@
 'user strict';
 
+const nodemailer = require('nodemailer');
+const user_email = 'sunqimeng@sunqm.com';
+const auth_code = '9kTdeh5epJPgQLyS';
+const transporter = nodemailer.createTransport({
+    // service: 'qq',
+    host: 'smtp.exmail.qq.com',
+    secureConnection: true,
+    port: 465,
+    auth: {
+        user: user_email, // 账号
+        pass: auth_code, // 授权码
+    },
+});
+
 // helper用来放utils
 module.exports = {
 	// 请求成功
@@ -45,5 +59,21 @@ module.exports = {
 			key = `$${results[keys.indexOf(key)]}$` // 字表需要在字符串前后添加$符
 		}
 		return key
+	},
+
+	async sendMail({ email, subject, text, html }) {
+		const mailOptions = {
+		  from: user_email, // 发送者,与上面的user一致
+		  to: email,   // 接收者,可以同时发送多个,以逗号隔开
+		  subject,   // 标题
+		  text,   // 文本
+		  html,
+		};	
+		try {
+		  await transporter.sendMail(mailOptions);
+		  return true;
+		} catch (err) {
+		  return false;
+		}
 	}
 };

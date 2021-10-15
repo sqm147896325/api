@@ -17,11 +17,11 @@ module.exports = app => {
 		},
 		username: {
 			type: DataTypes.STRING(50),
-			allowNull: true
+			allowNull: false
 		},
 		password: {
 			type: DataTypes.STRING(50),
-			allowNull: true
+			allowNull: false
 		},
 		des: {
 			type: DataTypes.STRING(200),
