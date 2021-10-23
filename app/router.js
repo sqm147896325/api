@@ -46,8 +46,10 @@ module.exports = app => {
 	router.post('/webHook/index', controller.webHook.index);
 	router.post('/webHook/back', controller.webHook.back);
 
-    // 工具-邮箱验证码接口
+    // 工具-邮箱接口
 	router.get('/tool/email', controller.tool.email);
+    // 工具-邮箱验证码
+	router.post('/tool/emailVerify', controller.tool.emailVerify);
 
     // 打包页面资源访问
 	router.get('/page/back/', controller.page.back);
