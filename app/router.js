@@ -64,11 +64,11 @@ module.exports = app => {
 	// 消息模块-退出
     io.of('/msg').route('exit', io.controller.msg.exit)
 
-	// 聊天室模块-初始连接
+	// 聊天模块-初始连接
     io.of('/chat').route('init', io.controller.chat.init)
-	// 聊天室模块-发送消息
+	// 聊天模块-发送消息
     io.of('/chat').route('message', io.controller.chat.message)
-	// 聊天室模块-退出聊天室
+	// 聊天模块-退出聊天室
     io.of('/chat').route('exit', io.controller.chat.exit)
 
 };
