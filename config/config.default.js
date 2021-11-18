@@ -135,6 +135,10 @@ module.exports = appInfo => {
 	config.io = {
 		init: {}, // passed to engine.io
 		namespace: {
+			'/': {
+				connectionMiddleware: ['connection'],	// 进入时走的中间件
+				packetMiddleware: [],	// 每次发消息走的中间件
+			},
 			'/msg': {
 				connectionMiddleware: ['connection'],	// 进入时走的中间件
 				packetMiddleware: [],	// 每次发消息走的中间件
