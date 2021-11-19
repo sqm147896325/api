@@ -16,6 +16,7 @@ const transporter = nodemailer.createTransport({
 
 // helper用来放utils
 module.exports = {
+
 	// 请求成功
 	success(msg='',dataInfo={}){
 		this.ctx.status = 200;
@@ -25,7 +26,6 @@ module.exports = {
 			dataInfo
 		}
 	},
-
 	// 请求信息直接渲染
 	info(msg='',dataInfo={}){
 		this.ctx.status = 233;
@@ -35,7 +35,6 @@ module.exports = {
 			dataInfo
 		}
 	},
-
 	// 请求失败
 	fail(msg='',dataInfo={}){
 		this.ctx.status = 250;
@@ -44,6 +43,49 @@ module.exports = {
 			msg,
 			dataInfo
 		}
+	},
+
+	// 请求成功
+	ioSuccess(type, msg='',dataInfo={}){
+		const { socket } = this.ctx;
+        const id = socket.id;
+		const params = {
+            type, // 不为空，处理标识
+            id: id, // 不为空，发送者id
+            status: 200, // 不为空，状态，200为成功，233为成功且提示，250为失败
+            time: new Date().getTime(), // ，不为空，消息时间戳
+            msg, // 可为空，消息字段
+            dataInfo, // 可为空，数据字段
+        }
+        socket.emit('res', params);
+	},
+	// 请求信息直接渲染
+	ioInfo(type, msg='',dataInfo={}){
+		const { socket } = this.ctx;
+        const id = socket.id;
+		const params = {
+            type,
+            id: id,
+            status: 233,
+            time: new Date().getTime(),
+            msg,
+            dataInfo,
+        }
+        socket.emit('res', params);
+	},
+	// 请求失败
+	ioFail(type, msg='',dataInfo={}){
+        const { socket } = this.ctx;
+        const id = socket.id;
+		const params = {
+            type: type,
+            id: id,
+            status: 250,
+            time: new Date().getTime(),
+            msg,
+            dataInfo,
+        }
+        socket.emit('res', params);
 	},
 
 	/**
