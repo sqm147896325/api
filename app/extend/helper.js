@@ -26,6 +26,7 @@ module.exports = {
 			dataInfo
 		}
 	},
+
 	// 请求信息直接渲染
 	info(msg='',dataInfo={}){
 		this.ctx.status = 233;
@@ -46,18 +47,29 @@ module.exports = {
 	},
 
 	// 请求成功
-	params(data = null){
+	params(data = {}, params = {}){
 		const { socket, args } = this.ctx;
         const id = socket.id;
+		// 先合并各项到params中
+		if (typeof data === 'string') {
+			params.msg = data
+		} else {
+			params = data
+		}
+		// 抽离需要提取的项
+		let { msg, msgMap, ...dataInfo } = params
 		return {
             id: id, // 不为空，发送者socketid
 			sendName: args[0].name, // 不为空，发送者名称
 			sendId: args[0].userId, // 不为空，发送者用户id
             time: new Date().getTime(), // ，不为空，消息时间戳
-            msg: typeof data === 'string' ? data : '', // 可为空，消息字段
-            dataInfo: typeof data === 'object' ? data : null, // 可为空，数据字段
+            msg, // 可为空，消息字段
+            msgMap, // 可为空，消息字段中需要显示的key
+            dataInfo // 可为空，数据字段
         }
 	},
+
+
 
 	/**
 	 * @author sqm

@@ -20,6 +20,10 @@ module.exports = appInfo => {
 	// 在这里添加中间件,执行顺序为数组顺序
 	config.middleware = [ 'token' , 'params' ];
 
+	// 打开前置代理模式
+	config.proxy = true;
+	// 解析真实ip
+	config.ipHeaders = 'X-Real-Ip, X-Forwarded-For';
 
 	// 程序端口设置
 	config.cluster = {

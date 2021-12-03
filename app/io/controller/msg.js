@@ -25,9 +25,13 @@ class MsgController extends Controller {
 	async init() {
 		const { ctx } = this
 		const { helper, args } = ctx
-		ctx.socket.join('msg');
 		ctx.socket.join(args[0].id);
-		ctx.socket.to('msg').emit('233', helper.params( ctx.args[0].name + '连接了'))
+		const clientIp = ctx.request.ip
+		const msgMap = {
+			ip: 'ip地址',
+			deviceNum: '设备数'
+		}
+		ctx.socket.to(args[0].id).emit('233', helper.params( '其他设备登录', { msgMap,  ip: clientIp }))
 		ctx.socket.emit('res', helper.params('初始化成功'))
 	}
 
