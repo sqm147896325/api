@@ -2,6 +2,9 @@
 
 const Controller = require('egg').Controller;
 class toolController extends Controller {
+
+    tool = this.service.tool
+
     async email() {
         const { ctx } = this;
 		const { helper,params } = ctx;
@@ -33,6 +36,26 @@ class toolController extends Controller {
         // } else {
         //     helper.fail('发送失败');
         // }
+    }
+
+    /**
+	 * @author sqm
+	 * @description 调用百度api
+	 * @param {url:String}		'https://api.map.baidu.com'后拼接的地址
+	 * @param {data:Object}		对应服务所需要的参数（除去ak，详情见百度Web服务API）
+	 * @backDes 
+	 */	
+    async baidu() {
+        const { ctx } = this;
+		const { helper, params } = ctx;
+        const { url, ...data } = params
+        const res = await this.tool.baidu(url, data)
+        if (res.status === 0) {
+            helper.success('获取成功', res.result)
+        } else {
+            helper.fail('获取失败', res.message);
+
+        }
     }
 }
 
