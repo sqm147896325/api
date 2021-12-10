@@ -19,7 +19,6 @@ class ApiController extends Controller {
 			// 只在启动时调用一次该方法，并将其存入变量
 			let res = await this.main.index();
 			this.app.var.apiList = res;
-			console.log(66666)
 			helper.success('查询成功',res);
 			return true;
 		};

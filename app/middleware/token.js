@@ -6,8 +6,20 @@ module.exports = (options, app) => {
         const tokenWL = app.config.tokenWL;
         //获取当前路由
         const url = ctx.path;
-        //判断当前路由是否需要验证token
-        let flag = tokenWL.includes(url);
+
+		// 自定义通配符匹配，匹配到为true否则为false
+		function regexpGlobbing(arr, symbol,str) {
+			return !!arr.reduce((total, e) => {
+				const r = new RegExp(`^${ e.replace(symbol, '.*') }$`) // 将定义的通配符则替换为 ./ 来控制通配
+				return r.test(str) ? total + 1 : total + 0
+            }, 0)
+		}
+
+        // //判断当前路由是否需要验证token
+        // let flag = tokenWL.includes(url);
+
+		//判断当前路由是否需要验证token
+        let flag = regexpGlobbing(tokenWL, '*', url);
 
         if (flag) {
 			// 不需要验证

@@ -50,9 +50,8 @@ module.exports = app => {
 	router.get('/tool/email', controller.tool.email);
     // 工具-邮箱验证码
 	router.post('/tool/emailVerify', controller.tool.emailVerify);
-    // 工具-百度Api
-	router.get('/api/baidu', controller.tool.baidu);
-	router.post('/api/baidu', controller.tool.baidu);
+    // 工具-百度地图Api
+	router.get('/api/openMap', controller.tool.openMap);
 
     // 打包页面资源访问
 	router.get('/page/back/', controller.page.back);

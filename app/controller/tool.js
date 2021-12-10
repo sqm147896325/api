@@ -39,17 +39,17 @@ class toolController extends Controller {
     }
 
     /**
-	 * @author sqm
-	 * @description 调用百度api
-	 * @param {url:String}		'https://api.map.baidu.com'后拼接的地址
-	 * @param {data:Object}		对应服务所需要的参数（除去ak，详情见百度Web服务API）
-	 * @backDes 
-	 */	
-    async baidu() {
+     * @author sqm
+     * @description 调用百度地图api
+     * @param {url:String}		'api.map.baidu.com'后拼接的地址
+     * @param {data:Object}		对应服务所需要的参数，除去ak，详情见百度Web服务API
+     * @backDes 
+     */
+    async openMap() {
         const { ctx } = this;
 		const { helper, params } = ctx;
         const { url, ...data } = params
-        const res = await this.tool.baidu(url, data)
+        const res = await this.tool.openMap(url, data)
         if (res.status === 0) {
             helper.success('获取成功', res.result)
         } else {
