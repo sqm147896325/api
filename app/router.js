@@ -47,9 +47,11 @@ module.exports = app => {
 	router.post('/webHook/back', controller.webHook.back);
 
     // 工具-邮箱接口
-	router.get('/tool/email', controller.tool.email);
+	router.post('/tool/email', controller.tool.email);
     // 工具-邮箱验证码
 	router.post('/tool/emailVerify', controller.tool.emailVerify);
+    // 工具-邮箱验证码设置用户信息
+	router.post('/tool/emailSetUser', controller.tool.emailSetUser);
     // 工具-百度地图Api
 	router.get('/api/openMap', controller.tool.openMap);
 

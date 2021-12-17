@@ -98,6 +98,7 @@ module.exports = {
 		  await transporter.sendMail(mailOptions);
 		  return true;
 		} catch (err) {
+		  console.log(err)
 		  return false;
 		}
 	}

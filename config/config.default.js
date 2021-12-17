@@ -108,13 +108,24 @@ module.exports = appInfo => {
 		}
 	};
 
+	config.redis = {
+		// 单个数据库用client,多个数据库用clients
+		client: {
+			port: 6379,
+			host: '127.0.0.1',
+			password: process.env.SQL_PASSWORD ? process.env.SQL_PASSWORD : null,
+			db: 0,
+		}
+	}
+
+
 	// jwt配置 
 	config.jwt = {
 		secret: 'sqm'
 	};
 
 	// 路由白名单
-	config.tokenWL = ['/' , '/login', '/page/back', '/webHook/index', '/webHook/back', '/api/baidu'];
+	config.tokenWL = ['/' , '/login', '/page/back', '/webHook/index', '/webHook/back', '/api/baidu', '/tool/emailVerify', '/tool/emailSetUser'];
 
 	config.multipart = {
 		mode: 'file',		// 使用文件模式，这里还有stream模式更合理，不过使用较复杂
