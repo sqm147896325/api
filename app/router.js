@@ -32,6 +32,10 @@ module.exports = app => {
     router.delete('/user', controller.user.delete);
     router.get('/user/list', controller.user.getList);
     router.post('/user/power', controller.user.setPower);
+    // 邮箱验证码
+	router.post('/user/emailVerify', controller.user.emailVerify);
+    // 邮箱验证码设置用户信息
+	router.post('/user/emailSetUser', controller.user.emailSetUser);
 
     // 接口文档路由
     router.get('/api/index', controller.api.index);
@@ -48,10 +52,6 @@ module.exports = app => {
 
     // 工具-邮箱接口
 	router.post('/tool/email', controller.tool.email);
-    // 工具-邮箱验证码
-	router.post('/tool/emailVerify', controller.tool.emailVerify);
-    // 工具-邮箱验证码设置用户信息
-	router.post('/tool/emailSetUser', controller.tool.emailSetUser);
     // 工具-百度地图Api
 	router.get('/api/openMap', controller.tool.openMap);
 

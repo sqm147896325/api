@@ -8,8 +8,9 @@ class UserService extends Service {
 
 	// 登录
 	async login(id,password){
-		const result = await this.main.findByPk(id,{
+		const result = await this.main.findOne({
 			where:{
+				id,
 				password
 			},
 			attributes: [
@@ -87,8 +88,9 @@ class UserService extends Service {
 
 	// 获取单个用户信息
 	async read(id){
-		const result = await this.main.findByPk(id,{
+		const result = await this.main.findOne({
 			where: {
+				id, 
 				display: 1, 	// 只查询未删除的数据
 			},
 			attributes: [

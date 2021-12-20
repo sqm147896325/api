@@ -12,8 +12,9 @@ class FileService extends Service {
 	async read(uuid,user_id){
 		if( uuid != 0 ){
 			// 父目录不是根目录
-			const result = await this.main.findByPk(uuid,{
+			const result = await this.main.findOne({
 				where: {
+					uuid,
 					display: 1, 	// 只查询未删除的数据
 					user_id
 				},
@@ -72,8 +73,9 @@ class FileService extends Service {
 
 	// 通过父级id查询其父路径
 	async getPath(uuid) {
-		const result = await this.main.findByPk(uuid,{
+		const result = await this.main.findOne({
 			where: {
+				uuid,
 				display: 1, 	// 只查询未删除的数据
 			},
 			attributes: [ 'path' ]
@@ -89,7 +91,8 @@ class FileService extends Service {
 
 	// 删除文件
 	async del(uuid,user_id){
-		const type = await this.main.findByPk(uuid,{
+		const type = await this.main.findOne({
+			uuid,
 			where: {user_id},
 			attributes: [ 'file_type', 'path' ]
 		});

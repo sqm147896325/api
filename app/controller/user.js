@@ -123,6 +123,67 @@ class UserController extends Controller {
 		helper.info('更新成功',result);
 	};
 
+	/**
+     * @author sqm
+     * @description 邮箱验证码
+     * @param {email:String}		邮箱地址
+     * @backDes 
+     */
+	async emailVerify() {
+		const { ctx, app } = this;
+		const { helper,params } = ctx;
+		let varStr = '1234567890abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+		let text = varStr[Number.parseInt(Math.random() * varStr.length)] + varStr[Number.parseInt(Math.random() * varStr.length)] + varStr[Number.parseInt(Math.random() * varStr.length)] + varStr[Number.parseInt(Math.random() * varStr.length)]
+		const res = await helper.sendMail({
+			email: params.email,
+			subject: '验证码',
+			text: `您的验证码为: ${text}`,
+			html: null
+		})
+		if(res) {
+			await app.redis.set(params.email, text, 'Ex', '1800'); // 设置验证码30分钟过期
+			helper.info('发送成功', { type: 'success' });
+		} else {
+			helper.info('发送失败');
+		}
+	}
+
+	/**
+	 * @author sqm
+	 * @description 邮箱验证码设置用户信息
+	 * @param {email:String}		邮箱
+	 * @param {password:String}		用户密码
+	 * @param {verification:String}	验证码
+	 * @backDes 
+	 */
+	async emailSetUser() {
+		const { ctx, app } = this;
+		const { helper, params } = ctx;
+		const verification = await app.redis.get(params.email);
+		if (verification !== params.verification) {
+			helper.info('失败！验证码错误');
+			return false
+		}
+		const main = this.service.user;
+		let { count, rows } = await main.getList(1, 10, 'emil', params.email);
+		console.log(rows)
+		if (count === 0) {
+			const { id } = await main.create(params.email, params.password,{
+				emil: params.email
+			});
+			helper.info(`创建成功，账号为${id}`, { type: 'success' });
+		} else {
+			const flag = await main.update(rows[0].id, {
+				password: params.password
+			});
+			if (flag) {
+				helper.info('修改密码成功', { type: 'success' });
+			} else {
+				helper.info('修改密码失败');
+			}
+		}
+	}
+
 }
 
 module.exports = UserController;

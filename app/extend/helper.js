@@ -1,8 +1,8 @@
 'user strict';
 
 const nodemailer = require('nodemailer');
-const user_email = 'sunqimeng@sunqm.com';
-const auth_code = '9kTdeh5epJPgQLyS';
+const user_email = process.env.EMAIL_ADDRESS; // 发件邮箱地址
+const auth_code = process.env.EMAIL_PASSWORD; // 发件邮箱密钥
 const transporter = nodemailer.createTransport({
     // service: 'qq',
     host: 'smtp.exmail.qq.com',
@@ -28,7 +28,7 @@ module.exports = {
 	},
 
 	// 请求信息直接渲染
-	info(msg='',dataInfo={}){
+	info(msg='',dataInfo={type: 'warning'}){
 		this.ctx.status = 233;
 		this.ctx.body = {
 			flag: 0,
@@ -90,15 +90,14 @@ module.exports = {
 		const mailOptions = {
 		  from: user_email, // 发送者,与上面的user一致
 		  to: email,   // 接收者,可以同时发送多个,以逗号隔开
-		  subject,   // 标题
-		  text,   // 文本
+		  subject: `LS后台——${subject}`,   // 标题
+		  text: `来自 api.sunqm.com/page/back\n${text}`,   // 文本
 		  html,
 		};	
 		try {
 		  await transporter.sendMail(mailOptions);
 		  return true;
 		} catch (err) {
-		  console.log(err)
 		  return false;
 		}
 	}
