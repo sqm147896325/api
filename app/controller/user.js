@@ -140,6 +140,7 @@ class UserController extends Controller {
 			text: `您的验证码为: ${text}`,
 			html: null
 		})
+		console.log(res)
 		if(res) {
 			await app.redis.set(params.email, text, 'Ex', '1800'); // 设置验证码30分钟过期
 			helper.info('发送成功', { type: 'success' });
@@ -166,18 +167,19 @@ class UserController extends Controller {
 		}
 		const main = this.service.user;
 		let { count, rows } = await main.getList(1, 10, 'emil', params.email);
-		console.log(rows)
 		if (count === 0) {
 			const { id } = await main.create(params.email, params.password,{
 				emil: params.email
 			});
 			helper.info(`创建成功，账号为${id}`, { type: 'success' });
+			await app.redis.del(params.email)
 		} else {
 			const flag = await main.update(rows[0].id, {
 				password: params.password
 			});
 			if (flag) {
 				helper.info('修改密码成功', { type: 'success' });
+				await app.redis.del(params.email)
 			} else {
 				helper.info('修改密码失败');
 			}

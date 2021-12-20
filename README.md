@@ -14,11 +14,11 @@ LS后台采取前后端分离，此为项目为后端项目，是使用egg框架
 
 EMAIL_ADDRESS		发件邮箱的地址
 
-EMAIL_PASSWORD	发件邮箱的密钥
+EMAIL_PASSWORD	    发件邮箱的密钥
 
 SQL_PASSWORD		数据库密码（系统中存在mysql与redis两个数据库且密码一致）
 
-BAIDU_AK					百度地图api密钥
+BAIDU_AK			百度地图api密钥
 
 #### 二、系统实例（维护中暂不对外开放）
 
