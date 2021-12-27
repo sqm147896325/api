@@ -5,7 +5,7 @@ create table `user` (
 `username` varchar(50) not null comment '用户名',
 `password` varchar(50) not null comment '密码',
 `des` varchar(200) comment '描述',
-`emil` varchar(50) comment '邮箱',
+`email` varchar(50) comment '邮箱',
 `tel` int comment '电话',
 `power` text comment '权限',
 `token` varchar(200) comment 'token值',

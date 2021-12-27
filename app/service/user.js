@@ -18,7 +18,7 @@ class UserService extends Service {
 				'username',
 				'des',
 				'tel',
-				'emil',
+				'email',
 				'power',
 				'created_at',
 				'updated_at'
@@ -48,7 +48,7 @@ class UserService extends Service {
 		const result = await this.main.create({
 			username,
 			password,
-			emil: option.emil,
+			email: option.email,
 			tel: option.tel,
 			des: option.des
 		});	
@@ -73,7 +73,7 @@ class UserService extends Service {
 		const result = await this.main.update({
 			username: option.username,
 			password: option.password,
-			emil: option.emil || null,
+			email: option.email || null,
 			tel: option.tel || null,
 			des: option.des || null
 		},{
@@ -98,7 +98,7 @@ class UserService extends Service {
 				'username',
 				'des',
 				'tel',
-				'emil',
+				'email',
 				'power',
 				'created_at',
 				'updated_at'
@@ -130,7 +130,7 @@ class UserService extends Service {
 				'username',
 				'des',
 				'tel',
-				'emil',
+				'email',
 				'power',
 				'created_at',
 				'updated_at'

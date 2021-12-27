@@ -27,7 +27,7 @@ module.exports = app => {
 			type: DataTypes.STRING(200),
 			allowNull: true
 		},
-		emil: {
+		email: {
 			type: DataTypes.STRING(50),
 			allowNull: true
 		},

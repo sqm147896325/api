@@ -28,7 +28,7 @@ class UserController extends Controller {
 	 * @description 创建用户
 	 * @param {username:String}		用户名称
 	 * @param {password:String}		用户密码
-	 * @param {emil:String}			用户邮箱
+	 * @param {email:String}			用户邮箱
 	 * @param {tel:String}			用户电话
 	 * @param {des:String}			用户描述
 	 * @backDes 
@@ -37,7 +37,7 @@ class UserController extends Controller {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;
  		const { id , username } = await this.main.create(params.username,params.password,{
-			emil: params.emil,
+			email: params.email,
 			tel: params.tel,
 			des: params.des
 		});
@@ -67,7 +67,7 @@ class UserController extends Controller {
 	 * @param {id:String}			账号
 	 * @param {username:String}		用户名称
 	 * @param {password:String}		用户密码
-	 * @param {emil:String}			用户邮箱
+	 * @param {email:String}			用户邮箱
 	 * @param {tel:String}			用户电话
 	 * @param {des:String}			用户描述
 	 * @backDes 
@@ -78,7 +78,7 @@ class UserController extends Controller {
 		const result =  await this.main.update(params.id,{
 			username: params.username,
 			password: params.password,
-			emil: params.emil,
+			email: params.email,
 			tel: params.tel,
 			des: params.des
 		});
@@ -166,10 +166,10 @@ class UserController extends Controller {
 			return false
 		}
 		const main = this.service.user;
-		let { count, rows } = await main.getList(1, 10, 'emil', params.email);
+		let { count, rows } = await main.getList(1, 10, 'email', params.email);
 		if (count === 0) {
 			const { id } = await main.create(params.email, params.password,{
-				emil: params.email
+				email: params.email
 			});
 			helper.info(`创建成功，账号为${id}`, { type: 'success' });
 			await app.redis.del(params.email)
