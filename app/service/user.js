@@ -8,11 +8,18 @@ class UserService extends Service {
 
 	// 登录
 	async login(id,password){
-		const result = await this.main.findOne({
-			where:{
-				id,
+		let whereParams = {
+			id,
+			password
+		}
+		if(id.includes('@')) {
+			whereParams = {
+				email: id,
 				password
-			},
+			}
+		}
+		const result = await this.main.findOne({
+			where: whereParams,
 			attributes: [
 				'id',
 				'username',

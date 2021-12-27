@@ -111,7 +111,7 @@ module.exports = app => {
 
 	// 多个博客 对应 一个用户
 	Blog.associate = function() {
-		app.model.Blog.belongsTo(app.model.User, { as: 'user', foreignKey: 'author_id', targetKey: 'id' });
+		app.model.Blog.belongsTo(app.model.User, { as: 'user', foreignKey: 'author_id', targetKey: 'id' }); // !初始化时可能因为先创建blog而找不到user表报错
 	}
 
 	return Blog;

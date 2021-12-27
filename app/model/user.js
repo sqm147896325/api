@@ -29,7 +29,8 @@ module.exports = app => {
 		},
 		email: {
 			type: DataTypes.STRING(50),
-			allowNull: true
+			allowNull: true,
+			unique: true
 		},
 		tel: {
 			type: DataTypes.BIGINT,

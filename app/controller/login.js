@@ -24,13 +24,13 @@ class LoginController extends Controller {
 		// 注册token
 		const token = this.app.jwt.sign({
 			username: result.username,
-			id: params.id
+			id: result.id
 		}, this.app.config.jwt.secret, {
 			expiresIn: '3 days'
 		} );
 		
 		try {
-			await this.main.updataToken(token,params.id);
+			await this.main.updataToken(token,result.id);
 			helper.success('登录成功',{
 				token,
 				userInfo:result
