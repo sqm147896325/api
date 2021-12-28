@@ -1,5 +1,7 @@
 'use strict';
 
+const crypto = require('crypto-js');
+
 const Controller = require('egg').Controller;
 
 class UserController extends Controller {
@@ -28,15 +30,18 @@ class UserController extends Controller {
 	 * @description 创建用户
 	 * @param {username:String}		用户名称
 	 * @param {password:String}		用户密码
-	 * @param {email:String}			用户邮箱
+	 * @param {email:String}		用户邮箱
 	 * @param {tel:String}			用户电话
 	 * @param {des:String}			用户描述
 	 * @backDes 
 	 */	
 	async create() {
 		const { ctx } = this;
-		const { params , body , helper } = ctx;
- 		const { id , username } = await this.main.create(params.username,params.password,{
+		const { params , helper } = ctx;
+		const salt = helper.randomStr(8);
+		const password = crypto.MD5(params.password + salt).toString();
+ 		const { id , username } = await this.main.create(params.username, password,{
+			salt,
 			email: params.email,
 			tel: params.tel,
 			des: params.des
@@ -52,7 +57,7 @@ class UserController extends Controller {
 	 */	
 	async delete() {
 		const { ctx } = this;
-		const { params , body , helper } = ctx
+		const { params , helper } = ctx
 		const result =  await this.main.del(params.id);
 		if(!result){
 			helper.fail('删除失败');
@@ -67,14 +72,14 @@ class UserController extends Controller {
 	 * @param {id:String}			账号
 	 * @param {username:String}		用户名称
 	 * @param {password:String}		用户密码
-	 * @param {email:String}			用户邮箱
+	 * @param {email:String}		用户邮箱
 	 * @param {tel:String}			用户电话
 	 * @param {des:String}			用户描述
 	 * @backDes 
 	 */	
 	async update() {
 		const { ctx } = this;
-		const { params , body , helper } = ctx;
+		const { params , helper } = ctx;
 		const result =  await this.main.update(params.id,{
 			username: params.username,
 			password: params.password,
@@ -132,8 +137,7 @@ class UserController extends Controller {
 	async emailVerify() {
 		const { ctx, app } = this;
 		const { helper,params } = ctx;
-		let varStr = '1234567890abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-		let text = varStr[Number.parseInt(Math.random() * varStr.length)] + varStr[Number.parseInt(Math.random() * varStr.length)] + varStr[Number.parseInt(Math.random() * varStr.length)] + varStr[Number.parseInt(Math.random() * varStr.length)]
+		const text = helper.randomStr();
 		const res = await helper.sendMail({
 			email: params.email,
 			subject: '验证码',

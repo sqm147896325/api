@@ -100,5 +100,16 @@ module.exports = {
 		} catch (err) {
 		  return false;
 		}
+	},
+
+	// 生成随机码
+	randomStr(len = 4) {
+		let varStr = '1234567890abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+		let text = '';
+		for (let index = 0; index < len; index++) {
+			text += varStr[Number.parseInt(Math.random() * varStr.length)]
+			
+		}
+		return text
 	}
 };

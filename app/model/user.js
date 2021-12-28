@@ -1,5 +1,7 @@
 'use strict';
 
+const crypto = require('crypto-js');
+
 module.exports = app => {
 
 	// 获取数据类型
@@ -17,24 +19,29 @@ module.exports = app => {
 		},
 		username: {
 			type: DataTypes.STRING(50),
-			allowNull: false
+			allowNull: false,
+			comment: "用户名"
 		},
 		password: {
 			type: DataTypes.STRING(50),
-			allowNull: false
+			allowNull: false,
+			comment: "密码"
 		},
 		des: {
 			type: DataTypes.STRING(200),
-			allowNull: true
+			allowNull: true,
+			comment: "描述"
 		},
 		email: {
 			type: DataTypes.STRING(50),
 			allowNull: true,
-			unique: true
+			unique: true,
+			comment: "邮箱"
 		},
 		tel: {
 			type: DataTypes.BIGINT,
-			allowNull: true
+			allowNull: true,
+			comment: "电话"
 		},
 		power: {
 			type: DataTypes.TEXT,
@@ -45,6 +52,11 @@ module.exports = app => {
 			type: DataTypes.STRING(200),
 			allowNull: true,
 			comment: "token值"
+		},
+		salt: {
+			type: DataTypes.STRING(50),
+			allowNull: false,
+			comment: "盐"
 		},
 		display: {
 			type: DataTypes.INTEGER.UNSIGNED,
@@ -84,12 +96,15 @@ module.exports = app => {
 		await User.sync()
 		.then(async () => {
 			const users = await User.findAll();
+			const salt = 'NewAdmin';
+			const password = crypto.MD5('e10adc3949ba59abbe56e057f20f883e' + salt).toString(); // e10adc3949ba59abbe56e057f20f883e 为 123456 的 MD5, 初始加密后为 1723579d5ab8372d3e55f7b44a258530
 			if (!users['0']) {
 				// 如果用户表里没有数据，则创建管理员账户
 				await User.create({
 					id: 10000,
 					username: 'admin',
-					password: '123456',
+					salt,
+					password,
 					power: JSON.stringify(['用户管理'])
 				});
 				console.log('创建了user表并初始化管理员')

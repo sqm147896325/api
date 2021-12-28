@@ -2,24 +2,31 @@
 
 const Service = require("egg").Service;
 
+const crypto = require('crypto-js');
+
 class UserService extends Service {
 
 	main = this.ctx.model.User;
 
 	// 登录
 	async login(id,password){
-		let whereParams = {
-			id,
-			password
-		}
+		let whereKey = { id }
 		if(id.includes('@')) {
-			whereParams = {
-				email: id,
-				password
-			}
+			whereKey = { email: id }
 		}
+		const res = await this.main.findOne({
+			where: whereKey,
+			attributes: [ 'salt', 'id' ]
+		})
+		if (!res?.salt) {
+			return false
+		}
+		const oldPassword = crypto.MD5(password + res.salt).toString();
 		const result = await this.main.findOne({
-			where: whereParams,
+			where: {
+				id: res.id,
+				password: oldPassword
+			},
 			attributes: [
 				'id',
 				'username',
@@ -55,6 +62,7 @@ class UserService extends Service {
 		const result = await this.main.create({
 			username,
 			password,
+			salt: option.salt,
 			email: option.email,
 			tel: option.tel,
 			des: option.des
@@ -77,9 +85,12 @@ class UserService extends Service {
 	// 更新用户
 	async update(id,option={}){
 		// 可能没有值的地方插入时变为null
+		const salt = this.ctx.helper.randomStr(8)
+		const NewPassword = crypto.MD5(option.password + salt).toString();
 		const result = await this.main.update({
 			username: option.username,
-			password: option.password,
+			password: NewPassword,
+			salt: salt,
 			email: option.email || null,
 			tel: option.tel || null,
 			des: option.des || null
@@ -112,6 +123,34 @@ class UserService extends Service {
 			]
 		});
 		return result;
+	}
+
+	// 获取盐值
+	async getSalt(id) {
+		const result = await this.main.findOne({
+			where: {
+				id, 
+				display: 1, 	// 只查询未删除的数据
+			},
+			attributes: [
+				'salt'
+			]
+		});
+		return result.salt;
+	}
+
+	// 更新盐
+	async updateSalt({id, password, salt}) {
+		const result = await this.main.update({
+			password,
+			salt
+		},{
+			where: {
+				id, 
+				display: 1, 	// 只查询未删除的数据
+			}
+		});
+		return result[0];
 	}
 
 	// 获取用户列表

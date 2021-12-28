@@ -2,6 +2,8 @@
 
 const Controller = require('egg').Controller;
 
+const crypto = require('crypto-js');
+
 class LoginController extends Controller {
 
 	main = this.service.user;
@@ -15,7 +17,7 @@ class LoginController extends Controller {
 	 */	
 	async login() {
 		const { ctx } = this;
-		const { params , body , helper } = ctx;
+		const { params , helper } = ctx;
 		const result = await this.main.login(params.id,params.password);
 		if(!result){
 			helper.info('账号密码错误');
@@ -31,12 +33,16 @@ class LoginController extends Controller {
 		
 		try {
 			await this.main.updataToken(token,result.id);
+			const salt = this.ctx.helper.randomStr(8)
+			const NewPassword = crypto.MD5(params.password + salt).toString();
+			await this.main.updateSalt({id: params.id, password: NewPassword, salt});
 			helper.success('登录成功',{
 				token,
 				userInfo:result
 			});
 		} catch (error) {
-			helper.fail('token更新错误');
+			console.log(error)
+			helper.fail('登录失败');
 			return false;
 		}
 	}
