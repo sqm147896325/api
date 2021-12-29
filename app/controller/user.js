@@ -125,7 +125,7 @@ class UserController extends Controller {
 			helper.fail('更新失败');
 			return false;
 		}
-		helper.info('更新成功',result);
+		helper.success('更新成功',result);
 	};
 
 	/**

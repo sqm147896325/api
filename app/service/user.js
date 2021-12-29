@@ -4,6 +4,8 @@ const Service = require("egg").Service;
 
 const crypto = require('crypto-js');
 
+const Op = require('sequelize').Op;		// 定义sequelize的运算符
+
 class UserService extends Service {
 
 	main = this.ctx.model.User;
@@ -165,9 +167,9 @@ class UserService extends Service {
 			where: {
 				display: 1, 	// 只查询未删除的数据
 				// sequelize查询，只要满足其一即可
-				$or:{
+				[Op.or]: {
 					// 用%前后匹配
-					[key]: { $like : `%${query}%`},
+					[key]: { [Op.like] : `%${query}%`},
 				}
 			},
 			// 指定返回的属性

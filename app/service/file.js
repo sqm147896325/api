@@ -4,6 +4,8 @@ const archiver = require('archiver');
 
 const Service = require("egg").Service;
 
+const Op = require('sequelize').Op;		// 定义sequelize的运算符
+
 class FileService extends Service {
 
 	main = this.ctx.model.File;
@@ -130,7 +132,7 @@ class FileService extends Service {
 	async download(deleteArr,user_id) {
 		// 获取文件路径
 		let path = await this.main.findAll({
-			where:{uuid:{$in:deleteArr},user_id},
+			where:{ uuid: { [Op.in]: deleteArr }, user_id },
 			attributes: [ 'path','file_type','name' ]
 		})
 		let zipPath = `app/public/zipTemp/${(new Date).getTime()}.zip`;	// 设置压缩路径

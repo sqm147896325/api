@@ -24,15 +24,26 @@ class MsgController extends Controller {
 	 */	
 	async init() {
 		const { ctx } = this
-		const { helper, args } = ctx
-		ctx.socket.join(args[0].id);
+		const { helper, args, socket } = ctx
+		socket.join(args[0].userId); // 加入用户名相同的房间
+		socket.leave(socket.id) // 退出默认房间
 		const clientIp = ctx.request.ip
+		console.log(socket)
+		// this.logger.debug(socket);
+
+		const msgData = {
+			ip: clientIp,
+			deviceNum: socket.adapter.rooms[args[0].userId].length, // 已登录设备数
+			onlineUser: Object.keys(socket.adapter.rooms).length, // 在线用户数
+			// onlineAll: socket.server.engine.clientsCount, // 总连接数
+		}
 		const msgMap = {
 			ip: 'ip地址',
-			deviceNum: '设备数'
+			deviceNum: '已登录设备数',
+			onlineUser: '在线用户数'
 		}
-		ctx.socket.to(args[0].id).emit('233', helper.params( '其他设备登录', { msgMap,  ip: clientIp }))
-		ctx.socket.emit('res', helper.params('初始化成功'))
+		socket.to(args[0].userId).emit('233', helper.params( '其他设备登录', { msgMap, ...msgData }));
+		socket.emit('res', helper.params('初始化成功'));
 	}
 
 	/**
@@ -45,7 +56,7 @@ class MsgController extends Controller {
 		const { ctx } = this
 		const { helper, args } = ctx
 		this[args[0].type]()
-		ctx.socket.emit('res', helper.params('msg主要方法'))
+		socket.emit('res', helper.params('msg主要方法'))
 	}
 
 	/**
@@ -58,7 +69,7 @@ class MsgController extends Controller {
 	async mass() {
 		const { ctx } = this
 		const { helper, args } = ctx
-		ctx.socket.to(args[0].room).emit(args[0].status, helper.params(args[0].msg))
+		socket.to(args[0].room).emit(args[0].status, helper.params(args[0].msg))
 	}
 
 	/**
@@ -71,7 +82,7 @@ class MsgController extends Controller {
 	 async single() {
 		const { ctx } = this
 		const { helper, args } = ctx
-		ctx.socket.id(args[0].id).emit(args[0].status, helper.params(args[0].msg))
+		socket.id(args[0].id).emit(args[0].status, helper.params(args[0].msg))
 	}
 }
 
