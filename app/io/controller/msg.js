@@ -23,14 +23,12 @@ class MsgController extends Controller {
 	 * @backDes
 	 */	
 	async init() {
-		const { ctx } = this
+		const { ctx, app } = this
 		const { helper, args, socket } = ctx
+		await helper.redisSet('user', socket.id, args[0])
 		socket.join(args[0].userId); // 加入用户名相同的房间
 		socket.leave(socket.id) // 退出默认房间
 		const clientIp = ctx.request.ip
-		console.log(socket)
-		// this.logger.debug(socket);
-
 		const msgData = {
 			ip: clientIp,
 			deviceNum: socket.adapter.rooms[args[0].userId].length, // 已登录设备数

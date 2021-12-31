@@ -111,5 +111,41 @@ module.exports = {
 			
 		}
 		return text
-	}
+	},
+
+	// redis设置值
+	async redisSet(filed, key, value = null) {
+		if (key && value) {
+			await this.ctx.app.redis.hset(filed, key, JSON.stringify(value))
+		} else if (key && value === null) {
+			await this.ctx.app.redis.set(filed, JSON.stringify(key))
+		} else {
+			return false
+		}
+		return true
+	},
+
+	// redis获取值
+	async redisGet(filed) {
+		const type = await this.ctx.app.redis.type(filed)
+		let res = null;
+		if (type === 'hash') {
+			res = await this.ctx.app.redis.hgetall(filed)
+			Object.keys(res).forEach(e => {
+				try {
+					res[e] = JSON.parse(res[e])
+				} catch (error) {}
+			})
+			return res
+		} else if (type === 'string') {
+			res = await this.ctx.app.redis.get(filed)
+			try {
+				res = JSON.parse(res)
+			} catch (error) {}
+			return res
+		} else {
+			console.log('键名错误或类型错误')
+			return null
+		}
+	},
 };
