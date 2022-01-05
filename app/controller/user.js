@@ -179,7 +179,8 @@ class UserController extends Controller {
 			await app.redis.del(params.email)
 		} else {
 			const flag = await main.update(rows[0].id, {
-				password: params.password
+				password: params.password,
+				email: params.email
 			});
 			if (flag) {
 				helper.info('修改密码成功', { type: 'success' });
