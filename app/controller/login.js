@@ -35,7 +35,7 @@ class LoginController extends Controller {
 			await this.main.updataToken(token,result.id);
 			const salt = this.ctx.helper.randomStr(8)
 			const NewPassword = crypto.MD5(params.password + salt).toString();
-			await this.main.updateSalt({id: params.id, password: NewPassword, salt});
+			await this.main.updateSalt({id: result.id, password: NewPassword, salt});
 			helper.success('登录成功',{
 				token,
 				userInfo:result
