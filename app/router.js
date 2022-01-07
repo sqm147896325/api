@@ -75,4 +75,11 @@ module.exports = app => {
 	// 聊天模块-退出聊天室
     io.of('/chat').route('exit', io.controller.chat.exit)
 
+    // 终端模块-初始化
+    io.of('/term').route('init', io.controller.term.init)
+    // 终端模块-传输消息,不使用框架内监听直接使用socket内置方法监听
+    // io.of('/term').route('res', io.controller.term.res)
+    // 终端模块-关闭连接
+    io.of('/term').route('exit', io.controller.term.exit)
+
 };

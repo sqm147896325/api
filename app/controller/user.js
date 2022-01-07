@@ -144,7 +144,6 @@ class UserController extends Controller {
 			text: `您的验证码为: ${text}`,
 			html: null
 		})
-		console.log(res)
 		if(res) {
 			await app.redis.set(params.email, text, 'Ex', '1800'); // 设置验证码30分钟过期
 			helper.info('发送成功', { type: 'success' });

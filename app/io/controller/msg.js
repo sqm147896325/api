@@ -8,6 +8,7 @@ const Controller = require('egg').Controller;
 	msg 模块同名主要事件，根据dataInfo中type不同类型服务端系统执行不同操作
 客户端监听事件定义
 	res 响应事件
+		newUser 新用户上线
 	233 前端给出提示事件
 	250 前端给出错误提示事件
 	msg 模块同名主要事件，根据dataInfo中type不同类型执行客户端系统执行不同操作
@@ -25,13 +26,14 @@ class MsgController extends Controller {
 	async init() {
 		const { ctx, app } = this
 		const { helper, args, socket } = ctx
-		await helper.redisSet('user', socket.id, args[0])
+		await helper.redisSet('user', socket.id, args[0])	// 所有连接的基本信息都存入user中
 		socket.join(args[0].userId); // 加入用户名相同的房间
 		socket.leave(socket.id) // 退出默认房间
 		const clientIp = ctx.request.ip
+		const deviceNum = socket.adapter.rooms[args[0].userId].length
 		const msgData = {
 			ip: clientIp,
-			deviceNum: socket.adapter.rooms[args[0].userId].length, // 已登录设备数
+			deviceNum, // 已登录设备数
 			onlineUser: Object.keys(socket.adapter.rooms).length, // 在线用户数
 			// onlineAll: socket.server.engine.clientsCount, // 总连接数
 		}
@@ -39,6 +41,11 @@ class MsgController extends Controller {
 			ip: 'ip地址',
 			deviceNum: '已登录设备数',
 			onlineUser: '在线用户数'
+		}
+		const userList = socket.adapter.rooms
+		if (deviceNum === 1) {
+		// 	// 第一个设备设备登录时，发送更新用户列表事件
+			socket.broadcast.emit('res', helper.params({ type: 'newUser',userList }));
 		}
 		socket.to(args[0].userId).emit('233', helper.params( '其他设备登录', { msgMap, ...msgData }));
 		socket.emit('res', helper.params('初始化成功'));

@@ -125,6 +125,25 @@ module.exports = {
 		return true
 	},
 
+	// redis追加值
+	async redisAdd(filed, key, value = null) {
+		if (key && value) {
+			let res = await this.ctx.app.redis.hget(filed, key)
+			!res ? res = [] : res = JSON.parse(res)
+			res.push(value)
+			console.log(res)
+			await this.ctx.app.redis.hset(filed, key, JSON.stringify(res))
+		} else if (key && value === null) {
+			let res = await this.ctx.app.redis.get(filed, key)
+			!res ? res = [] : res = JSON.parse(res)
+			res.push(value)
+			await this.ctx.app.redis.set(filed, JSON.stringify(res))
+		} else {
+			return false
+		}
+		return true
+	},
+
 	// redis获取值
 	async redisGet(filed) {
 		const type = await this.ctx.app.redis.type(filed)
