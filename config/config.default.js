@@ -124,7 +124,7 @@ module.exports = appInfo => {
 	};
 
 	// 路由白名单
-	config.tokenWL = ['/' , '/login', '/page/back', '/webHook/index', '/webHook/back', '/api/baidu', '/user/emailVerify', '/user/emailSetUser'];
+	config.tokenWL = ['/' , '/login', '/page/back', '/file/download', '/webHook/index', '/webHook/back', '/api/baidu', '/user/emailVerify', '/user/emailSetUser'];
 
 	config.multipart = {
 		mode: 'file',		// 使用文件模式，这里还有stream模式更合理，不过使用较复杂
