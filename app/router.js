@@ -82,4 +82,10 @@ module.exports = app => {
     // 终端模块-关闭连接
     io.of('/term').route('exit', io.controller.term.exit)
 
+    /* 博客主页模块，目前使用已有接口方法 */
+    // 博客主页操作
+    router.get('/home/getBlog', controller.blog.read);
+    router.get('/home/blogList', controller.blog.getList);
+    router.get('/home/blogKeyword', controller.blog.getKeyword);
+
 };
