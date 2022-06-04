@@ -75,6 +75,28 @@ class WebHookController extends Controller {
 			helper.success('密钥错误')
 		}
     }
+
+	/**
+     * @author sqm
+     * @description 个人主页自动部署接口
+     * @param {*}
+     * @backDes
+     */
+	async home() {
+        const { ctx } = this;
+		const { helper,params } = ctx;
+		if(ctx.headers['x-gitee-token'] === process.env.SQL_PASSWORD){
+			
+			child.exec('sh ~/server/api/script/deployHome.sh', (err, sto) => {
+				console.log('sto', sto);
+				console.error('err', err);
+			})
+			helper.success('后台正在打包部署');
+		}else{
+			console.log('params',params);
+			helper.success('密钥错误')
+		}
+    }
 }
 
 module.exports = WebHookController;

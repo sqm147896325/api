@@ -24,6 +24,23 @@ class PageController extends Controller {
             helper.fail('访问失败！')
         }
     }
+
+    /**
+     * @author sqm
+     * @description 个人主页静态地址
+     * @param {*}
+     * @backDes
+     */
+    async home() {
+        const { ctx } = this;
+		const { helper,params } = ctx;
+        this.ctx.set('Content-Type', 'text/html');
+        try {
+            this.ctx.body = await fs.readFileSync(path.join(this.app.baseDir, 'project/blog-home/dist/index.html'));
+        } catch (error) {
+            helper.fail('访问失败！')
+        }
+    }
 }
 
 module.exports = PageController;
