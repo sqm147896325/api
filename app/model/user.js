@@ -105,7 +105,7 @@ module.exports = app => {
 					username: 'admin',
 					salt,
 					password,
-					power: JSON.stringify(['用户管理'])
+					power: JSON.stringify(['user']) // 初始拥有用户管理
 				});
 				console.log('创建了user表并初始化管理员')
 			} else {
