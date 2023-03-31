@@ -19,3 +19,5 @@ app/public/static/*
 app/public/trash/*
 // 忽略压缩缓存资源
 app/public/zipTemp/*
+// 忽略需要部署的静态资源
+project/*
