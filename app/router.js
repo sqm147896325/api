@@ -58,7 +58,7 @@ module.exports = app => {
 
     // 打包页面资源访问
 	router.get('/page/back/*', controller.page.back);
-	router.get('/page/home', controller.page.home);
+	router.get('/page/home/*', controller.page.home);
 
     /* socket.io 模块，of对应的是url路径，route对应事件名称 */
 	// 消息模块-初始连接
