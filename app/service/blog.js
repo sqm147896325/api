@@ -89,10 +89,16 @@ class BlogService extends Service {
 	}
 
 	// 获取博客列表，可以用作获取最新博客的接口
-	async getList(page=1,pagesize=5,key='id',query=''){
+	async getList(page=1,pagesize=5,keys=['id'],query=''){
 		const offset = (page-1)*pagesize;
 		const limit = pagesize;
-		key = this.ctx.helper.changeQueryKey(key, ['author'], ['user.username'])
+		const like = {} // 多字段模糊查询规则
+		keys = keys.map(e => {
+			let key = this.ctx.helper.changeQueryKey(e, ['author'], ['user.username']) // 连查 user 表，映射对应字段
+			like[key] = { [Op.like] : `%${query}%`} // 用%前后匹配
+			return key
+		})
+		console.log('keys', keys)
 		const config = { 
 			limit:parseInt(limit), 		// 查询条数
 			offset:parseInt(offset), 	// 偏移量
@@ -101,10 +107,7 @@ class BlogService extends Service {
 			where: {
 				display: 1, 	// 只查询未删除的数据
 				// sequelize查询，只要满足其一即可
-				[Op.or]: {
-					// 用%前后匹配
-					[key]: { [Op.like] : `%${query}%`},
-				}
+				[Op.or]: like
 			},
 			include: [
 				{
@@ -118,7 +121,7 @@ class BlogService extends Service {
 			attributes: [
 				'id',
 				'author_id',
-				[Sequelize.col('user.username'), 'author'],
+				[Sequelize.col('user.username'), 'author'], // 将 user 表的 username 字段，映射为 author 返回
 				'title',
 				'des',
 				'keyword',

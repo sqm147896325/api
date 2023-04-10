@@ -101,7 +101,11 @@ class BlogController extends Controller {
 	async getList() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;
-		const result = await this.main.getList(params.page,params.pagesize,params.key || 'id',params.query || '');
+		if (params.key === '') {
+			params.key = 'title,content,des,keyword'
+		}
+		const keys = params.key.split(',')
+		const result = await this.main.getList(params.page, params.pagesize, keys, params.query || '');
 		helper.success('',result);
 	};
 
