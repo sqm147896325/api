@@ -99,6 +99,8 @@ class UserService extends Service {
 		},{
 			where: {id:parseInt(id)}
 		});
+		// 更新之后清除token
+		await this.updataToken('', id)
 		if(result[0] == 0){
 			// 未发生更新
 			return false;
@@ -195,6 +197,8 @@ class UserService extends Service {
 		},{
 			where: {id:parseInt(id)}
 		});
+		// 更新之后清除token
+		await this.updataToken('', id)
 		if(result[0] == 0){
 			// 未发生更新
 			return false;
