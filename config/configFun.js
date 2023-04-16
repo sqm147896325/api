@@ -26,7 +26,7 @@ module.exports = (appInfo, userConfig = {}) => {
 	config.cluster = {
 		listen: {
 			path: '',
-			port: process.env.NODE_ENV == "production" ? 9080 : 9080,
+			port: 9080,
 			hostname: '127.0.0.1',
 		}
 	};
