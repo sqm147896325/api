@@ -52,7 +52,7 @@ class WebHookController extends Controller {
 		const { helper,params } = ctx;
 		if(ctx.headers['x-gitee-token'] === process.env.SQL_PASSWORD){
 			
-			child.exec('sh ./script/deployBack.sh', (err, sto) => {
+			child.exec('sh ~/server/api/script/deployBack.sh', (err, sto) => {
 				console.log('sto', sto);
 				console.error('err', err);
 			})
