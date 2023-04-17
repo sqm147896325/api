@@ -16,4 +16,5 @@ fi
 # yarn build
 
 # 使用解压缩方法代替yarn build
+cd dist
 unzip -o dist.zip
