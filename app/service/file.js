@@ -6,6 +6,10 @@ const Service = require("egg").Service;
 
 const Op = require('sequelize').Op;		// 定义sequelize的运算符
 
+const staticPath = 'app/public/static' // 文件静态目录位置
+const trashPath = 'app/public/trash' // 文件回收站位置
+const zipTempPath = 'app/public/zipTemp' // 文件压缩缓存位置
+
 class FileService extends Service {
 
 	main = this.ctx.model.File;
@@ -38,7 +42,7 @@ class FileService extends Service {
 				result.dataValues.content = content;
 			} else {
 				// 文件执行内容
-				const content = fs.readFileSync('app/public/static/' + result.dataValues.path);
+				const content = fs.readFileSync(staticPath + '/' + result.dataValues.path);
 				delete result.dataValues.path;			// 不对外暴露内部目录结构
 				result.dataValues.content = content;
 			}
@@ -115,7 +119,7 @@ class FileService extends Service {
 		} else {
 			// 类型为文件
 			// 移动真实路径到trash中
-			await fs.renameSync(`app/public/static${type.path}`,`app/public/trash${type.path}`);
+			await fs.renameSync(`${staticPath}${type.path}`,`${trashPath}${type.path}`);
 		}
 		// 类型为文件或文件夹最后一步,更新当前删除状态
 		const result = await this.main.update({ display: 0 },{
@@ -128,16 +132,17 @@ class FileService extends Service {
 		return true;
 	}
 
-	// 下载文件
-	async download(deleteArr,user_id) {
+	// 下载文件压缩包
+	async downloadZip(arr,user_id) {
 		// 获取文件路径
 		let path = await this.main.findAll({
-			where:{ uuid: { [Op.in]: deleteArr }, user_id },
+			where:{ uuid: { [Op.in]: arr }, user_id },
 			attributes: [ 'path','file_type','name' ]
 		})
-		let zipPath = `app/public/zipTemp/${(new Date).getTime()}.zip`;	// 设置压缩路径
+		let filename = (new Date).getTime() + '.zip'; // 设置压缩路径
+		let zipPath = `${zipTempPath}/${filename}`
 		try {
-			let output = fs.createWriteStream(zipPath);						// 创建写入流
+			let output = fs.createWriteStream(zipPath); // 创建写入流
 			let archive = archiver('zip', {
 				zlib: { level: -1 }	// 设置压缩级别
 			});
@@ -146,10 +151,10 @@ class FileService extends Service {
 				// 根据路径匹配需要压缩的文件
 				if( e['file_type'] == 'dir' ) {
 					// 如果是目录，执行
-					archive.directory(`app/public/static/${e.path}/`,e.name);
+					archive.directory(`${staticPath}/${e.path}/`,e.name);
 				} else {
 					// 如果是文件，执行
-					archive.append(fs.createReadStream(`app/public/static/${e.path}`),{name: e.name+e['file_type']});
+					archive.append(fs.createReadStream(`${staticPath}/${e.path}`),{name: e.name+e['file_type']});
 				}
 			});
 			// 最终打包
@@ -157,7 +162,22 @@ class FileService extends Service {
 		} catch (error) {
 			console.log('压缩失败',error)
 		}
-		return zipPath;
+		return {
+			path: zipPath,
+			filename: filename
+		};
+	}
+
+	async fileLink(fileId, user_id) {
+		// 获取文件路径
+		let file = await this.main.findOne({
+			where:{ uuid: fileId, user_id },
+			attributes: [ 'path','file_type','name' ]
+		})
+		return {
+			path: staticPath + file.path,
+			filename: file.name + file.file_type
+		}
 	}
 }
 

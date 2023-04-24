@@ -101,7 +101,7 @@ class BlogController extends Controller {
 	async getList() {
 		const { ctx } = this;
 		const { params , body , helper } = ctx;
-		if (params.key === '') {
+		if (!params.key) {
 			params.key = 'title,content,des,keyword'
 		}
 		const keys = params.key.split(',')

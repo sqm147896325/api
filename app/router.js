@@ -44,7 +44,8 @@ module.exports = app => {
 	router.post('/file/index', controller.file.read);
 	router.put('/file/index', controller.file.create);
     router.delete('/file/index', controller.file.delete);
-    router.get('/file/download', controller.file.download);
+    router.get('/file/downloadZip', controller.file.downloadZip);
+    router.get('/file/fileLink', controller.file.fileLink);
 
 	// webHook自动部署
 	router.post('/webHook/index', controller.webHook.index);

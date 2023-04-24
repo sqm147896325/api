@@ -132,23 +132,23 @@ class FileController extends Controller {
 
 	/**
      * @author sqm
-     * @description 下载文件
+     * @description 下载文件压缩包
      * @param {downloadArr:Array}		要下载的文件或文件夹uuid的数组
      * @backDes 
      */
-	 async download() {
+	 async downloadZip() {
         const { ctx } = this;
 		const { helper , params } = ctx;
-		console.log(params)
 		try{
-			const path = await this.main.download(params.downloadArr.split(','),params['user_id']);
+			let downloadArr = params.downloadArr.split(',')
+			const { path, filename } = await this.main.downloadZip(downloadArr, params['user_id']);
 			ctx.attachment(path);		// 相当于设置响应头
 			const stats = await fs.statSync(path, {
 				encoding: 'utf8',
 			});
 			ctx.response.set({
 				'Content-Type': 'application/octet-stream',
-				'Content-Disposition': `attachment; filename=download.zip`,
+				'Content-Disposition': `attachment; filename=${filename}`,
 				'Content-Length': stats.size,
 			});
 			const readStream = ctx.body = fs.createReadStream(path);
@@ -176,15 +176,48 @@ class FileController extends Controller {
 			readStream.on('close', () => {
 				console.log('文件已关闭！');
 				fs.unlink(path, () => {
-					console.log('文件删除完毕');
+					console.log(path, '文件删除完毕');
 				})
 			});
 			return false;
 		} catch(err) {
-			console.log(err)
 			helper.fail('下载文件失败',err);
 		}
     }
+
+
+	/**
+     * @author sqm
+     * @description 下载、预览单文件
+     * @param {fileId:String}		要下载的文件的uuid
+     * @param {user_id:String}		要下载的文件所属用户的uuid
+     * @param {download:Any}		是否调用下载的标志
+     * @backDes 
+     */
+	async fileLink() {
+		const { ctx } = this;
+		const { helper , params } = ctx;
+		try{
+			const { path, filename } = await this.main.fileLink(params.fileId, params['user_id']);
+			ctx.attachment(path);		// 相当于设置响应头
+			const stats = await fs.statSync(path, {
+				encoding: 'utf8',
+			});
+			let responseHeader = {
+				'Content-Disposition': `inline; filename=${filename}`,
+				'Content-Length': stats.size,
+			}
+			if (params.download) {
+				// 如果有 download 标识，则进行下载
+				responseHeader['Content-Type'] = 'application/octet-stream'
+				responseHeader['Content-Disposition'] = `attachment; filename=${filename}`
+			}
+			ctx.response.set(responseHeader);
+			ctx.body = fs.createReadStream(path);
+		} catch(err) {
+			helper.fail('下载文件失败',err);
+		}
+	}
 }
 
 module.exports = FileController;
