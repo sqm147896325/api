@@ -93,4 +93,6 @@ module.exports = app => {
     router.get('/home/blogList', controller.blog.getList);
     router.get('/home/blogKeyword', controller.blog.getKeyword);
 
+    /* openai */
+    router.post('/openai/index', controller.openai.index);
 };

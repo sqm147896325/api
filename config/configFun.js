@@ -67,7 +67,7 @@ module.exports = (appInfo, userConfig = {}) => {
 		client: {
 			port: 6379,
 			host: '127.0.0.1',
-			password: process.env.SQL_PASSWORD ? process.env.SQL_PASSWORD : null,
+			password: process.env.SQL_PASSWORD ? process.env.SQL_PASSWORD : 'redis666666',
 			db: 0,
 		}
 	}
@@ -77,7 +77,7 @@ module.exports = (appInfo, userConfig = {}) => {
 	config.jwt = { secret: 'sqm' };
 
 	// 路由白名单
-	config.tokenWL = ['/' , '/login', '/file/downloadZip', '/file/fileLink', '/api/baidu', '/user/emailVerify', '/user/emailSetUser', '/page/*', '/webHook/*', '/home/*'];
+	config.tokenWL = ['/' , '/login', '/file/downloadZip', '/file/fileLink', '/api/baidu', '/user/emailVerify', '/user/emailSetUser', '/page/*', '/webHook/*', '/home/*', '/openai/*'];
 
 	config.multipart = {
 		mode: 'file',		// 使用文件模式，这里还有stream模式更合理，不过使用较复杂
@@ -127,6 +127,11 @@ module.exports = (appInfo, userConfig = {}) => {
 			{prefix: '/page/home/', dir: path.join(appInfo.baseDir, 'project/blog-home/dist')},
 		]
 	};
+
+	/* 自定义配置 */
+	config.openai = {
+		apiKey: ''
+	}
 
 	return {
 		...config,
