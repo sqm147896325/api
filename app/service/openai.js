@@ -2,15 +2,43 @@
 
 const Service = require('egg').Service;
 const { Configuration, OpenAIApi } = require('openai');
-// const tunnel = require('tunnel');
 
 class OpenaiService extends Service {
   constructor(ctx) {
     super(ctx);
 
+    /* 下面为cf反代work配置 */
+
+    // const TELEGRAPH_URL = 'https://api.openai.com';
+
+    // addEventListener('fetch', event => {
+    //   event.respondWith(handleRequest(event.request))
+    // })
+
+    // async function handleRequest(request) {
+    //   const url = new URL(request.url);
+    //   url.host = TELEGRAPH_URL.replace(/^https?:\/\//, '');
+
+    //   const modifiedRequest = new Request(url.toString(), {
+    //     headers: request.headers,
+    //     method: request.method,
+    //     body: request.body,
+    //     redirect: 'follow'
+    //   });
+
+    //   const response = await fetch(modifiedRequest);
+    //   const modifiedResponse = new Response(response.body, response);
+
+    //   // 添加允许跨域访问的响应头
+    //   modifiedResponse.headers.set('Access-Control-Allow-Origin', '*');
+
+    //   return modifiedResponse;
+    // }
+
     // 创建 OpenAI 配置
     this.configuration = new Configuration({
       apiKey: this.app.config.openai.apiKey,
+      basePath: 'https://147896325.uk/v1' // 这里放cf反代地址
     });
 
     // 创建 OpenAI 实例
@@ -20,6 +48,7 @@ class OpenaiService extends Service {
   async index(prompt) {
     try {
       // 定义聊天的起始和结束标记
+      // todo messages是当前用户对话的记录应该存入
       const messages = [
         {"role": "user", "content": prompt}
       ];
@@ -29,22 +58,6 @@ class OpenaiService extends Service {
         model: 'gpt-3.5-turbo',
         messages,
       };
-
-    //   // 配置代理选项
-    //   const proxyOptions = {
-    //     proxy: {
-    //       host: this.app.config.v2ray.add,
-    //       port: parseInt(this.app.config.v2ray.port),
-    //       username: "",  // 如果有用户名和密码，请填写在这里
-    //       password: "",  // 如果有用户名和密码，请填写在这里
-    //       tls: {
-    //         servername: this.app.config.v2ray.sni,
-    //       },
-    //     },
-    //   };
-
-    //   // 创建带有代理的 HTTP 代理隧道
-    //   const agent = tunnel.httpsOverHttp(proxyOptions);
 
       // 发送请求给 ChatGPT-3.5 Turbo API，使用代理
       const response = await this.openai.createChatCompletion(requestData);
