@@ -95,4 +95,6 @@ module.exports = app => {
 
     /* openai */
     router.post('/openai/index', controller.openai.index);
+    router.post('/openai/converse', controller.openai.converse);
+    router.post('/openai/getConversationHistory', controller.openai.getConversationHistory);
 };
