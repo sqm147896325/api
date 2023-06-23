@@ -16,9 +16,8 @@ class OpenaiService extends Service {
     // 创建 OpenAI 实例
     this.openai = new OpenAIApi(this.configuration);
 
-    // 用户对话记录
-    // 创建一个空对象，用于存储每个用户的对话记录
-    this.userMessages = {};
+    // 引入用户对话模型
+    this.UserConversation = this.ctx.model.UserConversation;
   }
 
   async index(prompt) {
@@ -27,16 +26,26 @@ class OpenaiService extends Service {
 
   async converse(userId, message) {
     try {
-      // 检查是否存在该用户的对话记录，如果不存在则创建一个新的空数组
-      if (!this.userMessages[userId]) {
-        this.userMessages[userId] = [];
-      }
+      // 添加用户消息到用户对话表
+      await this.UserConversation.create({
+        userId,
+        role: 'user',
+        content: message,
+      });
 
-      // 获取该用户的对话记录数组
-      const messages = this.userMessages[userId];
+      const userConversation = await this.UserConversation.findAll({
+        where: {
+          userId,
+        },
+        order: [
+          ['id', 'ASC'],
+        ],
+      });
 
-      // 添加用户消息到该用户的对话记录中
-      messages.push({ role: 'user', content: message });
+      const messages = userConversation.map(conversation => ({
+        role: conversation.role,
+        content: conversation.content,
+      }));
 
       const requestData = {
         model: 'gpt-3.5-turbo',
@@ -47,8 +56,12 @@ class OpenaiService extends Service {
 
       const reply = response.data.choices[0].message.content;
 
-      // 添加助手回复到该用户的对话记录中
-      messages.push({ role: 'assistant', content: reply });
+      // 添加助手回复到用户对话表
+      await this.UserConversation.create({
+        userId,
+        role: 'assistant',
+        content: reply,
+      });
 
       return reply;
     } catch (error) {
@@ -57,15 +70,26 @@ class OpenaiService extends Service {
     }
   }
 
-  getConversationHistory(userId) {
-    // 检查该用户的对话记录是否存在
-    if (this.userMessages[userId]) {
-      // 返回该用户的对话记录数组
-      return this.userMessages[userId];
-    }
+  async getConversationHistory(userId) {
+    try {
+      const userConversation = await this.UserConversation.findAll({
+        where: {
+          userId,
+        },
+        order: [
+          ['id', 'ASC'],
+        ],
+      });
 
-    // 如果对话记录不存在，则返回空数组
-    return [];
+      return userConversation.map(conversation => ({
+        role: conversation.role,
+        content: conversation.content,
+      }));
+    } catch (error) {
+      console.error('Error retrieving conversation history:', error);
+      // 处理错误
+      return [];
+    }
   }
 }
 

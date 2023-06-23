@@ -48,7 +48,7 @@ class OpenAiController extends Controller {
         const { userId } = ctx.params;
 
         // 调用 OpenaiService 的 getConversationHistory 方法获取对话记录
-        const conversationHistory = service.openai.getConversationHistory(userId);
+        const conversationHistory = await service.openai.getConversationHistory(userId);
 
         // 返回对话记录
         ctx.body = {
