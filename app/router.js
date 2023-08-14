@@ -64,7 +64,7 @@ module.exports = app => {
 	router.get('/page/home', controller.page.home);
 	router.get('/page/home/*', controller.page.home);
 	router.get('/page/com', controller.page.com);
-	// router.get('/page/com/*', controller.page.com);
+	router.get('/page/com/*', controller.page.com);
 
 
     /* socket.io 模块，of对应的是url路径，route对应事件名称 */

@@ -125,6 +125,7 @@ module.exports = (appInfo, userConfig = {}) => {
 		dir: [
 			{prefix: '/page/back/', dir: path.join(appInfo.baseDir, 'project/blog-back/dist')},
 			{prefix: '/page/home/', dir: path.join(appInfo.baseDir, 'project/blog-home/dist')},
+			{prefix: '/page/com/', dir: path.join(appInfo.baseDir, 'project/madder-com/dist')},
 		]
 	};
 
