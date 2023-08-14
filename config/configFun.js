@@ -121,6 +121,7 @@ module.exports = (appInfo, userConfig = {}) => {
 		},
 	};
 
+	/* 使用内置的 egg-static 部署静态网页 */
 	config.static = {
 		dir: [
 			{prefix: '/page/back/', dir: path.join(appInfo.baseDir, 'project/blog-back/dist')},
