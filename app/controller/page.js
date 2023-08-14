@@ -41,6 +41,23 @@ class PageController extends Controller {
             helper.fail('访问失败！')
         }
     }
+
+    /**
+     * @author sqm
+     * @description 组件归集静态地址
+     * @param {*}
+     * @backDes
+     */
+    async com() {
+        const { ctx } = this;
+		const { helper,params } = ctx;
+        this.ctx.set('Content-Type', 'text/html');
+        try {
+            this.ctx.body = await fs.readFileSync(path.join(this.app.baseDir, 'project/madder-com/dist/index.html'));
+        } catch (error) {
+            helper.fail('访问失败！')
+        }
+    }
 }
 
 module.exports = PageController;
