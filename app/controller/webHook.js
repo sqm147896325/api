@@ -56,20 +56,7 @@ class WebHookController extends Controller {
 				console.log('sto', sto);
 				console.error('err', err);
 			})
-
-			// const childrenProcess = child.spawn( 'sh', [' ~/server/api/script/deployBack.sh'], {
-			// 	cwd: '/home/sqm/server/api/',
-			// 	shell: process.env.ComSpec ? process.env.ComSpec : '/bin/sh',
-			// 	detached: true,
-			// 	stdio: 'ignore'
-			// });
-			// childrenProcess.on('error',error => {
-			// 	console.log('error',error)
-			// });
-			// childrenProcess.on('exit',exit => {
-			// 	console.log('exit',exit)
-			// })
-			helper.success('后台正在打包部署');
+			helper.success('后台正在重新部署');
 		}else{
 			console.log('params',params);
 			helper.success('密钥错误')
@@ -91,7 +78,29 @@ class WebHookController extends Controller {
 				console.log('sto', sto);
 				console.error('err', err);
 			})
-			helper.success('后台正在打包部署');
+			helper.success('个人主页正在打包部署');
+		}else{
+			console.log('params',params);
+			helper.success('密钥错误')
+		}
+    }
+
+	/**
+     * @author sqm
+     * @description 个人主页自动部署接口
+     * @param {*}
+     * @backDes
+     */
+	async com() {
+        const { ctx } = this;
+		const { helper,params } = ctx;
+		if(ctx.headers['x-gitee-token'] === process.env.SQL_PASSWORD){
+			
+			child.exec('sh ~/server/api/script/deployCom.sh', (err, sto) => {
+				console.log('sto', sto);
+				console.error('err', err);
+			})
+			helper.success('组件合集正在打包部署');
 		}else{
 			console.log('params',params);
 			helper.success('密钥错误')

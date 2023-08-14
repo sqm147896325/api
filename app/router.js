@@ -51,6 +51,7 @@ module.exports = app => {
 	router.post('/webHook/index', controller.webHook.index);
 	router.post('/webHook/back', controller.webHook.back);
 	router.post('/webHook/home', controller.webHook.home);
+	router.post('/webHook/com', controller.webHook.com);
 
     // 工具-邮箱接口
 	router.post('/tool/email', controller.tool.email);
