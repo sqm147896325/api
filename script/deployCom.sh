@@ -2,10 +2,10 @@
 cd project
 # 判断目录是否存在
 if [ ! -d "/home/sqm/server/api/project/madder-com" ]; then
-    git clone https://gitee.com/sqm147896325/madder-com
-    cd blog-back
+    git clone https://gitee.com/sqm147896325/madder-com.git
+    cd madder-com
 else
-    cd blog-back
+    cd madder-com
     git pull
 fi
 
