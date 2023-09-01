@@ -98,8 +98,7 @@ class FileService extends Service {
 	// 删除文件
 	async del(uuid,user_id){
 		const type = await this.main.findOne({
-			uuid,
-			where: {user_id},
+			where: { user_id, uuid },
 			attributes: [ 'file_type', 'path' ]
 		});
 		// 如果类型为文件夹
