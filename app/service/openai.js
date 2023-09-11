@@ -47,8 +47,6 @@ class OpenaiService extends Service {
       // };
       // const response = await this.openai.createChatCompletion(requestData);
 
-      console.log('messages', messages)
-
       /* 使用@azure/openai的依赖 */
       const response = await this.openai.getChatCompletions('gpt-35-turbo-16k', messages);
 
