@@ -97,9 +97,14 @@ module.exports = app => {
     router.get('/home/blogList', controller.blog.getList);
     router.get('/home/blogKeyword', controller.blog.getKeyword);
 
+    /* 对话相关路由 */
+    router.get('/conversation/list', controller.conversation.getList);
+    router.put('/conversation/create', controller.conversation.create);
+    router.delete('/conversation/delete', controller.conversation.delete);
+
+
     /* openai */
     router.post('/openai/index', controller.openai.index);
-    router.post('/openai/converse', controller.openai.converse);
+    router.post('/openai/conversation', controller.openai.conversation);
     router.post('/openai/getConversationHistory', controller.openai.getConversationHistory);
-    router.delete('/openai/delConversationHistory', controller.openai.delConversationHistory);
 };

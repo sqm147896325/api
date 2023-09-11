@@ -4,6 +4,8 @@ const Controller = require('egg').Controller;
 
 class OpenAiController extends Controller {
 
+	main = this.service.openai;
+
     /**
      * @author sqm
      * @description index入口，暂不使用
@@ -11,10 +13,10 @@ class OpenAiController extends Controller {
      * @backDes
      */
     async index() {
-        const { ctx, service } = this;
+        const { ctx } = this;
 		const { helper, params } = ctx;
-        let res = await service.openai.index(params.message);
-        helper.success('查询成功',res);
+        let res = await this.main.index(params.message);
+        helper.success('查询成功', res);
     }
 
     /**
@@ -24,12 +26,12 @@ class OpenAiController extends Controller {
      * @param {String} message 用户信息
      * @backDes 当前对话返回
      */
-    async converse() {
-        const { ctx, service } = this;
+    async conversation() {
+        const { ctx } = this;
         const { helper, params } = ctx;
 
-        // 调用 OpenaiService 的 converse 方法进行对话交流
-        const result = await service.openai.converse(params.userId, params.message);
+        // 调用 OpenaiService 的 conversation 方法进行对话交流
+        const result = await this.main.conversation(params.userId, params.message);
 
         // 返回对话的助手回复
 		helper.success( '', result );
@@ -43,34 +45,16 @@ class OpenAiController extends Controller {
      * @backDes 对话数据
      */
     async getConversationHistory() {
-        const { ctx, service } = this;
+        const { ctx } = this;
         const { helper, params } = ctx;
 
         // 调用 OpenaiService 的 getConversationHistory 方法获取对话记录
-        const result = await service.openai.getConversationHistory(params.userId);
+        const result = await this.main.getConversationHistory(params.userId);
 
 		helper.success( '', result );
 
     }
 
-    /**
-     * @author sqm
-     * @description 删除对话数据
-     * @param {String} userId 用于删除对话的用户id
-     * @backDes 是否删除成功
-     */
-    async delConversationHistory() {
-        const { ctx, service } = this;
-		const { helper, params } = ctx;
-
-        const result = await service.openai.delConversationHistory(params.userId);
-
-        if(!result){
-			helper.fail('删除失败');
-			return false;
-		}
-		helper.success('删除成功',result);
-    }
 }
 
 module.exports = OpenAiController;

@@ -29,7 +29,7 @@ class OpenaiService extends Service {
     console.log('index暂不进行使用')
   }
 
-  async converse(userId, message) {
+  async conversation(userId, message) {
     try {
       // 添加用户消息到用户对话表
       await this.UserConversation.create({
@@ -87,18 +87,6 @@ class OpenaiService extends Service {
       // 处理错误
       return [];
     }
-  }
-
-  async delConversationHistory(userId) {
-      const result = await this.UserConversation.update({ display: 0 },{
-        where: { userId }
-      });
-
-      if(result[0] == 0){
-        // 未发生更新
-        return false;
-      }
-      return true;
   }
 }
 
