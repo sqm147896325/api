@@ -7,6 +7,7 @@
     "declarations": true
   },
   "dependencies": {
+    "@azure/openai": "^1.0.0-beta.5",
     "@types/node": "^16.11.11",
     "archiver": "^5.3.0",
     "crypto-js": "^4.1.1",
