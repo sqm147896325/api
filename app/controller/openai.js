@@ -26,15 +26,14 @@ class OpenAiController extends Controller {
      */
     async converse() {
         const { ctx, service } = this;
-        const { userId, message } = ctx.request.body;
+        const { helper, params } = ctx;
 
         // 调用 OpenaiService 的 converse 方法进行对话交流
-        const reply = await service.openai.converse(userId, message);
+        const result = await service.openai.converse(params.userId, params.message);
 
         // 返回对话的助手回复
-        ctx.body = {
-            reply,
-        };
+		helper.success( '', result );
+
     }
 
     /**
@@ -45,15 +44,13 @@ class OpenAiController extends Controller {
      */
     async getConversationHistory() {
         const { ctx, service } = this;
-        const { userId } = ctx.params;
+        const { helper, params } = ctx;
 
         // 调用 OpenaiService 的 getConversationHistory 方法获取对话记录
-        const conversationHistory = await service.openai.getConversationHistory(userId);
+        const result = await service.openai.getConversationHistory(params.userId);
 
-        // 返回对话记录
-        ctx.body = {
-            conversationHistory,
-        };
+		helper.success( '', result );
+
     }
 
     /**
