@@ -101,4 +101,5 @@ module.exports = app => {
     router.post('/openai/index', controller.openai.index);
     router.post('/openai/converse', controller.openai.converse);
     router.post('/openai/getConversationHistory', controller.openai.getConversationHistory);
+    router.delete('/openai/delConversationHistory', controller.openai.delConversationHistory);
 };

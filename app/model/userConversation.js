@@ -36,6 +36,12 @@ module.exports = app => {
       defaultValue: app.Sequelize.literal('CURRENT_TIMESTAMP'),
       comment: '创建时间',
     },
+    display: {
+			type: DataTypes.INTEGER.UNSIGNED,
+			allowNull: false,
+			defaultValue: 1,
+			comment: "是否删除"
+		},
   }, {
     sequelize: app.sequelize,
     tableName: 'user_conversation',

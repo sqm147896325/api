@@ -55,6 +55,25 @@ class OpenAiController extends Controller {
             conversationHistory,
         };
     }
+
+    /**
+     * @author sqm
+     * @description 删除对话数据
+     * @param {String} userId 用于删除对话的用户id
+     * @backDes 是否删除成功
+     */
+    async delConversationHistory() {
+        const { ctx, service } = this;
+		const { helper, params } = ctx;
+
+        const result = await service.openai.delConversationHistory(params.userId);
+
+        if(!result){
+			helper.fail('删除失败');
+			return false;
+		}
+		helper.success('删除成功',result);
+    }
 }
 
 module.exports = OpenAiController;

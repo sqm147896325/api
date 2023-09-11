@@ -22,8 +22,6 @@ class OpenaiService extends Service {
     const endpoint = 'https://sunqm.openai.azure.com/';
     const azureApiKey = this.app.config.openai.azureApiKey;
 
-    console.log('azureApiKey', azureApiKey)
-
     this.openai = new OpenAIClient(endpoint, new AzureKeyCredential(azureApiKey)); // 创建openai实例
   }
 
@@ -40,19 +38,7 @@ class OpenaiService extends Service {
         content: message,
       });
 
-      const userConversation = await this.UserConversation.findAll({
-        where: {
-          userId,
-        },
-        order: [
-          ['id', 'ASC'],
-        ],
-      });
-
-      const messages = userConversation.map(conversation => ({
-        role: conversation.role,
-        content: conversation.content,
-      }));
+      const messages = await this.getConversationHistory(userId);
 
       /* 使用openai的依赖 */
       // const requestData = {
@@ -60,6 +46,8 @@ class OpenaiService extends Service {
       //   messages,
       // };
       // const response = await this.openai.createChatCompletion(requestData);
+
+      console.log('messages', messages)
 
       /* 使用@azure/openai的依赖 */
       const response = await this.openai.getChatCompletions('gpt-35-turbo-16k', messages);
@@ -85,6 +73,7 @@ class OpenaiService extends Service {
       const userConversation = await this.UserConversation.findAll({
         where: {
           userId,
+          display: 1, 	// 只查询未删除的数据
         },
         order: [
           ['id', 'ASC'],
@@ -100,6 +89,18 @@ class OpenaiService extends Service {
       // 处理错误
       return [];
     }
+  }
+
+  async delConversationHistory(userId) {
+      const result = await this.UserConversation.update({ display: 0 },{
+        where: { userId }
+      });
+
+      if(result[0] == 0){
+        // 未发生更新
+        return false;
+      }
+      return true;
   }
 }
 
