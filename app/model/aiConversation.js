@@ -1,15 +1,20 @@
 'use strict';
 
 module.exports = app => {
-  const { DataTypes } = app.Sequelize;
+  const { DataTypes, UUID } = app.Sequelize;
 
-  const UserConversation = app.model.define('user_conversation', {
+  const AiConversation = app.model.define('ai_conversation', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       comment: '对话ID',
+    },
+    uuid: {
+      type: UUID,
+      allowNull: false,
+      comment: '所属对话uuid',
     },
     userId: {
       type: DataTypes.INTEGER,
@@ -44,7 +49,7 @@ module.exports = app => {
 		},
   }, {
     sequelize: app.sequelize,
-    tableName: 'user_conversation',
+    tableName: 'ai_conversation',
     timestamps: false,
     indexes: [
       {
@@ -59,14 +64,14 @@ module.exports = app => {
   });
 
   (async function() {
-    await UserConversation.sync();
+    await AiConversation.sync();
     console.log('用户对话表已创建');
   })();
 
   // 关联用户表
-  UserConversation.associate = function() {
-    app.model.UserConversation.belongsTo(app.model.User, { foreignKey: 'userId', targetKey: 'id' });
+  AiConversation.associate = function() {
+    app.model.AiConversation.belongsTo(app.model.User, { foreignKey: 'userId', targetKey: 'id' });
   };
 
-  return UserConversation;
+  return AiConversation;
 };

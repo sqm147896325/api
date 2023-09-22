@@ -9,7 +9,7 @@ class OpenaiService extends Service {
     super(ctx);
 
     // 引入用户对话模型
-    this.UserConversation = this.ctx.model.UserConversation;
+    this.main = this.ctx.model.AiConversation;
 
     /* 使用openai创建配置 */
     // this.configuration = new Configuration({
@@ -29,16 +29,18 @@ class OpenaiService extends Service {
     console.log('index暂不进行使用')
   }
 
-  async conversation(userId, message) {
+  async conversation(userId, message, uuid) {
     try {
+
       // 添加用户消息到用户对话表
-      await this.UserConversation.create({
+      await this.main.create({
+        uuid,
         userId,
         role: 'user',
         content: message,
       });
 
-      const messages = await this.getConversationHistory(userId);
+      const messages = await this.getConversationHistory(uuid);
 
       /* 使用openai的依赖 */
       // const requestData = {
@@ -53,7 +55,8 @@ class OpenaiService extends Service {
       const reply = response.choices[0].message.content;
 
       // 添加助手回复到用户对话表
-      await this.UserConversation.create({
+      await this.main.create({
+        uuid,
         userId,
         role: 'assistant',
         content: reply,
@@ -61,16 +64,20 @@ class OpenaiService extends Service {
 
       return reply;
     } catch (error) {
-      console.error('Error in ChatGPT-3.5 Turbo integration:', error);
+      if (error.code === 'content_filter') {
+        throw new Error('content_filter')
+      } else {
+        throw error
+      }
       // 处理错误
     }
   }
 
-  async getConversationHistory(userId) {
+  async getConversationHistory(uuid) {
     try {
-      const userConversation = await this.UserConversation.findAll({
+      const aiConversation = await this.main.findAll({
         where: {
-          userId,
+          uuid,
           display: 1, 	// 只查询未删除的数据
         },
         order: [
@@ -78,7 +85,7 @@ class OpenaiService extends Service {
         ],
       });
 
-      return userConversation.map(conversation => ({
+      return aiConversation.map(conversation => ({
         role: conversation.role,
         content: conversation.content,
       }));

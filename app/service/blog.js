@@ -38,7 +38,6 @@ class BlogService extends Service {
 
 	// 更新文章
 	async update(id,option={}){
-		console.log(option)
 		const result = await this.main.update({
 			title: option.title,
 			content: option.content,
@@ -98,7 +97,6 @@ class BlogService extends Service {
 			like[key] = { [Op.like] : `%${query}%`} // 用%前后匹配
 			return key
 		})
-		console.log('keys', keys)
 		const config = { 
 			limit:parseInt(limit), 		// 查询条数
 			offset:parseInt(offset), 	// 偏移量

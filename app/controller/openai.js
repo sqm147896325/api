@@ -30,11 +30,28 @@ class OpenAiController extends Controller {
         const { ctx } = this;
         const { helper, params } = ctx;
 
-        // 调用 OpenaiService 的 conversation 方法进行对话交流
-        const result = await this.main.conversation(params.userId, params.message);
+        let uuid = params.uuid
 
-        // 返回对话的助手回复
-		helper.success( '', result );
+        if (!uuid) {
+            // 没有uuid为新创建的
+            const res = await this.service.conversation.create(params.userId, 'ai')
+            uuid = res.uuid
+        }
+
+        // 调用 OpenaiService 的 conversation 方法进行对话交流
+        try {
+            const result = await this.main.conversation(params.userId, params.message, uuid);
+
+            // 返回对话的助手回复
+            helper.success( '', { uuid: uuid, result: result } );
+        } catch (error) {
+            if (error.message === 'content_filter') {
+                helper.info('内容不合规');
+            } else {
+                helper.info('服务器错误');
+            }
+        }
+
 
     }
 
@@ -49,7 +66,7 @@ class OpenAiController extends Controller {
         const { helper, params } = ctx;
 
         // 调用 OpenaiService 的 getConversationHistory 方法获取对话记录
-        const result = await this.main.getConversationHistory(params.userId);
+        const result = await this.main.getConversationHistory(params.uuid);
 
 		helper.success( '', result );
 

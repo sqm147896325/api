@@ -59,6 +59,7 @@ module.exports = (appInfo, userConfig = {}) => {
 		define:{
 			freezeTableName: true,		// Model 对应的表名将与model名相同
 		},
+		logging: false,
 		dialectOptions: { charset: 'utf8mb4' }
 	};
 

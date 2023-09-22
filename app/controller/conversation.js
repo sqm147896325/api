@@ -4,7 +4,7 @@ const Controller = require('egg').Controller;
 
 class ConversationController extends Controller {
 
-	main = this.service.Conversation;
+	main = this.service.conversation;
 
     /**
 	 * @author sqm
@@ -23,10 +23,14 @@ class ConversationController extends Controller {
      * @description 获取对话列表
      * @backDes 当前对话返回
      */
-    async getList() {
+    async list() {
         const { ctx } = this;
         const { helper, params } = ctx;
-        const result = await this.main.getList(params.userId, params.page, params.pagesize);
+        if (!params.key) {
+			params.key = 'type'
+		}
+		const keys = params.key.split(',')
+        const result = await this.main.list(params.page, params.pagesize, keys, params.query || '');
         helper.success('', result);
     }
 
@@ -37,10 +41,10 @@ class ConversationController extends Controller {
      * @backDes 是否删除成功
      */
     async delete() {
-        const { ctx, service } = this;
+        const { ctx } = this;
         const { helper, params } = ctx;
 
-        const result = await service.openai.delete(params.uuid);
+        const result = await this.main.delete(params.uuid);
 
         if(!result){
             helper.fail('删除失败');

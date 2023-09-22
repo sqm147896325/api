@@ -98,7 +98,7 @@ module.exports = app => {
     router.get('/home/blogKeyword', controller.blog.getKeyword);
 
     /* 对话相关路由 */
-    router.get('/conversation/list', controller.conversation.getList);
+    router.get('/conversation/list', controller.conversation.list);
     router.put('/conversation/create', controller.conversation.create);
     router.delete('/conversation/delete', controller.conversation.delete);
 
