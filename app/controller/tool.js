@@ -1,17 +1,17 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-class toolController extends Controller {
+class ToolController extends Controller {
 
     tool = this.service.tool
 
     /**
      * @author sqm
      * @description 发送邮件
-     * @param {email:String}		邮箱地址
-     * @param {subject:String}		邮件标题
-     * @param {text:String}		    邮件内容
-     * @param {html:String}		    邮件html
+     * @param {String} email 邮箱地址
+     * @param {String} subject 邮件标题
+     * @param {String} text 邮件内容
+     * @param {String} html 邮件html
      * @backDes 
      */
     async email() {
@@ -33,8 +33,8 @@ class toolController extends Controller {
     /**
      * @author sqm
      * @description 调用百度地图api
-     * @param {url:String}		'api.map.baidu.com'后拼接的地址
-     * @param {data:Object}		对应服务所需要的参数，除去ak，详情见百度Web服务API
+     * @param {String} url 'api.map.baidu.com'后拼接的地址
+     * @param {Object} data 对应服务所需要的参数，除去ak，详情见百度Web服务API
      * @backDes 
      */
     async openMap() {
@@ -51,4 +51,4 @@ class toolController extends Controller {
     }
 }
 
-module.exports = toolController;
+module.exports = ToolController;

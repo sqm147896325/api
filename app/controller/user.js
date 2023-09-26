@@ -11,7 +11,7 @@ class UserController extends Controller {
 	/**
 	 * @author sqm
 	 * @description 获取某一用户信息
-	 * @param {id:String}	账号
+	 * @param {String} id 账号
 	 * @backDes 
 	 */	
 	async read() {
@@ -28,11 +28,11 @@ class UserController extends Controller {
 	/**
 	 * @author sqm
 	 * @description 创建用户
-	 * @param {username:String}		用户名称
-	 * @param {password:String}		用户密码
-	 * @param {email:String}		用户邮箱
-	 * @param {tel:String}			用户电话
-	 * @param {des:String}			用户描述
+	 * @param {String} username 用户名称
+	 * @param {String} password 用户密码
+	 * @param {String} email 用户邮箱
+	 * @param {String} tel 用户电话
+	 * @param {String} des 用户描述
 	 * @backDes 
 	 */	
 	async create() {
@@ -52,7 +52,7 @@ class UserController extends Controller {
 	/**
 	 * @author sqm
 	 * @description 删除用户
-	 * @param {id:String}	账号
+	 * @param {String} id 账号
 	 * @backDes 
 	 */	
 	async delete() {
@@ -69,12 +69,12 @@ class UserController extends Controller {
 	/**
 	 * @author sqm
 	 * @description 更新用户
-	 * @param {id:String}			账号
-	 * @param {username:String}		用户名称
-	 * @param {password:String}		用户密码
-	 * @param {email:String}		用户邮箱
-	 * @param {tel:String}			用户电话
-	 * @param {des:String}			用户描述
+	 * @param {String} id 账号
+	 * @param {String} username 用户名称
+	 * @param {String} password 用户密码
+	 * @param {String} email 用户邮箱
+	 * @param {String} tel 用户电话
+	 * @param {String} des 用户描述
 	 * @backDes 
 	 */	
 	async update() {
@@ -97,10 +97,10 @@ class UserController extends Controller {
 	/**
 	 * @author sqm
 	 * @description 获取用户列表,支持模糊查询
-	 * @param {page:Number}		用户列表页码
-	 * @param {pagesize:Number}	用户列表每页大小
-	 * @param {key:String}		查询的关键字
-	 * @param {query:String}	需要查询的内容
+	 * @param {Number} page 用户列表页码
+	 * @param {Number} pagesize 用户列表每页大小
+	 * @param {String} key 查询的关键字
+	 * @param {String} query 需要查询的内容
 	 * @backDes 
 	 */	
 	async getList() {
@@ -113,8 +113,8 @@ class UserController extends Controller {
 	/**
 	 * @author sqm
 	 * @description 设置某一用户权限
-	 * @param {id:String}			账号
-	 * @param {power:String}		权限
+	 * @param {String} id 账号
+	 * @param {String} power 权限
 	 * @backDes 
 	 */	
 	async setPower(){
@@ -131,7 +131,7 @@ class UserController extends Controller {
 	/**
      * @author sqm
      * @description 邮箱验证码
-     * @param {email:String}		邮箱地址
+     * @param {String} email 邮箱地址
      * @backDes 
      */
 	async emailVerify() {
@@ -155,9 +155,9 @@ class UserController extends Controller {
 	/**
 	 * @author sqm
 	 * @description 邮箱验证码设置用户信息
-	 * @param {email:String}		邮箱
-	 * @param {password:String}		用户密码
-	 * @param {verification:String}	验证码
+	 * @param {String} email 邮箱
+	 * @param {String} password 用户密码
+	 * @param {String} verification 验证码
 	 * @backDes 
 	 */
 	async emailSetUser() {

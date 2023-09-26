@@ -10,7 +10,7 @@ class FileController extends Controller {
     /**
      * @author sqm
      * @description 读取单个文件
-     * @param {uudi:Number}		要读取的文件或文件夹id
+     * @param {uudi} Number 要读取的文件或文件夹id
      * @backDes 
      */
     async read() {
@@ -28,11 +28,11 @@ class FileController extends Controller {
 	/**
      * @author sqm
      * @description 上传文件,目前只支持单文件上传
-     * @param {parentId:Number}		父级文件夹id,如果是在根目录下创建则传0
-	 * @param {md5:String}			校验的md5码,文件夹为'0'
-     * @param {name:String}			文件或文件夹名
-     * @param {size:String}			文件大小,文件夹为0,如果没有则从文件中获取
-     * @param {keyword:String}		关键字,可选
+     * @param {Number} parentId 父级文件夹id,如果是在根目录下创建则传0
+	 * @param {String} md5 校验的md5码,文件夹为'0'
+     * @param {String} name 文件或文件夹名
+     * @param {String} size 文件大小,文件夹为0,如果没有则从文件中获取
+     * @param {String} keyword 关键字,可选
      * @backDes 
      */
 	async create() {
@@ -111,7 +111,7 @@ class FileController extends Controller {
 	/**
      * @author sqm
      * @description 删除文件
-     * @param {delArr:Array}		要删除的文件或文件夹uuid的数组
+     * @param {Array} delArr 要删除的文件或文件夹uuid的数组
      * @backDes 
      */
 	 async delete() {
@@ -133,7 +133,7 @@ class FileController extends Controller {
 	/**
      * @author sqm
      * @description 下载文件压缩包
-     * @param {downloadArr:Array}		要下载的文件或文件夹uuid的数组
+     * @param {Array} downloadArr 要下载的文件或文件夹uuid的数组
      * @backDes 
      */
 	 async downloadZip() {
@@ -189,9 +189,9 @@ class FileController extends Controller {
 	/**
      * @author sqm
      * @description 下载、预览单文件
-     * @param {fileId:String}		要下载的文件的uuid
-     * @param {user_id:String}		要下载的文件所属用户的uuid
-     * @param {download:Any}		是否调用下载的标志
+     * @param {String} fileId 要下载的文件的uuid
+     * @param {String} user_id 要下载的文件所属用户的uuid
+     * @param {Any} download 是否调用下载的标志
      * @backDes 
      */
 	async fileLink() {

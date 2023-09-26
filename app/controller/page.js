@@ -16,7 +16,7 @@ class PageController extends Controller {
      */
 	async back() {
         const { ctx } = this;
-		const { helper,params } = ctx;
+		const { helper } = ctx;
         this.ctx.set('Content-Type', 'text/html');
         try {
             this.ctx.body = await fs.readFileSync(path.join(this.app.baseDir, 'project/blog-back/dist/index.html'));
@@ -33,7 +33,7 @@ class PageController extends Controller {
      */
     async home() {
         const { ctx } = this;
-		const { helper,params } = ctx;
+		const { helper } = ctx;
         this.ctx.set('Content-Type', 'text/html');
         try {
             this.ctx.body = await fs.readFileSync(path.join(this.app.baseDir, 'project/blog-home/dist/index.html'));
@@ -50,7 +50,7 @@ class PageController extends Controller {
      */
     async com() {
         const { ctx } = this;
-		const { helper,params } = ctx;
+		const { helper } = ctx;
         this.ctx.set('Content-Type', 'text/html');
         try {
             this.ctx.body = await fs.readFileSync(path.join(this.app.baseDir, 'project/madder-com/dist/index.html'));
