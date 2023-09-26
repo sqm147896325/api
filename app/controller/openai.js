@@ -72,6 +72,13 @@ class OpenAiController extends Controller {
 
     }
 
+    async painter() {
+        const { ctx } = this;
+        const { helper, params } = ctx;
+        let res = await this.main.painter(params.prompt, params.size, params.n)
+        helper.success('', res)
+    }
+
 }
 
 module.exports = OpenAiController;

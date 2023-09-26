@@ -95,6 +95,16 @@ class OpenaiService extends Service {
       return [];
     }
   }
+
+  async painter(prompt, size = '1024x1024', n = 1) {
+    const response = await this.openai.getImages(
+      prompt,
+      size,
+      n
+    )
+    
+    return response.data
+  }
 }
 
 module.exports = OpenaiService;
