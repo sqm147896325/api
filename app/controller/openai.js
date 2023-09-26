@@ -40,8 +40,8 @@ class OpenAiController extends Controller {
             // 返回对话的助手回复
             helper.success( '', { uuid: uuid, result: reply } );
         } catch (error) {
-            console.log('error', error)
-            if (error.message === 'content_filter') {
+            console.error(error)
+            if (error.code === 'content_filter') {
                 helper.info('内容不合规');
             } else {
                 helper.info('服务器错误');
@@ -79,8 +79,19 @@ class OpenAiController extends Controller {
     async painter() {
         const { ctx } = this;
         const { helper, params } = ctx;
-        let res = await this.main.painter(params.prompt, params.size, params.n)
-        helper.success('', res)
+
+        try {
+            let res = await this.main.painter(params.prompt, params.size, params.n);
+            helper.success('', res);
+        } catch (error) {
+            console.error(error)
+            if (error.code === 'contentFilter') {
+                helper.info('内容不合规');
+            } else {
+                helper.info('服务器错误');
+            }
+        }
+
     }
 
 }

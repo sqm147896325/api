@@ -19,33 +19,18 @@ class OpenaiService extends Service {
 
   // openai进行对话
   async conversation(messages) {
-    try {
+    /* 使用@azure/openai的依赖 */
+    const response = await this.openai.getChatCompletions('gpt-35-turbo-16k', messages);
 
-      /* 使用@azure/openai的依赖 */
-      const response = await this.openai.getChatCompletions('gpt-35-turbo-16k', messages);
-
-      const reply = response.choices[0].message.content;
-
-      return reply;
-    } catch (error) {
-      if (error.code === 'content_filter') {
-        throw new Error('content_filter')
-      } else {
-        throw error
-      }
-      // 处理错误
-    }
+    const reply = response.choices[0].message.content;
+    return reply;
   }
 
   // openai生成图片
   async painter(prompt, size = '1024x1024', n = 1) {
-    const response = await this.openai.getImages(
-      prompt,
-      size,
-      n
-    )
+    const response = await this.openai.getImages(prompt, size, n)
     
-    return response.data
+    return response.data 
   }
 }
 
