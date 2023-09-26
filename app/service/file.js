@@ -16,8 +16,9 @@ class FileService extends Service {
 
 	// 获取单个文件信息
 	async read(uuid,user_id){
-		if(uuid){
+		if(uuid !== '0'){
 			// 父目录不是根目录
+			console.log(uuid,user_id)
 			const result = await this.main.findOne({
 				where: {
 					uuid,
