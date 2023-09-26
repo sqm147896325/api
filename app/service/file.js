@@ -16,7 +16,7 @@ class FileService extends Service {
 
 	// 获取单个文件信息
 	async read(uuid,user_id){
-		if( uuid != 0 ){
+		if(uuid){
 			// 父目录不是根目录
 			const result = await this.main.findOne({
 				where: {
@@ -36,7 +36,7 @@ class FileService extends Service {
 					'upload_time'
 				]
 			});
-			if(result.dataValues.file_type == 'dir'){
+			if(result.dataValues.file_type === 'dir'){
 				// 文件夹执行内容
 				const content = await this.getItem(uuid,user_id);
 				result.dataValues.content = content;
@@ -102,7 +102,7 @@ class FileService extends Service {
 			attributes: [ 'file_type', 'path' ]
 		});
 		// 如果类型为文件夹
-		if(type['file_type'] == 'dir'){
+		if(type['file_type'] === 'dir'){
 			// 递归获取子集状态
 			const itemArr = await this.main.findAll({
 				where: {
@@ -124,11 +124,8 @@ class FileService extends Service {
 		const result = await this.main.update({ display: 0 },{
 			where: {uuid}
 		});
-		if(result[0] == 0){
-			// 未发生更新
-			return false;
-		}
-		return true;
+
+		return !!result[0] // 有更新结果 true 更新了，没更新结果 false 未更新
 	}
 
 	// 下载文件压缩包
@@ -148,7 +145,7 @@ class FileService extends Service {
 			archive.pipe(output)	// 使用管道连接两个流
 			path.forEach(e => {
 				// 根据路径匹配需要压缩的文件
-				if( e['file_type'] == 'dir' ) {
+				if( e['file_type'] === 'dir' ) {
 					// 如果是目录，执行
 					archive.directory(`${staticPath}/${e.path}/`,e.name);
 				} else {

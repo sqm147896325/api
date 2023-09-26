@@ -9,11 +9,14 @@ class ConversationController extends Controller {
     /**
 	 * @author sqm
 	 * @description 添加创建对话
+     * @param {String} userId 用户id
+     * @param {String} type 对话类型（枚举）
+     * @param {Object} options 对话其他配置
 	 * @backDes 
 	 */	
     async create() {
         const { ctx } = this;
-        const { params , body , helper } = ctx;
+        const { params , helper } = ctx;
         const { id , name } = await this.main.create(params.userId, params.type, params.options);
         helper.info('添加成功',{ id , name });
     };
@@ -21,6 +24,10 @@ class ConversationController extends Controller {
     /**
      * @author sqm
      * @description 获取对话列表
+     * @param {Number} page 页数
+     * @param {Number} pagesize 每页大小
+     * @param {String} keys 查询关键类型
+     * @param {String} query 查询内容
      * @backDes 当前对话返回
      */
     async list() {

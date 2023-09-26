@@ -8,7 +8,6 @@ const { v1 } = require("uuid");
 
 module.exports = app => {
     const {
-        STRING,
         DataTypes,
         UUID,
         ENUM

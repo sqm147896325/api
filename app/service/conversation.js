@@ -8,7 +8,7 @@ class ConversationService extends Service {
 
 	main = this.ctx.model.Conversation;
 
-    // 按需创建对话
+    // 按需创建对话组
 	async create(user_id, type, options={}){
 		const result = await this.main.create({
 			user_id,
@@ -21,12 +21,12 @@ class ConversationService extends Service {
 		return result;
 	}
 
-    // 获取对话列表
+    // 获取对话组列表
 	async list(page=1,pagesize=5,keys=['user_id'],query=''){
 		const offset = (page-1)*pagesize;
 		const limit = pagesize;
 		const like = {} // 多字段模糊查询规则
-		keys = keys.map(e => {
+		keys.map(e => {
 			let key = this.ctx.helper.changeQueryKey(e, ['author'], ['user.username']) // 连查 user 表，映射对应字段
 			like[key] = { [Op.like] : `%${query}%`} // 用%前后匹配
 			return key
@@ -58,16 +58,13 @@ class ConversationService extends Service {
 		return result;
 	}
 
+	// 删除对话组
     async delete(uuid) {
         const result = await this.main.update({ display: 0 },{
           where: { uuid }
         });
   
-        if(result[0] == 0){
-          // 未发生更新
-          return false;
-        }
-        return true;
+		return !!result[0] // 有更新结果 true 更新了，没更新结果 false 未更新
     }
 
 }

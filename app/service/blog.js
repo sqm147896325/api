@@ -29,11 +29,8 @@ class BlogService extends Service {
 		const result = await this.main.update({ display: 0 },{
 			where: {id}
 		});
-		if(result[0] == 0){
-			// 未发生更新
-			return false;
-		}
-		return true;
+
+		return !!result[0] // 有更新结果 true 更新了，没更新结果 false 未更新
 	}
 
 	// 更新文章
@@ -47,11 +44,8 @@ class BlogService extends Service {
 		},{
 			where: {id:parseInt(id)}
 		});
-		if(result[0] == 0){
-			// 未发生更新
-			return false;
-		}
-		return true;
+
+		return !!result[0] // 有更新结果 true 更新了，没更新结果 false 未更新
 	}
 
 	// 获取单篇信息
@@ -92,7 +86,7 @@ class BlogService extends Service {
 		const offset = (page-1)*pagesize;
 		const limit = pagesize;
 		const like = {} // 多字段模糊查询规则
-		keys = keys.map(e => {
+		keys.map(e => {
 			let key = this.ctx.helper.changeQueryKey(e, ['author'], ['user.username']) // 连查 user 表，映射对应字段
 			like[key] = { [Op.like] : `%${query}%`} // 用%前后匹配
 			return key

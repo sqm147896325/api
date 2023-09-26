@@ -77,11 +77,8 @@ class UserService extends Service {
 		const result = await this.main.update({ display: 0 },{
 			where: {id}
 		});
-		if(result[0] == 0){
-			// 未发生更新
-			return false;
-		}
-		return true;
+
+		return !!result[0] // 有更新结果 true 更新了，没更新结果 false 未更新
 	}
 
 	// 更新用户
@@ -101,11 +98,8 @@ class UserService extends Service {
 		});
 		// 更新之后清除token
 		await this.updataToken('', id)
-		if(result[0] == 0){
-			// 未发生更新
-			return false;
-		}
-		return true;
+
+		return !!result[0] // 有更新结果 true 更新了，没更新结果 false 未更新
 	}
 
 	// 获取单个用户信息
@@ -199,11 +193,8 @@ class UserService extends Service {
 		});
 		// 更新之后清除token
 		await this.updataToken('', id)
-		if(result[0] == 0){
-			// 未发生更新
-			return false;
-		}
-		return true;
+
+		return !!result[0] // 有更新结果 true 更新了，没更新结果 false 未更新
 	}
 }
 
