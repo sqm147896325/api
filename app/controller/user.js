@@ -16,8 +16,12 @@ class UserController extends Controller {
 	 */	
 	async read() {
 		const { ctx } = this;
-		const { params , body , helper } = ctx;
-		const result = await this.main.read(params.id);
+		const { params, helper, state } = ctx;
+		let id = params.id
+		if (!id) {
+			id = state?.userInfo?.id || ''
+		}
+		const result = await this.main.read(id);
 		if(!result){
 			helper.fail('查询失败');
 			return false;
