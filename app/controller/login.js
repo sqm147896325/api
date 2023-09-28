@@ -46,6 +46,18 @@ class LoginController extends Controller {
 			return false;
 		}
 	}
+
+	/**
+	 * @author sqm
+	 * @description 退出登录
+	 * @param {String} id 账号
+	 * @param {String} password	密码
+	 * @backDes 返回token和用户信息
+	 */	
+	async exit() {
+		await this.main.updataToken('', this.ctx.state.userInfo.id);
+		this.ctx.helper.success('退出成功')
+	}
 }
 
 module.exports = LoginController;

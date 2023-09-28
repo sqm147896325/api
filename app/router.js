@@ -14,8 +14,9 @@ module.exports = app => {
 
     router.get('/', controller.home.index);
 
-	// 登录接口
+	// 登录相关接口
     router.post('/login', controller.login.login);
+    router.post('/exit', controller.login.exit);
 
     // 博客相关路由
     router.get('/blog', controller.blog.read);
