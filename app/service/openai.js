@@ -20,7 +20,7 @@ class OpenaiService extends Service {
   // openai进行对话
   async conversation(messages) {
     /* 使用@azure/openai的依赖 */
-    const response = await this.openai.getChatCompletions('gpt-35-turbo-16k', messages);
+    const response = await this.openai.getChatCompletions('gpt-35-turbo', messages);
 
     const reply = response.choices[0].message.content;
     return reply;
