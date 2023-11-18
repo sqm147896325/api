@@ -11,7 +11,7 @@ class OpenaiService extends Service {
     this.main = this.ctx.model.AiConversation;
 
     /* 使用@azure/openai创建配置 */
-    const endpoint = 'https://sunqm.openai.azure.com/';
+    const endpoint = 'https://madder-gpt4.openai.azure.com/';
     const azureApiKey = this.app.config.openai.azureApiKey;
 
     this.openai = new OpenAIClient(endpoint, new AzureKeyCredential(azureApiKey)); // 创建openai实例
