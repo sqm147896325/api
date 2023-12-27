@@ -27,7 +27,7 @@ module.exports = (appInfo, userConfig = {}) => {
 		listen: {
 			path: '',
 			port: 9080,
-			hostname: '127.0.0.1',
+			hostname: 'localhost',
 		}
 	};
 	
