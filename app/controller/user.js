@@ -168,21 +168,27 @@ class UserController extends Controller {
 		const { ctx, app } = this;
 		const { helper, params } = ctx;
 		const verification = await app.redis.get(params.email);
-		if (verification !== params.verification) {
+		if ((verification || '').toLowerCase() !== (params.verification || '').toLowerCase()) {
 			helper.info('失败！验证码错误');
 			return false
 		}
 		const main = this.service.user;
 		let { count, rows } = await main.getList(1, 10, 'email', params.email);
 		if (count === 0) {
-			const { id } = await main.create(params.email, params.password,{
+			const salt = helper.randomStr(8);
+			const password = crypto.MD5(params.password + salt).toString();
+			const { id } = await main.create(params.email, password,{
+				salt,
 				email: params.email
 			});
 			helper.info(`创建成功，账号为${id}`, { type: 'success' });
 			await app.redis.del(params.email)
 		} else {
+			const salt = helper.randomStr(8);
+			const password = crypto.MD5(params.password + salt).toString();
 			const flag = await main.update(rows[0].id, {
-				password: params.password,
+				password: password,
+				salt,
 				email: params.email
 			});
 			if (flag) {
