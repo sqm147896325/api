@@ -2,7 +2,7 @@
 
 const Controller = require('egg').Controller;
 
-class OpenAiController extends Controller {
+class OpenaiController extends Controller {
 
 	main = this.service.openai;
 
@@ -79,7 +79,6 @@ class OpenAiController extends Controller {
     async painter() {
         const { ctx } = this;
         const { helper, params } = ctx;
-
         try {
             let res = await this.main.painter(params.prompt, params.size, params.n);
             helper.success('', res);
@@ -96,4 +95,4 @@ class OpenAiController extends Controller {
 
 }
 
-module.exports = OpenAiController;
+module.exports = OpenaiController;
