@@ -5,9 +5,9 @@ const { OpenAIClient, AzureKeyCredential } = require('@azure/openai')
 
 class OpenaiService extends Service {
   constructor(ctx) {
-    try {
-      super(ctx);
+    super(ctx);
 
+    try {
       // 引入用户对话模型
       this.main = this.ctx.model.AiConversation;
   
