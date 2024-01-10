@@ -27,7 +27,7 @@
   "devDependencies": {
     "autod": "^3.1.2",
     "autod-egg": "^1.1.0",
-    "egg-bin": "^4.16.4",
+    "egg-bin": "^4.20.0",
     "egg-ci": "^1.19.0",
     "egg-mock": "^3.26.0",
     "eslint": "^8.4.0",
@@ -40,7 +40,6 @@
     "start": "egg-scripts start --sticky --daemon --title=api --ignore-stderr --workers=1",
     "stop": "egg-scripts stop --title=api",
     "dev": "egg-bin dev",
-    "dev:beta": "egg-bin dev --env=beta",
     "prod": "egg-scripts start --env=prod",
     "debug": "egg-bin debug",
     "test": "npm run lint && npm run test-local",
