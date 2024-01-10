@@ -33,12 +33,36 @@ class OpenaiController extends Controller {
 
             const messages = await this.service.aiConversation.getConversationHistory(uuid); // 获取该对话组历史消息
 
-            const reply = await this.main.conversation(messages); // 调用openai进行对话
+            ctx.type = 'text/event-stream';
+            ctx.set('Cache-Control', 'no-cache');
+            ctx.set('Connection', 'keep-alive');
+            
+            const events = await this.main.conversation(messages); // 调用openai进行对话
+
+            ctx.status = 200; // 设置响应状态码
+            ctx.res.write('\n');
+
+            let reply = ''
+
+            for await (const event of events) {
+                for (const choice of event.choices) {
+                    const delta = choice.delta?.content;
+                    if (delta !== undefined) {
+                        console.log('delta', delta)
+                        let params =  {
+                            flag: 0,
+                            msg: '',
+                            dataInfo: delta
+                        }
+                        ctx.res.write(`data: ${JSON.stringify(params)}\n\n`)
+                        reply += delta
+                    }
+                }
+            }
+
+            ctx.res.end();
 
             await this.service.aiConversation.create(uuid, params.userId, 'assistant', reply); // 添加助手回复到用户对话表
-
-            // 返回对话的助手回复
-            helper.success( '', { uuid: uuid, result: reply } );
         } catch (error) {
             console.error(error)
             if (error.code === 'content_filter') {
