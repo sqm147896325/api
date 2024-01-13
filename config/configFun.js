@@ -78,7 +78,7 @@ module.exports = (appInfo, userConfig = {}) => {
 	config.jwt = { secret: 'sqm' };
 
 	// 路由白名单
-	config.tokenWL = ['/' , '/login', '/file/downloadZip', '/file/fileLink', '/api/baidu', '/user/emailVerify', '/user/emailSetUser', '/page/*', '/webHook/*', '/home/*', '/openai/*'];
+	config.tokenWL = ['/' , '/login', '/file/downloadZip', '/file/fileLink', '/api/baidu', '/user/emailVerify', '/user/emailSetUser', '/page/*', '/webHook/*', '/home/*'];
 
 	config.multipart = {
 		mode: 'file',		// 使用文件模式，这里还有stream模式更合理，不过使用较复杂

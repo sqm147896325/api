@@ -32,34 +32,39 @@ class OpenaiController extends Controller {
             await this.service.aiConversation.create(uuid, params.userId, 'user', params.message); // 添加用户消息到用户对话表
 
             const messages = await this.service.aiConversation.getConversationHistory(uuid); // 获取该对话组历史消息
-
-            ctx.type = 'text/event-stream';
-            ctx.set('Cache-Control', 'no-cache');
-            ctx.set('Connection', 'keep-alive');
             
             const events = await this.main.conversation(messages); // 调用openai进行对话
 
+            // 设置 Server-Sent Events
+            ctx.type = 'text/event-stream';
+            ctx.set('Cache-Control', 'no-cache');
+            ctx.set('Connection', 'keep-alive');
             ctx.status = 200; // 设置响应状态码
-            ctx.res.write('\n');
 
+            // 写入头部信息
+            ctx.res.write('event: header\n');
+            let headerParams = {
+                uuid
+            }
+            ctx.res.write(`data: ${JSON.stringify(headerParams)}\n\n`);
+
+            // 设置消息数据块
             let reply = ''
-
+            ctx.res.write('event: message\n');
             for await (const event of events) {
+                console.log('event', event)
                 for (const choice of event.choices) {
+                    console.log('choice', choice)
                     const delta = choice.delta?.content;
                     if (delta !== undefined) {
-                        console.log('delta', delta)
-                        let params =  {
-                            flag: 0,
-                            msg: '',
-                            dataInfo: delta
-                        }
-                        ctx.res.write(`data: ${JSON.stringify(params)}\n\n`)
+                        ctx.res.write(`data: ${delta}\n`)
                         reply += delta
                     }
                 }
             }
+            ctx.res.write('\n')
 
+            // 结束传输
             ctx.res.end();
 
             await this.service.aiConversation.create(uuid, params.userId, 'assistant', reply); // 添加助手回复到用户对话表
