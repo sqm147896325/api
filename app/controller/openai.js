@@ -50,19 +50,16 @@ class OpenaiController extends Controller {
 
             // 设置消息数据块
             let reply = ''
-            ctx.res.write('event: message\n');
             for await (const event of events) {
-                console.log('event', event)
-                for (const choice of event.choices) {
-                    console.log('choice', choice)
-                    const delta = choice.delta?.content;
+                if (event.choices && event.choices.length) {
+                    const delta = event.choices[0].delta?.content;
                     if (delta !== undefined) {
-                        ctx.res.write(`data: ${delta}\n`)
+                        ctx.res.write('event: message\n');
+                        ctx.res.write(`data: ${JSON.stringify(delta)}\n\n`)
                         reply += delta
                     }
                 }
             }
-            ctx.res.write('\n')
 
             // 结束传输
             ctx.res.end();

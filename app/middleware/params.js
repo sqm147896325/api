@@ -7,6 +7,7 @@ module.exports = options => {
 			...ctx.query, //get请求解析后
 			...ctx.request.body //post请求解析后
 		};
+		console.log('ctx.params >>>', ctx.params)
 		await next();
 	};
 };
