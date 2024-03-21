@@ -40,6 +40,7 @@
     "start": "egg-scripts start --sticky --daemon --title=api --ignore-stderr --workers=1",
     "stop": "egg-scripts stop --title=api",
     "dev": "egg-bin dev",
+    "dev:local": "egg-bin dev --env=local",
     "prod": "egg-scripts start --env=prod",
     "debug": "egg-bin debug",
     "test": "npm run lint && npm run test-local",

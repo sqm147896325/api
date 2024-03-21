@@ -42,6 +42,9 @@ module.exports = appInfo => {
                 }
             }
         })
+    } else {
+        console.log('请输入 pwd username')
+        exit(0)
     }
 	return appInfo
 };

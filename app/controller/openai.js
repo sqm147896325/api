@@ -18,6 +18,19 @@ class OpenaiController extends Controller {
         const { ctx } = this;
         const { helper, params } = ctx;
 
+        // 限制调用次数
+        let conversationsNum = await this.ctx.app.redis.get(params.userId + '_conversations')
+        if (!isNaN(parseFloat(conversationsNum)) && isFinite(conversationsNum)) {
+            conversationsNum = Number(conversationsNum || 0)
+        } else {
+            conversationsNum = 0
+        }
+        if (conversationsNum > 10) {
+            helper.info('每日聊天数已超出，请24小时后重试或联系管理员重置');
+            return false
+        }
+        this.ctx.app.redis.set(params.userId + '_conversations', conversationsNum + 1, 'Ex', (60 * 60 * 24)) 
+
         let uuid = params.uuid
 
         if (!uuid) {
@@ -73,8 +86,6 @@ class OpenaiController extends Controller {
                 helper.info('服务器错误');
             }
         }
-
-
     }
 
     /**
@@ -105,6 +116,20 @@ class OpenaiController extends Controller {
     async painter() {
         const { ctx } = this;
         const { helper, params } = ctx;
+
+        // 限制调用次数
+        let painterNum = await this.app.redis.get(params.userId + '_conversations')
+        if (!isNaN(parseFloat(painterNum)) && isFinite(painterNum)) {
+            painterNum = Number(painterNum || 0)
+        } else {
+            painterNum = 0
+        }
+        if (painterNum > 2) {
+            helper.info('每日绘画已超出，请24小时后重试或联系管理员重置');
+            return false
+        }
+        this.app.redis.set(params.userId + '_conversations', painterNum + 1, 'Ex', (60 * 60 * 24)) 
+
         try {
             let res = await this.main.painter(params.prompt, params.size, params.n);
             helper.success('', res);
