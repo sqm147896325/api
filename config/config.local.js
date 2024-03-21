@@ -2,7 +2,6 @@
 
 'use strict';
 
-const { exit } = require('process');
 // import configFun from './configFun.js'
 const configFun = require('./configFun');
 
@@ -43,8 +42,7 @@ module.exports = appInfo => {
             }
         })
     } else {
-        console.log('请输入 pwd username')
-        exit(0)
+        console.log('beta模式请输入 --pwd xxx --username xxx，当前以普通模式运行')
     }
 	return appInfo
 };
