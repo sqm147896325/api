@@ -9,11 +9,11 @@ const configFun = require('./configFun');
  * @param {Egg.EggAppInfo} appInfo app info
  */
 module.exports = appInfo => {
-    let pwd = ''
+    let password = ''
     let username = ''
-    if (process.argv[2] && JSON.parse(process.argv[2]).pwd && JSON.parse(process.argv[2]).username) {
+    if (process.argv[2] && JSON.parse(process.argv[2]).password && JSON.parse(process.argv[2]).username) {
         // egg 生命周期等地方无法异步传入密码，beta模式下用户名密码由node参数传入
-        pwd = JSON.parse(process.argv[2]).pwd + ''
+        password = JSON.parse(process.argv[2]).password + ''
         username = JSON.parse(process.argv[2]).username + ''
 
         appInfo = configFun(appInfo, {
@@ -23,7 +23,7 @@ module.exports = appInfo => {
                 host: 'sunqm.com',
                 port: '3306',
                 username: username,
-                password: pwd,
+                password: password,
                 timezone:'+08:00',
                 define:{
                     freezeTableName: true,		// Model 对应的表名将与model名相同
@@ -36,13 +36,13 @@ module.exports = appInfo => {
                 client: {
                     port: 6379,
                     host: 'sunqm.com',
-                    password: pwd,
+                    password: password,
                     db: 0,
                 }
             }
         })
     } else {
-        console.log('beta模式请输入 --pwd xxx --username xxx，当前以普通模式运行')
+        console.log('beta模式请输入 --password xxx --username xxx，当前以普通模式运行')
     }
 	return appInfo
 };
