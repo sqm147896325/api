@@ -10,8 +10,7 @@ module.exports = app => {
       io
     } = app;
 
-    /* 普通接口 */
-
+    /* 根路由 */
     router.get('/', controller.home.index);
 
 	// 登录相关接口
@@ -67,7 +66,6 @@ module.exports = app => {
 	router.get('/page/com', controller.page.com);
 	router.get('/page/com/*', controller.page.com);
 
-
     /* socket.io 模块，of对应的是url路径，route对应事件名称 */
 	// 消息模块-初始连接
     io.of('/msg').route('init', io.controller.msg.init)
@@ -103,9 +101,18 @@ module.exports = app => {
     router.put('/conversation/create', controller.conversation.create);
     router.delete('/conversation/delete', controller.conversation.delete);
 
-
     /* openai */
     router.post('/openai/conversation', controller.openai.conversation);
     router.post('/openai/getConversationHistory', controller.openai.getConversationHistory);
     router.post('/openai/painter', controller.openai.painter);
+
+    /* mock接口 */
+    router.get('/mock/login', controller.mock.login);
+    router.post('/mock/login', controller.mock.login);
+    router.get('/mock/getInfo', controller.mock.getInfo);
+    router.post('/mock/getInfo', controller.mock.getInfo);
+    router.get('/mock/listSearch', controller.mock.listSearch);
+    router.post('/mock/listSearch', controller.mock.listSearch);
+    router.get('/mock/logout', controller.mock.logout);
+    router.post('/mock/logout', controller.mock.logout);
 };
