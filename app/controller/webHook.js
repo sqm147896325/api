@@ -78,7 +78,7 @@ class WebHookController extends Controller {
 				console.log('sto', sto);
 				console.error('err', err);
 			})
-			helper.success('个人主页正在打包部署');
+			helper.success('个人主页正在重新部署');
 		}else{
 			console.log('params',params);
 			helper.success('密钥错误')
@@ -100,7 +100,7 @@ class WebHookController extends Controller {
 				console.log('sto', sto);
 				console.error('err', err);
 			})
-			helper.success('组件合集正在打包部署');
+			helper.success('组件合集正在重新部署');
 		}else{
 			console.log('params',params);
 			helper.success('密钥错误')
