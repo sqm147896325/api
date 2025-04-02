@@ -46,7 +46,7 @@ class OpenaiController extends Controller {
 
             const messages = await this.service.aiConversation.getConversationHistory(uuid); // 获取该对话组历史消息
             
-            const events = await this.main.conversation(messages); // 调用openai进行对话
+            const stream = await this.main.conversation(messages); // 调用openai进行对话
 
             // 设置 Server-Sent Events
             ctx.type = 'text/event-stream';
@@ -62,22 +62,49 @@ class OpenaiController extends Controller {
             ctx.res.write(`data: ${JSON.stringify(headerParams)}\n\n`);
 
             // 设置消息数据块
-            let reply = ''
-            for await (const event of events) {
-                if (event.choices && event.choices.length) {
-                    const delta = event.choices[0].delta?.content;
-                    if (delta !== undefined) {
+            let replyContent = '';
+            let thinkContent = '';
+            let isAnswering = false;
+
+            for await (const chunk of events) {
+                if (!chunk.choices?.length) {
+                    continue;
+                }
+
+                const delta = chunk.choices[0].delta;
+                
+                // 处理思考过程
+                if (delta.reasoning_content) {
+                    if (!thinkContent) {
+                        thinkContent += '<think>'
                         ctx.res.write('event: message\n');
-                        ctx.res.write(`data: ${JSON.stringify(delta)}\n\n`)
-                        reply += delta
+                        ctx.res.write(`data: ${JSON.stringify('<think>')}\n\n`)
                     }
+                    ctx.res.write('event: message\n');
+                    ctx.res.write(`data: ${JSON.stringify(delta.reasoning_content)}\n\n`)
+                    thinkContent += delta.reasoning_content;
+                } 
+                // 处理正式回复
+                else if (delta.content) {
+                    if (!isAnswering) {
+                        isAnswering = true;
+                        if (thinkContent) {
+                            thinkContent += '</think>'
+                            ctx.res.write('event: message\n');
+                            ctx.res.write(`data: ${JSON.stringify('</think>')}\n\n`)
+                        }
+                    }
+                    ctx.res.write('event: message\n');
+                    ctx.res.write(`data: ${JSON.stringify(delta.content)}\n\n`)
+                    replyContent += delta.content;
                 }
             }
+            replyContent = thinkContent + replyContent; // 将思考内容和回复内容合并
 
             // 结束传输
             ctx.res.end();
 
-            await this.service.aiConversation.create(uuid, params.userId, 'assistant', reply); // 添加助手回复到用户对话表
+            await this.service.aiConversation.create(uuid, params.userId, 'assistant', replyContent); // 添加助手回复到用户对话表
         } catch (error) {
             console.error(error)
             if (error.code === 'content_filter') {

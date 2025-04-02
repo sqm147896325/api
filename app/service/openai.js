@@ -24,7 +24,7 @@ class OpenaiService extends Service {
   async conversation(messages) {
     /* 使用@azure/openai的依赖 */
     const events = await this.openai.chat.completions.create({
-      model: 'deepseek-chat',
+      model: 'deepseek-reasoner',
       messages,
       stream: true,
     });
