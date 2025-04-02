@@ -12,14 +12,9 @@ class OpenaiService extends Service {
       this.main = this.ctx.model.AiConversation;
   
       /* 创建配置 */
-      const baseURL = 'https://api.deepseek.com';
-      const apiKey = this.app.config.openai.apiKey;
+      const aiConfig = this.app.config.ai.deepSeek;
 
-  
-      this.openai = new OpenAI({
-        baseURL,
-        apiKey
-    }); // 创建openai实例
+      this.openai = new OpenAI(aiConfig); // 创建openai实例
     } catch (error) {
       console.log('ai 初始化失败', error)
     }

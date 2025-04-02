@@ -144,8 +144,15 @@ module.exports = (appInfo, userConfig = {}) => {
 	};
 
 	/* 自定义配置 */
-	config.openai = {
-		apiKey: process.env.OPENAI_API_KEY
+	config.ai = {
+		dashScope: {
+			baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+			apiKey: process.env.API_KEY_DASHSCOPE,
+		},
+		deepSeek: {
+			baseURL: 'https://api.deepseek.com',
+			apiKey: process.env.API_KEY_DEEPSEEK,
+		},
 	}
 
 	return {
