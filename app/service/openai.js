@@ -1,7 +1,7 @@
 'use strict';
 
 const Service = require('egg').Service;
-const { OpenAIClient, AzureKeyCredential } = require('@azure/openai')
+const OpenAI = require('openai')
 
 class OpenaiService extends Service {
   constructor(ctx) {
@@ -11,11 +11,15 @@ class OpenaiService extends Service {
       // 引入用户对话模型
       this.main = this.ctx.model.AiConversation;
   
-      /* 使用@azure/openai创建配置 */
-      const endpoint = 'https://madder-gpt4.openai.azure.com/';
-      const azureApiKey = this.app.config.openai.azureApiKey;
+      /* 创建配置 */
+      const baseURL = 'https://api.deepseek.com';
+      const apiKey = this.app.config.openai.apiKey;
+
   
-      this.openai = new OpenAIClient(endpoint, new AzureKeyCredential(azureApiKey)); // 创建openai实例
+      this.openai = new OpenAI({
+        baseURL,
+        apiKey
+    }); // 创建openai实例
     } catch (error) {
       console.log('ai 初始化失败', error)
     }
@@ -24,7 +28,11 @@ class OpenaiService extends Service {
   // openai进行对话
   async conversation(messages) {
     /* 使用@azure/openai的依赖 */
-    const events = await this.openai.streamChatCompletions('gpt-35-turbo', messages);
+    const events = await this.openai.chat.completions.create({
+      model: 'deepseek-chat',
+      messages,
+      stream: true,
+    });
 
     return events;
   }
@@ -32,8 +40,8 @@ class OpenaiService extends Service {
   // openai生成图片
   async painter(prompt, size = '1024x1024', n = 1) {
     try {
-      const deploymentName = "Dalle3";
-      const response = await this.openai.getImages(deploymentName, prompt, { size, n })    
+      const model = "Dalle3";
+      const response = await this.openai.images.generate({ model, prompt,  size, n })   
       return response.data
     } catch (error) {
       console.log('error', error)

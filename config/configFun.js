@@ -145,7 +145,7 @@ module.exports = (appInfo, userConfig = {}) => {
 
 	/* 自定义配置 */
 	config.openai = {
-		azureApiKey: process.env.AZURE_OPENAI_KEY
+		apiKey: process.env.OPENAI_API_KEY
 	}
 
 	return {

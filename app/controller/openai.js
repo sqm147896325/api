@@ -25,7 +25,7 @@ class OpenaiController extends Controller {
         } else {
             conversationsNum = 0
         }
-        if (conversationsNum > 10) {
+        if (conversationsNum > 500) {
             helper.info('每日聊天数已超出，请24小时后重试或联系管理员重置');
             return false
         }
